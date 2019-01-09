@@ -75,7 +75,7 @@ sub new {
         fetchTime   => 0,
     };
 
-    $self->{cached} = _CreateForcastRef($self);
+    $self->{cached} = _CreateForecastRef($self);
 
     bless $self, $class;
     return $self;
@@ -190,8 +190,8 @@ sub _ProcessingRetrieveData($$) {
             $self->{cached}->{current_date_time} = strftime(
                 "%a,%e %b %Y %H:%M %p",
                 localtime( $self->{fetchTime} )
-              ),
-              $self->{cached}->{timezone} = $data->{timezone};
+              );
+            $self->{cached}->{timezone} = $data->{timezone};
             $self->{cached}->{license} = $data->{flags}->{'meteoalarm-license'};
             $self->{cached}->{current} = {
                 'temperature' => int(
@@ -229,13 +229,13 @@ sub _ProcessingRetrieveData($$) {
                 'precipIntensity' => $data->{currently}->{precipIntensity},
             };
 
-            my $i = 0;
             if ( ref( $data->{daily}->{data} ) eq "ARRAY"
                 and scalar( @{ $data->{daily}->{data} } ) > 0 )
             {
+                my $i = 0;
                 foreach ( @{ $data->{daily}->{data} } ) {
                     push(
-                        @{ $self->{cached}->{forcast}->{daily} },
+                        @{ $self->{cached}->{forecast}->{daily} },
                         {
                             'date' => strftime(
                                 "%a, %d.%m.%Y",
@@ -444,15 +444,15 @@ sub _ErrorHandling($$) {
     my ( $self, $err ) = @_;
 
     $self->{cached}->{current_date_time} =
-      strftime( "%a,%e %b %Y %H:%M %p", localtime( $self->{fetchTime} ) ),
-      $self->{cached}->{status} = $err;
+    strftime( "%a,%e %b %Y %H:%M %p", localtime( $self->{fetchTime} ) ),
+    $self->{cached}->{status} = $err;
     $self->{cached}->{validity} = 'stale';
 }
 
-sub _CreateForcastRef($) {
+sub _CreateForecastRef($) {
     my $self = shift;
 
-    my $forcastRef = (
+    my $forecastRef = (
         {
             lat  => $self->{lat},
             long => $self->{long},
@@ -461,7 +461,7 @@ sub _CreateForcastRef($) {
         }
     );
 
-    return $forcastRef;
+    return $forecastRef;
 }
 
 ##############################################################################

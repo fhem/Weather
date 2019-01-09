@@ -170,19 +170,19 @@ sub degrees_to_direction($@) {
 #     );
 # 
 #     # this needs to be finalized to use the APIOPTIONS
-#     my $maxage= $hash->{fhem}{allowCache} ? 600 : 0; # use cached data if allowed
-#     $hash->{fhem}{allowCache}= 1;
+#     my $maxage= $hash->{fhem}->{allowCache} ? 600 : 0; # use cached data if allowed
+#     $hash->{fhem}->{allowCache}= 1;
 #     YahooWeatherAPI_RetrieveDataWithCache($maxage, \%args);
 #     
 #     
-#     $hash->{fhem}{api}->setRetrieveData;
+#     $hash->{fhem}->{api}->setRetrieveData;
 # }
 
 sub Weather_ReturnWithError($$) {
     my ($hash, $responseRef)= @_;
     my $name= $hash->{NAME};
 
-#     $hash->{fhem}{allowCache}= 0; # do not use cache on next try
+#     $hash->{fhem}->{allowCache}= 0; # do not use cache on next try
 # 
 #     Log3 $hash, 3, "$name: $err";
 #     readingsBeginUpdate($hash);
@@ -191,13 +191,13 @@ sub Weather_ReturnWithError($$) {
 #     readingsBulkUpdate($hash, "pubDateRemote", $pubDate) if(defined($pubDate));
 #     readingsBulkUpdate($hash, "validity", "stale");
 #     readingsEndUpdate($hash, $doTrigger);
-
+    print 'In der Return with Error Funktion' . "\n";
 
     readingsBeginUpdate($hash);
     readingsBulkUpdate($hash, 'lastError', $responseRef->{status});
     
-    foreach my $r (keys %{$responseRef} ) {        
-        readingsBulkUpdate($hash, $r, $responseRef->{$r}) if ($r ne 'status');
+    foreach my $r (keys %{$responseRef} ) {
+        readingsBulkUpdate($hash, $r, $responseRef->{$r}) if ($r ne 'status' or ($r ne 'current' and ref($r) ne 'HASH') );
     }
     readingsBulkUpdate($hash, 'state', 'API Maintainer: ' . $responseRef->{apiMaintainer} .  ' ErrorMsg: ' . $responseRef->{status});
     readingsEndUpdate($hash, 1);
@@ -228,7 +228,7 @@ sub Weather_ReturnWithError($$) {
 #     my ($pubDateComment, $pubDate, $pubDateTs)= YahooWeatherAPI_pubDate($data);
 #     return Weather_ReturnWithError($hash, $doTrigger, $pubDateComment, $pubDate, $pubDateComment)
 #         unless(defined($pubDateTs));
-#     my $ts= defined($hash->{READINGS}{pubDateTs}) ? $hash->{READINGS}{pubDateTs}{VAL} : 0;
+#     my $ts= defined($hash->{READINGS}->{pubDateTs}) ? $hash->{READINGS}->{pubDateTs}->{VAL} : 0;
 #     return Weather_ReturnWithError($hash, $doTrigger, "stale data received", $pubDate, $pubDateComment)
 #         if($ts> $pubDateTs);
 # 
@@ -245,11 +245,11 @@ sub Weather_ReturnWithError($$) {
 #     readingsBeginUpdate($hash);
 # 
 #     # delete some unused readings
-#     delete($hash->{READINGS}{temp_f}) if(defined($hash->{READINGS}{temp_f}));
-#     delete($hash->{READINGS}{unit_distance}) if(defined($hash->{READINGS}{unit_distance}));
-#     delete($hash->{READINGS}{unit_speed}) if(defined($hash->{READINGS}{unit_speed}));
-#     delete($hash->{READINGS}{unit_pressuree}) if(defined($hash->{READINGS}{unit_pressuree}));
-#     delete($hash->{READINGS}{unit_temperature}) if(defined($hash->{READINGS}{unit_temperature}));
+#     delete($hash->{READINGS}->{temp_f}) if(defined($hash->{READINGS}->{temp_f}));
+#     delete($hash->{READINGS}->{unit_distance}) if(defined($hash->{READINGS}->{unit_distance}));
+#     delete($hash->{READINGS}->{unit_speed}) if(defined($hash->{READINGS}->{unit_speed}));
+#     delete($hash->{READINGS}->{unit_pressuree}) if(defined($hash->{READINGS}->{unit_pressuree}));
+#     delete($hash->{READINGS}->{unit_temperature}) if(defined($hash->{READINGS}->{unit_temperature}));
 # 
 #     # convert to metric units as far as required
 #     my $isConverted= YahooWeatherAPI_ConvertChannelData($data);
@@ -267,42 +267,42 @@ sub Weather_ReturnWithError($$) {
 #     readingsBulkUpdate($hash, "description", $data->{description});
 # 
 #     # location
-#     readingsBulkUpdate($hash, "city", $data->{location}{city});
-#     readingsBulkUpdate($hash, "region", $data->{location}{region});
-#     readingsBulkUpdate($hash, "country", $data->{location}{country});
+#     readingsBulkUpdate($hash, "city", $data->{location}->{city});
+#     readingsBulkUpdate($hash, "region", $data->{location}->{region});
+#     readingsBulkUpdate($hash, "country", $data->{location}->{country});
 #     readingsBulkUpdate($hash, "lat", $item->{lat});
 #     readingsBulkUpdate($hash, "long", $item->{long});
 # 
 #     # wind
-#     my $windspeed= int($data->{wind}{speed}+0.5);
+#     my $windspeed= int($data->{wind}->{speed}+0.5);
 #     readingsBulkUpdate($hash, "wind", $windspeed);
 #     readingsBulkUpdate($hash, "wind_speed", $windspeed);
-#     readingsBulkUpdate($hash, "wind_chill", $data->{wind}{chill});
-#     my $winddir= $data->{wind}{direction};
+#     readingsBulkUpdate($hash, "wind_chill", $data->{wind}->{chill});
+#     my $winddir= $data->{wind}->{direction};
 #     readingsBulkUpdate($hash, "wind_direction", $winddir);
 #     my $wdir= degrees_to_direction($winddir, @directions_txt_i18n);
 #     readingsBulkUpdate($hash, "wind_condition", "Wind: $wdir $windspeed km/h");
 # 
 #     # atmosphere
-#     my $humidity= $data->{atmosphere}{humidity};
+#     my $humidity= $data->{atmosphere}->{humidity};
 #     readingsBulkUpdate($hash, "humidity", $humidity);
-#     my $pressure= $data->{atmosphere}{pressure};
+#     my $pressure= $data->{atmosphere}->{pressure};
 #     readingsBulkUpdate($hash, "pressure", $pressure);
-#     readingsBulkUpdate($hash, "visibility", int($data->{atmosphere}{visibility}+0.5));
-#     my $pressure_trend= $data->{atmosphere}{rising};
+#     readingsBulkUpdate($hash, "visibility", int($data->{atmosphere}->{visibility}+0.5));
+#     my $pressure_trend= $data->{atmosphere}->{rising};
 #     readingsBulkUpdate($hash, "pressure_trend", $pressure_trend);
 #     readingsBulkUpdate($hash, "pressure_trend_txt", $pressure_trend_txt_i18n{$pressure_trend});
 #     readingsBulkUpdate($hash, "pressure_trend_sym", $pressure_trend_sym{$pressure_trend});
 # 
 #     # condition
-#     my $date= $item->{condition}{date};
+#     my $date= $item->{condition}->{date};
 #     readingsBulkUpdate($hash, "current_date_time", $date);
 #     readingsBulkUpdate($hash, "day_of_week", $wdays_txt_i18n{substr($date,0,3)});
-#     my $code= $item->{condition}{code};
+#     my $code= $item->{condition}->{code};
 #     readingsBulkUpdate($hash, "code", $code);
 #     readingsBulkUpdate($hash, "condition", $YahooCodes_i18n[$code]);
 #     readingsBulkUpdate($hash, "icon",  $iconlist[$code]);
-#     my $temp= $item->{condition}{temp};
+#     my $temp= $item->{condition}->{temp};
 #     readingsBulkUpdate($hash, "temp_c", $temp);
 #     readingsBulkUpdate($hash, "temperature", $temp);
 # 
@@ -338,7 +338,7 @@ sub Weather_RetrieveCallbackFn($) {
 
     my $name = shift;
     my $hash = $defs{$name};
-    my $responseRef = $hash->{fhem}{api}->getWeather;
+    my $responseRef = $hash->{fhem}->{api}->getWeather;
     
     if ( $responseRef->{status} eq 'ok' ) {
         Weather_WriteReadings($hash,$responseRef);
@@ -354,51 +354,52 @@ sub Weather_WriteReadings($$) {
     readingsBeginUpdate($hash);
 
     # delete some unused readings
-    delete($hash->{READINGS}{temp_f}) if(defined($hash->{READINGS}{temp_f}));
-    delete($hash->{READINGS}{unit_distance}) if(defined($hash->{READINGS}{unit_distance}));
-    delete($hash->{READINGS}{unit_speed}) if(defined($hash->{READINGS}{unit_speed}));
-    delete($hash->{READINGS}{unit_pressuree}) if(defined($hash->{READINGS}{unit_pressuree}));
-    delete($hash->{READINGS}{unit_temperature}) if(defined($hash->{READINGS}{unit_temperature}));
-
+    delete($hash->{READINGS}->{temp_f}) if(defined($hash->{READINGS}->{temp_f}));
+    delete($hash->{READINGS}->{unit_distance}) if(defined($hash->{READINGS}->{unit_distance}));
+    delete($hash->{READINGS}->{unit_speed}) if(defined($hash->{READINGS}->{unit_speed}));
+    delete($hash->{READINGS}->{unit_pressuree}) if(defined($hash->{READINGS}->{unit_pressuree}));
+    delete($hash->{READINGS}->{unit_temperature}) if(defined($hash->{READINGS}->{unit_temperature}));
+    
     # housekeeping information
     readingsBulkUpdate($hash, 'lastError', '');
     foreach my $r (keys %{$dataRef} ) {        
-        readingsBulkUpdate($hash, $r, $dataRef->{$r}) if ($r ne 'status' and $r ne 'current' and $r ne 'forcast');
+        readingsBulkUpdate($hash, $r, $dataRef->{$r})
+          if ( ref($dataRef->{$r}) ne 'HASH' );
     }
 
     readingsBulkUpdate($hash, "validity", "up-to-date");
 
 
     # current
-    if ( ref( $dataRef->{current} ) eq 'HASH' ) {
+    if ( defined($dataRef->{current}) and ref( $dataRef->{current} ) eq 'HASH' ) {
         while( my ($r,$v) = each %{$dataRef->{current}} ) {
             readingsBulkUpdate($hash, $r, $v);
         }
         
-        readingsBulkUpdate($hash, 'icon',  $iconlist[$dataRef->{current}{code}]);
-        if (  defined($dataRef->{current}{wind_direction})
-        and defined($dataRef->{current}{wind_speed} ) )
+        readingsBulkUpdate($hash, 'icon',  $iconlist[$dataRef->{current}->{code}]);
+        if (  defined($dataRef->{current}->{wind_direction})
+        and defined($dataRef->{current}->{wind_speed} ) )
         {
-            my $wdir= degrees_to_direction($dataRef->{current}{wind_direction}, @directions_txt_i18n);
-            readingsBulkUpdate($hash, 'wind_condition', 'Wind: ' . $wdir . ' ' . $dataRef->{current}{wind_speed} . ' km/h');
+            my $wdir= degrees_to_direction($dataRef->{current}->{wind_direction}, @directions_txt_i18n);
+            readingsBulkUpdate($hash, 'wind_condition', 'Wind: ' . $wdir . ' ' . $dataRef->{current}->{wind_speed} . ' km/h');
         }
     }
 
     # forecast
-    if ( ref( $dataRef->{forcast} ) eq 'HASH' ) {
-        ## Forcast for hourly
-        if (  ref( $dataRef->{forcast}{hourly} ) eq "ARRAY"
-        and scalar( @{ $dataRef->{forcast}{daily} } ) > 0 )
+    if ( defined($dataRef->{forecast}) and ref( $dataRef->{forecast} ) eq 'HASH' ) {
+        ## Forecast for hourly
+        if (  defined($dataRef->{forecast}->{hourly}) and ref( $dataRef->{forecast}->{hourly} ) eq "ARRAY"
+        and scalar( @{ $dataRef->{forecast}->{daily} } ) > 0 )
         {
         
         }
         
-        ## Forcast for Daily
-        if (  ref( $dataRef->{forcast}{daily} ) eq "ARRAY"
-        and scalar( @{ $dataRef->{forcast}{daily} } ) > 0 )
+        ## Forecast for Daily
+        if (  defined($dataRef->{forecast}->{daily}) and ref( $dataRef->{forecast}->{daily} ) eq "ARRAY"
+        and scalar( @{ $dataRef->{forecast}->{daily} } ) > 0 )
         {
             my $i= 0;
-            foreach my $fc (@{$dataRef->{forcast}{daily}}) {
+            foreach my $fc (@{$dataRef->{forecast}->{daily}}) {
                 $i++;
                 my $f= "fc" . $i ."_";
                 
@@ -406,22 +407,22 @@ sub Weather_WriteReadings($$) {
                     readingsBulkUpdate($hash, $f.$r, $v);
                 }
         #         readingsBulkUpdate($hash, $f . "day_of_week", $wdays_txt_i18n{$fc->{day}});
-                readingsBulkUpdate($hash, $f . 'icon',  $iconlist[$dataRef->{forcast}{daily}[$i-1]{code}]);
-                if (  defined($dataRef->{forcast}{daily}[$i-1]{wind_direction})
-                and defined($dataRef->{forcast}{daily}[$i-1]{wind_speed}) )
+                readingsBulkUpdate($hash, $f . 'icon',  $iconlist[$dataRef->{forecast}->{daily}[$i-1]{code}]);
+                if (  defined($dataRef->{forecast}->{daily}[$i-1]{wind_direction})
+                and defined($dataRef->{forecast}->{daily}[$i-1]{wind_speed}) )
                 {
-                    my $wdir= degrees_to_direction($dataRef->{forcast}{daily}[$i-1]{wind_direction}, @directions_txt_i18n);
-                    readingsBulkUpdate($hash, $f . 'wind_condition', 'Wind: ' . $wdir . ' ' . $dataRef->{forcast}{daily}[$i-1]{wind_speed} . ' km/h');
+                    my $wdir= degrees_to_direction($dataRef->{forecast}->{daily}[$i-1]{wind_direction}, @directions_txt_i18n);
+                    readingsBulkUpdate($hash, $f . 'wind_condition', 'Wind: ' . $wdir . ' ' . $dataRef->{forecast}->{daily}[$i-1]{wind_speed} . ' km/h');
                 }
-        #         readingsBulkUpdate($hash, $f . 'day_of_week', $wdays_txt_i18n{substr($dataRef->{forcast}[$i-1]{date},0,3)});
+        #         readingsBulkUpdate($hash, $f . 'day_of_week', $wdays_txt_i18n{substr($dataRef->{forecast}[$i-1]{date},0,3)});
             }
         }
     }
     
-    my $val= 'T:' . $dataRef->{current}{temperature} . '°C'
-            .' ' . substr($status_items_txt_i18n{1}, 0, 1) . ':' . $dataRef->{current}{humidity} . '%'
-            .' ' . substr($status_items_txt_i18n{0}, 0, 1) . ':' . $dataRef->{current}{wind} . 'km/h'
-            .' P:' . $dataRef->{current}{pressure} . 'mbar';
+    my $val= 'T:' . $dataRef->{current}->{temperature} . '°C'
+            .' ' . substr($status_items_txt_i18n{1}, 0, 1) . ':' . $dataRef->{current}->{humidity} . '%'
+            .' ' . substr($status_items_txt_i18n{0}, 0, 1) . ':' . $dataRef->{current}->{wind} . 'km/h'
+            .' P:' . $dataRef->{current}->{pressure} . 'mbar';
             
     Log3 $hash, 4, "$name: $val";
     readingsBulkUpdate($hash, 'state', $val);
@@ -439,7 +440,7 @@ sub Weather_GetUpdate($) {
     my ($hash) = @_;
     my $name = $hash->{NAME};
 
-    if($attr{$name} && $attr{$name}{disable}) {
+    if($attr{$name} && $attr{$name}->{disable}) {
       Log3 $hash, 5, "Weather $name: retrieval of weather data is disabled by attribute.";
       readingsBeginUpdate($hash);
       readingsBulkUpdate($hash, "pubDateComment", "disabled by attribute");
@@ -448,7 +449,7 @@ sub Weather_GetUpdate($) {
       Weather_RearmTimer($hash, gettimeofday()+$hash->{INTERVAL});
     } else {
 #       Weather_RetrieveData($name, 0);
-      $hash->{fhem}{api}->setRetrieveData;
+      $hash->{fhem}->{api}->setRetrieveData;
     }
 
     return 1;
@@ -464,8 +465,8 @@ sub Weather_Get($@) {
   my $reading= $a[1];
   my $value;
 
-  if(defined($hash->{READINGS}{$reading})) {
-        $value= $hash->{READINGS}{$reading}{VAL};
+  if(defined($hash->{READINGS}->{$reading})) {
+        $value= $hash->{READINGS}->{$reading}->{VAL};
   } else {
         my $rt= "";
         if(defined($hash->{READINGS})) {
@@ -515,7 +516,7 @@ sub Weather_Notify($$) {
   return if($dev->{NAME} ne "global");
   return if(!grep(m/^INITIALIZED|REREADCFG$/, @{$dev->{CHANGED}}));
 
-  # return if($attr{$name} && $attr{$name}{disable});
+  # return if($attr{$name} && $attr{$name}->{disable});
 
   # update weather after initialization or change of configuration
   # wait 10 to 29 seconds to avoid congestion due to concurrent activities
@@ -586,7 +587,7 @@ sub Weather_Define($$) {
   return "$name: cannot load API $api: $@" if($@);
 
   $hash->{NOTIFYDEV} = "global";
-  $hash->{fhem}{interfaces}= "temperature;humidity;wind";
+  $hash->{fhem}->{interfaces}= "temperature;humidity;wind";
   $hash->{LOCATION}     = ( defined($location) ? $location : AttrVal( 'global', 'latitude',  'error' ).','.AttrVal( 'global', 'longitude', 'error' ) );
   $hash->{INTERVAL}     = $interval;
   $hash->{LANG}         = ( defined($lang) ? $lang : lc(AttrVal('global','language','de')) );
@@ -594,16 +595,16 @@ sub Weather_Define($$) {
   $hash->{APIKEY}       = $apikey;
   $hash->{APIOPTIONS}   = $apioptions;
   #$hash->{UNITS}        = "c"; # hardcoded to use degrees centigrade (Celsius)
-  $hash->{READINGS}{current_date_time}{TIME}= TimeNow();
-  $hash->{READINGS}{current_date_time}{VAL}= "none";
+  $hash->{READINGS}->{current_date_time}->{TIME}= TimeNow();
+  $hash->{READINGS}->{current_date_time}->{VAL}= "none";
 
-  $hash->{fhem}{allowCache}= 1;
+  $hash->{fhem}->{allowCache}= 1;
   
   readingsSingleUpdate($hash,'state','Initialized',1);
   Weather_LanguageInitialize($hash->{LANG});
 
   my $apistring = $api . '::Weather';
-  $hash->{fhem}{api} = $apistring->new( { devName => $hash->{NAME}, apikey => $hash->{APIKEY}, location => $hash->{LOCATION}, cachemaxage => 600, language => $hash->{LANG} } );
+  $hash->{fhem}->{api} = $apistring->new( { devName => $hash->{NAME}, apikey => $hash->{APIKEY}, location => $hash->{LOCATION}, cachemaxage => 600, language => $hash->{LANG} } );
   
   Weather_GetUpdate($hash) if($init_done);
 
@@ -650,7 +651,7 @@ WeatherAsHtmlV($;$)
   $d = "<none>" if(!$d);
   $items = 10 if( !$items );
   return "$d is not a Weather instance<br>"
-        if(!$defs{$d} || $defs{$d}{TYPE} ne "Weather");
+        if(!$defs{$d} || $defs{$d}->{TYPE} ne "Weather");
 
   my $width= int(ICONSCALE*ICONWIDTH);
 
@@ -690,7 +691,7 @@ WeatherAsHtmlH($;$)
   $d = "<none>" if(!$d);
   $items = 10 if( !$items );
   return "$d is not a Weather instance<br>"
-        if(!$defs{$d} || $defs{$d}{TYPE} ne "Weather");
+        if(!$defs{$d} || $defs{$d}->{TYPE} ne "Weather");
 
   my $width= int(ICONSCALE*ICONWIDTH);
 
