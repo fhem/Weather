@@ -1,0 +1,1152 @@
+$forcastRef = (
+                {
+                    current_date_time => strftime(
+                        "%a,%e %b %Y %H:%M %p",
+                        localtime( $self->{fetchTime} )
+                    ),
+                    status   => 'ok',
+                    lat      => $self->{lat},
+                    long     => $self->{long},
+                    timezone => $data->{timezone},
+                    validity => 'up-to-date',
+                    license  => $data->{flags}{'meteoalarm-license'},
+                    apiMaintainer => 'Leon Gaultier (<a href=https://forum.fhem.de/index.php?action=profile;u=13684>CoolTux</a>)',
+                    current  => {
+                        'temperature' => int(sprintf("%.1f",$data->{currently}{temperature}) + 0.5),
+                        'temp_c'      => int(sprintf("%.1f",$data->{currently}{temperature}) + 0.5),
+                        'dewPoint'    => int(sprintf("%.1f",$data->{currently}{dewPoint}) + 0.5),
+                        'humidity'    => $data->{currently}{humidity} * 100,
+                        'condition' =>
+                          encode_utf8( $data->{currently}{summary} ),
+                        'pressure'       => $data->{currently}{pressure},
+                        'wind'           => $data->{currently}{windSpeed},
+                        'wind_speed'     => $data->{currently}{windSpeed},
+                        'wind_direction' => $data->{currently}{windBearing},
+                        'windGust'       => $data->{currently}{windGust},
+                        'cloudCover'     => $data->{currently}{cloudCover},
+                        'uvIndex'        => $data->{currently}{uvIndex},
+                        'visibility'     => $data->{currently}{visibility},
+                        'ozone'          => $data->{currently}{ozone},
+                        'code'           => $codes{ $data->{currently}{icon} },
+                        'iconAPI'        => $data->{currently}{icon},
+                        'pubDate'        => strftime(
+                            "%a,%e %b %Y %H:%M %p",
+                            localtime( $data->{currently}{'time'} )
+                        ),
+                        'precipProbability' =>
+                          $data->{currently}{precipProbability},
+                        'apparentTemperature' =>
+                          int(sprintf("%.1f",$data->{currently}{apparentTemperature}) + 0.5),
+                        'precipIntensity' =>
+                          $data->{currently}{precipIntensity},
+                    },
+                    forcast => {
+                                    daily => [
+                                                {
+                                                    'date' => strftime(
+                                                        "%a, %d.%m.%Y",
+                                                        localtime( $data->{daily}{data}[0]{'time'} )
+                                                    ),
+                                                    'day_of_week' => strftime(
+                                                        "%a",
+                                                        localtime( $data->{daily}{data}[0]{'time'} )
+                                                    ),
+                                                    'low_c' => int(sprintf("%.1f",$data->{daily}{data}[0]{temperatureLow}) + 0.5),
+                                                    'high_c' =>
+                                                    int(sprintf("%.1f",$data->{daily}{data}[0]{temperatureHigh}) + 0.5),
+                                                    'tempMin' =>
+                                                    int(sprintf("%.1f",$data->{daily}{data}[0]{temperatureMin}) + 0.5),
+                                                    'tempMinTime' => strftime(
+                                                        "%a,%e %b %Y %H:%M %p",
+                                                        localtime(
+                                                            $data->{daily}{data}[0]{temperatureMinTime}
+                                                        )
+                                                    ),
+                                                    'tempMax' =>
+                                                    int(sprintf("%.1f",$data->{daily}{data}[0]{temperatureMax}) + 0.5),
+                                                    'tempMaxTime' => strftime(
+                                                        "%a,%e %b %Y %H:%M %p",
+                                                        localtime(
+                                                            $data->{daily}{data}[0]{temperatureMaxTime}
+                                                        )
+                                                    ),
+                                                    'tempLow' =>
+                                                    int(sprintf("%.1f",$data->{daily}{data}[0]{temperatureLow}) + 0.5),
+                                                    'tempLowTime' => strftime(
+                                                        "%a,%e %b %Y %H:%M %p",
+                                                        localtime(
+                                                            $data->{daily}{data}[0]{temperatureLowTime}
+                                                        )
+                                                    ),
+                                                    'tempHigh' =>
+                                                    int(sprintf("%.1f",$data->{daily}{data}[0]{temperatureHigh}) + 0.5),
+                                                    'tempHighTime' => strftime(
+                                                        "%a,%e %b %Y %H:%M %p",
+                                                        localtime(
+                                                            $data->{daily}{data}[0]{temperatureHighTime}
+                                                        )
+                                                    ),
+                                                    'apparentTempLow' =>
+                                                    int(sprintf("%.1f",$data->{daily}{data}[0]{apparentTemperatureLow}) + 0.5),
+                                                    'apparentTempLowTime' => strftime(
+                                                        "%a,%e %b %Y %H:%M %p",
+                                                        localtime(
+                                                            $data->{daily}{data}[0]
+                                                            {apparentTemperatureLowTime}
+                                                        )
+                                                    ),
+                                                    'apparentTempHigh' =>
+                                                    int(sprintf("%.1f",$data->{daily}{data}[0]{apparentTemperatureHigh}) + 0.5),
+                                                    'apparentTempHighTime' => strftime(
+                                                        "%a,%e %b %Y %H:%M %p",
+                                                        localtime(
+                                                            $data->{daily}{data}[0]
+                                                            {apparentTemperatureHighTime}
+                                                        )
+                                                    ),
+                                                    'apparenttempMin' =>
+                                                    int(sprintf("%.1f",$data->{daily}{data}[0]{apparentTemperatureMin}) + 0.5),
+                                                    'apparenttempMinTime' => strftime(
+                                                        "%a,%e %b %Y %H:%M %p",
+                                                        localtime(
+                                                            $data->{daily}{data}[0]
+                                                            {apparentTemperatureMinTime}
+                                                        )
+                                                    ),
+                                                    'apparenttempMax' =>
+                                                    int(sprintf("%.1f",$data->{daily}{data}[0]{apparentTemperatureMax}) + 0.5),
+                                                    'apparenttempMaxTime' => strftime(
+                                                        "%a,%e %b %Y %H:%M %p",
+                                                        localtime(
+                                                            $data->{daily}{data}[0]
+                                                            {apparentTemperatureMaxTime}
+                                                        )
+                                                    ),
+                                                    'code' => $codes{ $data->{daily}{data}[0]{icon} },
+                                                    'iconAPI' => $data->{daily}{data}[0]{icon},
+                                                    'condition' =>
+                                                    encode_utf8( $data->{daily}{data}[0]{summary} ),
+                                                    'ozone'       => $data->{daily}{data}[0]{ozone},
+                                                    'uvIndex'     => $data->{daily}{data}[0]{uvIndex},
+                                                    'uvIndexTime' => strftime(
+                                                        "%a,%e %b %Y %H:%M %p",
+                                                        localtime(
+                                                            $data->{daily}{data}[0]{uvIndexTime}
+                                                        )
+                                                    ),
+                                                    'precipIntensity' =>
+                                                    $data->{daily}{data}[0]{precipIntensity},
+                                                    'precipIntensityMax' =>
+                                                    $data->{daily}{data}[0]{precipIntensityMax},
+                                                    'precipIntensityMaxTime' => strftime(
+                                                        "%a,%e %b %Y %H:%M %p",
+                                                        localtime(
+                                                            $data->{daily}{data}[0]
+                                                            {precipIntensityMaxTime}
+                                                        )
+                                                    ),
+                                                    'dewPoint'   => $data->{daily}{data}[0]{dewPoint},
+                                                    'humidity'   => $data->{daily}{data}[0]{humidity} * 100,
+                                                    'cloudCover' => $data->{daily}{data}[0]{cloudCover},
+                                                    'precipType' => $data->{daily}{data}[0]{precipType},
+
+                                                    'wind_direction' =>
+                                                    $data->{daily}{data}[0]{windBearing},
+                                                    'wind'       => $data->{daily}{data}[0]{windSpeed},
+                                                    'wind_speed' => $data->{daily}{data}[0]{windSpeed},
+                                                    'windGust'   => $data->{daily}{data}[0]{windGust},
+                                                    'windGustTime' => strftime(
+                                                        "%a,%e %b %Y %H:%M %p",
+                                                        localtime(
+                                                            $data->{daily}{data}[0]{windGustTime}
+                                                        )
+                                                    ),
+                                                    'moonPhase'  => $data->{daily}{data}[0]{moonPhase},
+                                                    'sunsetTime' => strftime(
+                                                        "%a,%e %b %Y %H:%M %p",
+                                                        localtime(
+                                                            $data->{daily}{data}[0]{sunsetTime}
+                                                        )
+                                                    ),
+                                                    'sunriseTime' => strftime(
+                                                        "%a,%e %b %Y %H:%M %p",
+                                                        localtime(
+                                                            $data->{daily}{data}[0]{sunriseTime}
+                                                        )
+                                                    ),
+
+                                                    'precipProbability' =>
+                                                    $data->{daily}{data}[0]{precipProbability},
+                                                    'pressure'   => $data->{daily}{data}[0]{pressure},
+                                                    'visibility' => $data->{daily}{data}[0]{visibility},
+                                                },
+                                                {
+                                                    'date' => strftime(
+                                                        "%a, %d.%m.%Y",
+                                                        localtime( $data->{daily}{data}[1]{'time'} )
+                                                    ),
+                                                    'day_of_week' => strftime(
+                                                        "%a",
+                                                        localtime( $data->{daily}{data}[1]{'time'} )
+                                                    ),
+                                                    'low_c' => int(sprintf("%.1f",$data->{daily}{data}[1]{temperatureLow}) + 0.5),
+                                                    'high_c' =>
+                                                    int(sprintf("%.1f",$data->{daily}{data}[1]{temperatureHigh}) + 0.5),
+                                                    'tempMin' =>
+                                                    int(sprintf("%.1f",$data->{daily}{data}[1]{temperatureMin}) + 0.5),
+                                                    'tempMinTime' => strftime(
+                                                        "%a,%e %b %Y %H:%M %p",
+                                                        localtime(
+                                                            $data->{daily}{data}[1]{temperatureMinTime}
+                                                        )
+                                                    ),
+                                                    'tempMax' =>
+                                                    int(sprintf("%.1f",$data->{daily}{data}[1]{temperatureMax}) + 0.5),
+                                                    'tempMaxTime' => strftime(
+                                                        "%a,%e %b %Y %H:%M %p",
+                                                        localtime(
+                                                            $data->{daily}{data}[1]{temperatureMaxTime}
+                                                        )
+                                                    ),
+                                                    'tempLow' =>
+                                                    int(sprintf("%.1f",$data->{daily}{data}[1]{temperatureLow}) + 0.5),
+                                                    'tempLowTime' => strftime(
+                                                        "%a,%e %b %Y %H:%M %p",
+                                                        localtime(
+                                                            $data->{daily}{data}[1]{temperatureLowTime}
+                                                        )
+                                                    ),
+                                                    'tempHigh' =>
+                                                    int(sprintf("%.1f",$data->{daily}{data}[1]{temperatureHigh}) + 0.5),
+                                                    'tempHighTime' => strftime(
+                                                        "%a,%e %b %Y %H:%M %p",
+                                                        localtime(
+                                                            $data->{daily}{data}[1]{temperatureHighTime}
+                                                        )
+                                                    ),
+                                                    'apparentTempLow' =>
+                                                    int(sprintf("%.1f",$data->{daily}{data}[1]{apparentTemperatureLow}) + 0.5),
+                                                    'apparentTempLowTime' => strftime(
+                                                        "%a,%e %b %Y %H:%M %p",
+                                                        localtime(
+                                                            $data->{daily}{data}[1]
+                                                            {apparentTemperatureLowTime}
+                                                        )
+                                                    ),
+                                                    'apparentTempHigh' =>
+                                                    int(sprintf("%.1f",$data->{daily}{data}[1]{apparentTemperatureHigh}) + 0.5),
+                                                    'apparentTempHighTime' => strftime(
+                                                        "%a,%e %b %Y %H:%M %p",
+                                                        localtime(
+                                                            $data->{daily}{data}[1]
+                                                            {apparentTemperatureHighTime}
+                                                        )
+                                                    ),
+                                                    'apparenttempMin' =>
+                                                    int(sprintf("%.1f",$data->{daily}{data}[1]{apparentTemperatureMin}) + 0.5),
+                                                    'apparenttempMinTime' => strftime(
+                                                        "%a,%e %b %Y %H:%M %p",
+                                                        localtime(
+                                                            $data->{daily}{data}[1]
+                                                            {apparentTemperatureMinTime}
+                                                        )
+                                                    ),
+                                                    'apparenttempMax' =>
+                                                    int(sprintf("%.1f",$data->{daily}{data}[1]{apparentTemperatureMax}) + 0.5),
+                                                    'apparenttempMaxTime' => strftime(
+                                                        "%a,%e %b %Y %H:%M %p",
+                                                        localtime(
+                                                            $data->{daily}{data}[1]
+                                                            {apparentTemperatureMaxTime}
+                                                        )
+                                                    ),
+                                                    'code' => $codes{ $data->{daily}{data}[1]{icon} },
+                                                    'iconAPI' => $data->{daily}{data}[1]{icon},
+                                                    'condition' =>
+                                                    encode_utf8( $data->{daily}{data}[1]{summary} ),
+                                                    'ozone'       => $data->{daily}{data}[1]{ozone},
+                                                    'uvIndex'     => $data->{daily}{data}[1]{uvIndex},
+                                                    'uvIndexTime' => strftime(
+                                                        "%a,%e %b %Y %H:%M %p",
+                                                        localtime(
+                                                            $data->{daily}{data}[1]{uvIndexTime}
+                                                        )
+                                                    ),
+                                                    'precipIntensity' =>
+                                                    $data->{daily}{data}[1]{precipIntensity},
+                                                    'precipIntensityMax' =>
+                                                    $data->{daily}{data}[1]{precipIntensityMax},
+                                                    'precipIntensityMaxTime' => strftime(
+                                                        "%a,%e %b %Y %H:%M %p",
+                                                        localtime(
+                                                            $data->{daily}{data}[1]
+                                                            {precipIntensityMaxTime}
+                                                        )
+                                                    ),
+                                                    'dewPoint'   => $data->{daily}{data}[1]{dewPoint},
+                                                    'humidity'   => $data->{daily}{data}[1]{humidity} * 100,
+                                                    'cloudCover' => $data->{daily}{data}[1]{cloudCover},
+                                                    'precipType' => $data->{daily}{data}[1]{precipType},
+
+                                                    'wind_direction' =>
+                                                    $data->{daily}{data}[1]{windBearing},
+                                                    'wind'       => $data->{daily}{data}[1]{windSpeed},
+                                                    'wind_speed' => $data->{daily}{data}[1]{windSpeed},
+                                                    'windGust'   => $data->{daily}{data}[1]{windGust},
+                                                    'windGustTime' => strftime(
+                                                        "%a,%e %b %Y %H:%M %p",
+                                                        localtime(
+                                                            $data->{daily}{data}[1]{windGustTime}
+                                                        )
+                                                    ),
+                                                    'moonPhase'  => $data->{daily}{data}[1]{moonPhase},
+                                                    'sunsetTime' => strftime(
+                                                        "%a,%e %b %Y %H:%M %p",
+                                                        localtime(
+                                                            $data->{daily}{data}[1]{sunsetTime}
+                                                        )
+                                                    ),
+                                                    'sunriseTime' => strftime(
+                                                        "%a,%e %b %Y %H:%M %p",
+                                                        localtime(
+                                                            $data->{daily}{data}[1]{sunriseTime}
+                                                        )
+                                                    ),
+
+                                                    'precipProbability' =>
+                                                    $data->{daily}{data}[1]{precipProbability},
+                                                    'pressure'   => $data->{daily}{data}[1]{pressure},
+                                                    'visibility' => $data->{daily}{data}[1]{visibility},
+                                                },
+                                                {
+                                                    'date' => strftime(
+                                                        "%a, %d.%m.%Y",
+                                                        localtime( $data->{daily}{data}[2]{'time'} )
+                                                    ),
+                                                    'day_of_week' => strftime(
+                                                        "%a",
+                                                        localtime( $data->{daily}{data}[2]{'time'} )
+                                                    ),
+                                                    'low_c' => int(sprintf("%.1f",$data->{daily}{data}[2]{temperatureLow}) + 0.5),
+                                                    'high_c' =>
+                                                    int(sprintf("%.1f",$data->{daily}{data}[2]{temperatureHigh}) + 0.5),
+                                                    'tempMin' =>
+                                                    int(sprintf("%.1f",$data->{daily}{data}[2]{temperatureMin}) + 0.5),
+                                                    'tempMinTime' => strftime(
+                                                        "%a,%e %b %Y %H:%M %p",
+                                                        localtime(
+                                                            $data->{daily}{data}[2]{temperatureMinTime}
+                                                        )
+                                                    ),
+                                                    'tempMax' =>
+                                                    int(sprintf("%.1f",$data->{daily}{data}[2]{temperatureMax}) + 0.5),
+                                                    'tempMaxTime' => strftime(
+                                                        "%a,%e %b %Y %H:%M %p",
+                                                        localtime(
+                                                            $data->{daily}{data}[2]{temperatureMaxTime}
+                                                        )
+                                                    ),
+                                                    'tempLow' =>
+                                                    int(sprintf("%.1f",$data->{daily}{data}[2]{temperatureLow}) + 0.5),
+                                                    'tempLowTime' => strftime(
+                                                        "%a,%e %b %Y %H:%M %p",
+                                                        localtime(
+                                                            $data->{daily}{data}[2]{temperatureLowTime}
+                                                        )
+                                                    ),
+                                                    'tempHigh' =>
+                                                    int(sprintf("%.1f",$data->{daily}{data}[2]{temperatureHigh}) + 0.5),
+                                                    'tempHighTime' => strftime(
+                                                        "%a,%e %b %Y %H:%M %p",
+                                                        localtime(
+                                                            $data->{daily}{data}[2]{temperatureHighTime}
+                                                        )
+                                                    ),
+                                                    'apparentTempLow' =>
+                                                    int(sprintf("%.1f",$data->{daily}{data}[2]{apparentTemperatureLow}) + 0.5),
+                                                    'apparentTempLowTime' => strftime(
+                                                        "%a,%e %b %Y %H:%M %p",
+                                                        localtime(
+                                                            $data->{daily}{data}[2]
+                                                            {apparentTemperatureLowTime}
+                                                        )
+                                                    ),
+                                                    'apparentTempHigh' =>
+                                                    int(sprintf("%.1f",$data->{daily}{data}[2]{apparentTemperatureHigh}) + 0.5),
+                                                    'apparentTempHighTime' => strftime(
+                                                        "%a,%e %b %Y %H:%M %p",
+                                                        localtime(
+                                                            $data->{daily}{data}[2]
+                                                            {apparentTemperatureHighTime}
+                                                        )
+                                                    ),
+                                                    'apparenttempMin' =>
+                                                    int(sprintf("%.1f",$data->{daily}{data}[2]{apparentTemperatureMin}) + 0.5),
+                                                    'apparenttempMinTime' => strftime(
+                                                        "%a,%e %b %Y %H:%M %p",
+                                                        localtime(
+                                                            $data->{daily}{data}[2]
+                                                            {apparentTemperatureMinTime}
+                                                        )
+                                                    ),
+                                                    'apparenttempMax' =>
+                                                    int(sprintf("%.1f",$data->{daily}{data}[2]{apparentTemperatureMax}) + 0.5),
+                                                    'apparenttempMaxTime' => strftime(
+                                                        "%a,%e %b %Y %H:%M %p",
+                                                        localtime(
+                                                            $data->{daily}{data}[2]
+                                                            {apparentTemperatureMaxTime}
+                                                        )
+                                                    ),
+                                                    'code' => $codes{ $data->{daily}{data}[2]{icon} },
+                                                    'iconAPI' => $data->{daily}{data}[1]{icon},
+                                                    'condition' =>
+                                                    encode_utf8( $data->{daily}{data}[2]{summary} ),
+                                                    'ozone'       => $data->{daily}{data}[2]{ozone},
+                                                    'uvIndex'     => $data->{daily}{data}[2]{uvIndex},
+                                                    'uvIndexTime' => strftime(
+                                                        "%a,%e %b %Y %H:%M %p",
+                                                        localtime(
+                                                            $data->{daily}{data}[2]{uvIndexTime}
+                                                        )
+                                                    ),
+                                                    'precipIntensity' =>
+                                                    $data->{daily}{data}[2]{precipIntensity},
+                                                    'precipIntensityMax' =>
+                                                    $data->{daily}{data}[2]{precipIntensityMax},
+                                                    'precipIntensityMaxTime' => strftime(
+                                                        "%a,%e %b %Y %H:%M %p",
+                                                        localtime(
+                                                            $data->{daily}{data}[2]
+                                                            {precipIntensityMaxTime}
+                                                        )
+                                                    ),
+                                                    'dewPoint'   => $data->{daily}{data}[2]{dewPoint},
+                                                    'humidity'   => $data->{daily}{data}[2]{humidity} * 100,
+                                                    'cloudCover' => $data->{daily}{data}[2]{cloudCover},
+                                                    'precipType' => $data->{daily}{data}[2]{precipType},
+
+                                                    'wind_direction' =>
+                                                    $data->{daily}{data}[2]{windBearing},
+                                                    'wind'       => $data->{daily}{data}[2]{windSpeed},
+                                                    'wind_speed' => $data->{daily}{data}[2]{windSpeed},
+                                                    'windGust'   => $data->{daily}{data}[2]{windGust},
+                                                    'windGustTime' => strftime(
+                                                        "%a,%e %b %Y %H:%M %p",
+                                                        localtime(
+                                                            $data->{daily}{data}[2]{windGustTime}
+                                                        )
+                                                    ),
+                                                    'moonPhase'  => $data->{daily}{data}[2]{moonPhase},
+                                                    'sunsetTime' => strftime(
+                                                        "%a,%e %b %Y %H:%M %p",
+                                                        localtime(
+                                                            $data->{daily}{data}[2]{sunsetTime}
+                                                        )
+                                                    ),
+                                                    'sunriseTime' => strftime(
+                                                        "%a,%e %b %Y %H:%M %p",
+                                                        localtime(
+                                                            $data->{daily}{data}[2]{sunriseTime}
+                                                        )
+                                                    ),
+
+                                                    'precipProbability' =>
+                                                    $data->{daily}{data}[2]{precipProbability},
+                                                    'pressure'   => $data->{daily}{data}[2]{pressure},
+                                                    'visibility' => $data->{daily}{data}[2]{visibility},
+                                                },
+                                                {
+                                                    'date' => strftime(
+                                                        "%a, %d.%m.%Y",
+                                                        localtime( $data->{daily}{data}[3]{'time'} )
+                                                    ),
+                                                    'day_of_week' => strftime(
+                                                        "%a",
+                                                        localtime( $data->{daily}{data}[3]{'time'} )
+                                                    ),
+                                                    'low_c' => int(sprintf("%.1f",$data->{daily}{data}[3]{temperatureLow}) + 0.5),
+                                                    'high_c' =>
+                                                    int(sprintf("%.1f",$data->{daily}{data}[3]{temperatureHigh}) + 0.5),
+                                                    'tempMin' =>
+                                                    int(sprintf("%.1f",$data->{daily}{data}[3]{temperatureMin}) + 0.5),
+                                                    'tempMinTime' => strftime(
+                                                        "%a,%e %b %Y %H:%M %p",
+                                                        localtime(
+                                                            $data->{daily}{data}[3]{temperatureMinTime}
+                                                        )
+                                                    ),
+                                                    'tempMax' =>
+                                                    int(sprintf("%.1f",$data->{daily}{data}[3]{temperatureMax}) + 0.5),
+                                                    'tempMaxTime' => strftime(
+                                                        "%a,%e %b %Y %H:%M %p",
+                                                        localtime(
+                                                            $data->{daily}{data}[3]{temperatureMaxTime}
+                                                        )
+                                                    ),
+                                                    'tempLow' =>
+                                                    int(sprintf("%.1f",$data->{daily}{data}[3]{temperatureLow}) + 0.5),
+                                                    'tempLowTime' => strftime(
+                                                        "%a,%e %b %Y %H:%M %p",
+                                                        localtime(
+                                                            $data->{daily}{data}[3]{temperatureLowTime}
+                                                        )
+                                                    ),
+                                                    'tempHigh' =>
+                                                    int(sprintf("%.1f",$data->{daily}{data}[3]{temperatureHigh}) + 0.5),
+                                                    'tempHighTime' => strftime(
+                                                        "%a,%e %b %Y %H:%M %p",
+                                                        localtime(
+                                                            $data->{daily}{data}[3]{temperatureHighTime}
+                                                        )
+                                                    ),
+                                                    'apparentTempLow' =>
+                                                    int(sprintf("%.1f",$data->{daily}{data}[3]{apparentTemperatureLow}) + 0.5),
+                                                    'apparentTempLowTime' => strftime(
+                                                        "%a,%e %b %Y %H:%M %p",
+                                                        localtime(
+                                                            $data->{daily}{data}[3]
+                                                            {apparentTemperatureLowTime}
+                                                        )
+                                                    ),
+                                                    'apparentTempHigh' =>
+                                                    int(sprintf("%.1f",$data->{daily}{data}[3]{apparentTemperatureHigh}) + 0.5),
+                                                    'apparentTempHighTime' => strftime(
+                                                        "%a,%e %b %Y %H:%M %p",
+                                                        localtime(
+                                                            $data->{daily}{data}[3]
+                                                            {apparentTemperatureHighTime}
+                                                        )
+                                                    ),
+                                                    'apparenttempMin' =>
+                                                    int(sprintf("%.1f",$data->{daily}{data}[3]{apparentTemperatureMin}) + 0.5),
+                                                    'apparenttempMinTime' => strftime(
+                                                        "%a,%e %b %Y %H:%M %p",
+                                                        localtime(
+                                                            $data->{daily}{data}[3]
+                                                            {apparentTemperatureMinTime}
+                                                        )
+                                                    ),
+                                                    'apparenttempMax' =>
+                                                    int(sprintf("%.1f",$data->{daily}{data}[3]{apparentTemperatureMax}) + 0.5),
+                                                    'apparenttempMaxTime' => strftime(
+                                                        "%a,%e %b %Y %H:%M %p",
+                                                        localtime(
+                                                            $data->{daily}{data}[3]
+                                                            {apparentTemperatureMaxTime}
+                                                        )
+                                                    ),
+                                                    'code' => $codes{ $data->{daily}{data}[3]{icon} },
+                                                    'iconAPI' => $data->{daily}{data}[3]{icon},
+                                                    'condition' =>
+                                                    encode_utf8( $data->{daily}{data}[3]{summary} ),
+                                                    'ozone'       => $data->{daily}{data}[3]{ozone},
+                                                    'uvIndex'     => $data->{daily}{data}[3]{uvIndex},
+                                                    'uvIndexTime' => strftime(
+                                                        "%a,%e %b %Y %H:%M %p",
+                                                        localtime(
+                                                            $data->{daily}{data}[3]{uvIndexTime}
+                                                        )
+                                                    ),
+                                                    'precipIntensity' =>
+                                                    $data->{daily}{data}[3]{precipIntensity},
+                                                    'precipIntensityMax' =>
+                                                    $data->{daily}{data}[3]{precipIntensityMax},
+                                                    'precipIntensityMaxTime' => strftime(
+                                                        "%a,%e %b %Y %H:%M %p",
+                                                        localtime(
+                                                            $data->{daily}{data}[3]
+                                                            {precipIntensityMaxTime}
+                                                        )
+                                                    ),
+                                                    'dewPoint'   => $data->{daily}{data}[3]{dewPoint},
+                                                    'humidity'   => $data->{daily}{data}[3]{humidity} * 100,
+                                                    'cloudCover' => $data->{daily}{data}[3]{cloudCover},
+                                                    'precipType' => $data->{daily}{data}[3]{precipType},
+
+                                                    'wind_direction' =>
+                                                    $data->{daily}{data}[3]{windBearing},
+                                                    'wind'       => $data->{daily}{data}[3]{windSpeed},
+                                                    'wind_speed' => $data->{daily}{data}[3]{windSpeed},
+                                                    'windGust'   => $data->{daily}{data}[3]{windGust},
+                                                    'windGustTime' => strftime(
+                                                        "%a,%e %b %Y %H:%M %p",
+                                                        localtime(
+                                                            $data->{daily}{data}[3]{windGustTime}
+                                                        )
+                                                    ),
+                                                    'moonPhase'  => $data->{daily}{data}[3]{moonPhase},
+                                                    'sunsetTime' => strftime(
+                                                        "%a,%e %b %Y %H:%M %p",
+                                                        localtime(
+                                                            $data->{daily}{data}[3]{sunsetTime}
+                                                        )
+                                                    ),
+                                                    'sunriseTime' => strftime(
+                                                        "%a,%e %b %Y %H:%M %p",
+                                                        localtime(
+                                                            $data->{daily}{data}[3]{sunriseTime}
+                                                        )
+                                                    ),
+
+                                                    'precipProbability' =>
+                                                    $data->{daily}{data}[3]{precipProbability},
+                                                    'pressure'   => $data->{daily}{data}[3]{pressure},
+                                                    'visibility' => $data->{daily}{data}[3]{visibility},
+                                                },
+                                                {
+                                                    'date' => strftime(
+                                                        "%a, %d.%m.%Y",
+                                                        localtime( $data->{daily}{data}[4]{'time'} )
+                                                    ),
+                                                    'day_of_week' => strftime(
+                                                        "%a",
+                                                        localtime( $data->{daily}{data}[4]{'time'} )
+                                                    ),
+                                                    'low_c' => int(sprintf("%.1f",$data->{daily}{data}[4]{temperatureLow}) + 0.5),
+                                                    'high_c' =>
+                                                    int(sprintf("%.1f",$data->{daily}{data}[4]{temperatureHigh}) + 0.5),
+                                                    'tempMin' =>
+                                                    int(sprintf("%.1f",$data->{daily}{data}[4]{temperatureMin}) + 0.5),
+                                                    'tempMinTime' => strftime(
+                                                        "%a,%e %b %Y %H:%M %p",
+                                                        localtime(
+                                                            $data->{daily}{data}[4]{temperatureMinTime}
+                                                        )
+                                                    ),
+                                                    'tempMax' =>
+                                                    int(sprintf("%.1f",$data->{daily}{data}[4]{temperatureMax}) + 0.5),
+                                                    'tempMaxTime' => strftime(
+                                                        "%a,%e %b %Y %H:%M %p",
+                                                        localtime(
+                                                            $data->{daily}{data}[4]{temperatureMaxTime}
+                                                        )
+                                                    ),
+                                                    'tempLow' =>
+                                                    int(sprintf("%.1f",$data->{daily}{data}[4]{temperatureLow}) + 0.5),
+                                                    'tempLowTime' => strftime(
+                                                        "%a,%e %b %Y %H:%M %p",
+                                                        localtime(
+                                                            $data->{daily}{data}[4]{temperatureLowTime}
+                                                        )
+                                                    ),
+                                                    'tempHigh' =>
+                                                    int(sprintf("%.1f",$data->{daily}{data}[4]{temperatureHigh}) + 0.5),
+                                                    'tempHighTime' => strftime(
+                                                        "%a,%e %b %Y %H:%M %p",
+                                                        localtime(
+                                                            $data->{daily}{data}[4]{temperatureHighTime}
+                                                        )
+                                                    ),
+                                                    'apparentTempLow' =>
+                                                    int(sprintf("%.1f",$data->{daily}{data}[4]{apparentTemperatureLow}) + 0.5),
+                                                    'apparentTempLowTime' => strftime(
+                                                        "%a,%e %b %Y %H:%M %p",
+                                                        localtime(
+                                                            $data->{daily}{data}[4]
+                                                            {apparentTemperatureLowTime}
+                                                        )
+                                                    ),
+                                                    'apparentTempHigh' =>
+                                                    int(sprintf("%.1f",$data->{daily}{data}[4]{apparentTemperatureHigh}) + 0.5),
+                                                    'apparentTempHighTime' => strftime(
+                                                        "%a,%e %b %Y %H:%M %p",
+                                                        localtime(
+                                                            $data->{daily}{data}[4]
+                                                            {apparentTemperatureHighTime}
+                                                        )
+                                                    ),
+                                                    'apparenttempMin' =>
+                                                    int(sprintf("%.1f",$data->{daily}{data}[4]{apparentTemperatureMin}) + 0.5),
+                                                    'apparenttempMinTime' => strftime(
+                                                        "%a,%e %b %Y %H:%M %p",
+                                                        localtime(
+                                                            $data->{daily}{data}[4]
+                                                            {apparentTemperatureMinTime}
+                                                        )
+                                                    ),
+                                                    'apparenttempMax' =>
+                                                    int(sprintf("%.1f",$data->{daily}{data}[4]{apparentTemperatureMax}) + 0.5),
+                                                    'apparenttempMaxTime' => strftime(
+                                                        "%a,%e %b %Y %H:%M %p",
+                                                        localtime(
+                                                            $data->{daily}{data}[4]
+                                                            {apparentTemperatureMaxTime}
+                                                        )
+                                                    ),
+                                                    'code' => $codes{ $data->{daily}{data}[4]{icon} },
+                                                    'iconAPI' => $data->{daily}{data}[4]{icon},
+                                                    'condition' =>
+                                                    encode_utf8( $data->{daily}{data}[4]{summary} ),
+                                                    'ozone'       => $data->{daily}{data}[4]{ozone},
+                                                    'uvIndex'     => $data->{daily}{data}[4]{uvIndex},
+                                                    'uvIndexTime' => strftime(
+                                                        "%a,%e %b %Y %H:%M %p",
+                                                        localtime(
+                                                            $data->{daily}{data}[4]{uvIndexTime}
+                                                        )
+                                                    ),
+                                                    'precipIntensity' =>
+                                                    $data->{daily}{data}[4]{precipIntensity},
+                                                    'precipIntensityMax' =>
+                                                    $data->{daily}{data}[4]{precipIntensityMax},
+                                                    'precipIntensityMaxTime' => strftime(
+                                                        "%a,%e %b %Y %H:%M %p",
+                                                        localtime(
+                                                            $data->{daily}{data}[4]
+                                                            {precipIntensityMaxTime}
+                                                        )
+                                                    ),
+                                                    'dewPoint'   => $data->{daily}{data}[4]{dewPoint},
+                                                    'humidity'   => $data->{daily}{data}[4]{humidity} * 100,
+                                                    'cloudCover' => $data->{daily}{data}[4]{cloudCover},
+                                                    'precipType' => $data->{daily}{data}[4]{precipType},
+
+                                                    'wind_direction' =>
+                                                    $data->{daily}{data}[4]{windBearing},
+                                                    'wind'       => $data->{daily}{data}[4]{windSpeed},
+                                                    'wind_speed' => $data->{daily}{data}[4]{windSpeed},
+                                                    'windGust'   => $data->{daily}{data}[4]{windGust},
+                                                    'windGustTime' => strftime(
+                                                        "%a,%e %b %Y %H:%M %p",
+                                                        localtime(
+                                                            $data->{daily}{data}[4]{windGustTime}
+                                                        )
+                                                    ),
+                                                    'moonPhase'  => $data->{daily}{data}[4]{moonPhase},
+                                                    'sunsetTime' => strftime(
+                                                        "%a,%e %b %Y %H:%M %p",
+                                                        localtime(
+                                                            $data->{daily}{data}[4]{sunsetTime}
+                                                        )
+                                                    ),
+                                                    'sunriseTime' => strftime(
+                                                        "%a,%e %b %Y %H:%M %p",
+                                                        localtime(
+                                                            $data->{daily}{data}[4]{sunriseTime}
+                                                        )
+                                                    ),
+
+                                                    'precipProbability' =>
+                                                    $data->{daily}{data}[4]{precipProbability},
+                                                    'pressure'   => $data->{daily}{data}[4]{pressure},
+                                                    'visibility' => $data->{daily}{data}[4]{visibility},
+                                                },
+                                                {
+                                                    'date' => strftime(
+                                                        "%a, %d.%m.%Y",
+                                                        localtime( $data->{daily}{data}[5]{'time'} )
+                                                    ),
+                                                    'day_of_week' => strftime(
+                                                        "%a",
+                                                        localtime( $data->{daily}{data}[5]{'time'} )
+                                                    ),
+                                                    'low_c' => int(sprintf("%.1f",$data->{daily}{data}[5]{temperatureLow}) + 0.5),
+                                                    'high_c' =>
+                                                    int(sprintf("%.1f",$data->{daily}{data}[5]{temperatureHigh}) + 0.5),
+                                                    'tempMin' =>
+                                                    int(sprintf("%.1f",$data->{daily}{data}[5]{temperatureMin}) + 0.5),
+                                                    'tempMinTime' => strftime(
+                                                        "%a,%e %b %Y %H:%M %p",
+                                                        localtime(
+                                                            $data->{daily}{data}[5]{temperatureMinTime}
+                                                        )
+                                                    ),
+                                                    'tempMax' =>
+                                                    int(sprintf("%.1f",$data->{daily}{data}[5]{temperatureMax}) + 0.5),
+                                                    'tempMaxTime' => strftime(
+                                                        "%a,%e %b %Y %H:%M %p",
+                                                        localtime(
+                                                            $data->{daily}{data}[5]{temperatureMaxTime}
+                                                        )
+                                                    ),
+                                                    'tempLow' =>
+                                                    int(sprintf("%.1f",$data->{daily}{data}[5]{temperatureLow}) + 0.5),
+                                                    'tempLowTime' => strftime(
+                                                        "%a,%e %b %Y %H:%M %p",
+                                                        localtime(
+                                                            $data->{daily}{data}[5]{temperatureLowTime}
+                                                        )
+                                                    ),
+                                                    'tempHigh' =>
+                                                    int(sprintf("%.1f",$data->{daily}{data}[5]{temperatureHigh}) + 0.5),
+                                                    'tempHighTime' => strftime(
+                                                        "%a,%e %b %Y %H:%M %p",
+                                                        localtime(
+                                                            $data->{daily}{data}[5]{temperatureHighTime}
+                                                        )
+                                                    ),
+                                                    'apparentTempLow' =>
+                                                    int(sprintf("%.1f",$data->{daily}{data}[5]{apparentTemperatureLow}) + 0.5),
+                                                    'apparentTempLowTime' => strftime(
+                                                        "%a,%e %b %Y %H:%M %p",
+                                                        localtime(
+                                                            $data->{daily}{data}[5]
+                                                            {apparentTemperatureLowTime}
+                                                        )
+                                                    ),
+                                                    'apparentTempHigh' =>
+                                                    int(sprintf("%.1f",$data->{daily}{data}[5]{apparentTemperatureHigh}) + 0.5),
+                                                    'apparentTempHighTime' => strftime(
+                                                        "%a,%e %b %Y %H:%M %p",
+                                                        localtime(
+                                                            $data->{daily}{data}[5]
+                                                            {apparentTemperatureHighTime}
+                                                        )
+                                                    ),
+                                                    'apparenttempMin' =>
+                                                    int(sprintf("%.1f",$data->{daily}{data}[5]{apparentTemperatureMin}) + 0.5),
+                                                    'apparenttempMinTime' => strftime(
+                                                        "%a,%e %b %Y %H:%M %p",
+                                                        localtime(
+                                                            $data->{daily}{data}[5]
+                                                            {apparentTemperatureMinTime}
+                                                        )
+                                                    ),
+                                                    'apparenttempMax' =>
+                                                    int(sprintf("%.1f",$data->{daily}{data}[5]{apparentTemperatureMax}) + 0.5),
+                                                    'apparenttempMaxTime' => strftime(
+                                                        "%a,%e %b %Y %H:%M %p",
+                                                        localtime(
+                                                            $data->{daily}{data}[5]
+                                                            {apparentTemperatureMaxTime}
+                                                        )
+                                                    ),
+                                                    'code' => $codes{ $data->{daily}{data}[5]{icon} },
+                                                    'iconAPI' => $data->{daily}{data}[5]{icon},
+                                                    'condition' =>
+                                                    encode_utf8( $data->{daily}{data}[5]{summary} ),
+                                                    'ozone'       => $data->{daily}{data}[5]{ozone},
+                                                    'uvIndex'     => $data->{daily}{data}[5]{uvIndex},
+                                                    'uvIndexTime' => strftime(
+                                                        "%a,%e %b %Y %H:%M %p",
+                                                        localtime(
+                                                            $data->{daily}{data}[5]{uvIndexTime}
+                                                        )
+                                                    ),
+                                                    'precipIntensity' =>
+                                                    $data->{daily}{data}[5]{precipIntensity},
+                                                    'precipIntensityMax' =>
+                                                    $data->{daily}{data}[5]{precipIntensityMax},
+                                                    'precipIntensityMaxTime' => strftime(
+                                                        "%a,%e %b %Y %H:%M %p",
+                                                        localtime(
+                                                            $data->{daily}{data}[5]
+                                                            {precipIntensityMaxTime}
+                                                        )
+                                                    ),
+                                                    'dewPoint'   => $data->{daily}{data}[5]{dewPoint},
+                                                    'humidity'   => $data->{daily}{data}[5]{humidity} * 100,
+                                                    'cloudCover' => $data->{daily}{data}[5]{cloudCover},
+                                                    'precipType' => $data->{daily}{data}[5]{precipType},
+
+                                                    'wind_direction' =>
+                                                    $data->{daily}{data}[5]{windBearing},
+                                                    'wind'       => $data->{daily}{data}[5]{windSpeed},
+                                                    'wind_speed' => $data->{daily}{data}[5]{windSpeed},
+                                                    'windGust'   => $data->{daily}{data}[5]{windGust},
+                                                    'windGustTime' => strftime(
+                                                        "%a,%e %b %Y %H:%M %p",
+                                                        localtime(
+                                                            $data->{daily}{data}[5]{windGustTime}
+                                                        )
+                                                    ),
+                                                    'moonPhase'  => $data->{daily}{data}[5]{moonPhase},
+                                                    'sunsetTime' => strftime(
+                                                        "%a,%e %b %Y %H:%M %p",
+                                                        localtime(
+                                                            $data->{daily}{data}[5]{sunsetTime}
+                                                        )
+                                                    ),
+                                                    'sunriseTime' => strftime(
+                                                        "%a,%e %b %Y %H:%M %p",
+                                                        localtime(
+                                                            $data->{daily}{data}[5]{sunriseTime}
+                                                        )
+                                                    ),
+
+                                                    'precipProbability' =>
+                                                    $data->{daily}{data}[5]{precipProbability},
+                                                    'pressure'   => $data->{daily}{data}[5]{pressure},
+                                                    'visibility' => $data->{daily}{data}[5]{visibility},
+                                                },
+                                                {
+                                                    'date' => strftime(
+                                                        "%a, %d.%m.%Y",
+                                                        localtime( $data->{daily}{data}[6]{'time'} )
+                                                    ),
+                                                    'day_of_week' => strftime(
+                                                        "%a",
+                                                        localtime( $data->{daily}{data}[6]{'time'} )
+                                                    ),
+                                                    'low_c' => int(sprintf("%.1f",$data->{daily}{data}[6]{temperatureLow}) + 0.5),
+                                                    'high_c' =>
+                                                    int(sprintf("%.1f",$data->{daily}{data}[6]{temperatureHigh}) + 0.5),
+                                                    'tempMin' =>
+                                                    int(sprintf("%.1f",$data->{daily}{data}[6]{temperatureMin}) + 0.5),
+                                                    'tempMinTime' => strftime(
+                                                        "%a,%e %b %Y %H:%M %p",
+                                                        localtime(
+                                                            $data->{daily}{data}[6]{temperatureMinTime}
+                                                        )
+                                                    ),
+                                                    'tempMax' =>
+                                                    int(sprintf("%.1f",$data->{daily}{data}[6]{temperatureMax}) + 0.5),
+                                                    'tempMaxTime' => strftime(
+                                                        "%a,%e %b %Y %H:%M %p",
+                                                        localtime(
+                                                            $data->{daily}{data}[6]{temperatureMaxTime}
+                                                        )
+                                                    ),
+                                                    'tempLow' =>
+                                                    int(sprintf("%.1f",$data->{daily}{data}[6]{temperatureLow}) + 0.5),
+                                                    'tempLowTime' => strftime(
+                                                        "%a,%e %b %Y %H:%M %p",
+                                                        localtime(
+                                                            $data->{daily}{data}[6]{temperatureLowTime}
+                                                        )
+                                                    ),
+                                                    'tempHigh' =>
+                                                    int(sprintf("%.1f",$data->{daily}{data}[6]{temperatureHigh}) + 0.5),
+                                                    'tempHighTime' => strftime(
+                                                        "%a,%e %b %Y %H:%M %p",
+                                                        localtime(
+                                                            $data->{daily}{data}[6]{temperatureHighTime}
+                                                        )
+                                                    ),
+                                                    'apparentTempLow' =>
+                                                    int(sprintf("%.1f",$data->{daily}{data}[6]{apparentTemperatureLow}) + 0.5),
+                                                    'apparentTempLowTime' => strftime(
+                                                        "%a,%e %b %Y %H:%M %p",
+                                                        localtime(
+                                                            $data->{daily}{data}[6]
+                                                            {apparentTemperatureLowTime}
+                                                        )
+                                                    ),
+                                                    'apparentTempHigh' =>
+                                                    int(sprintf("%.1f",$data->{daily}{data}[6]{apparentTemperatureHigh}) + 0.5),
+                                                    'apparentTempHighTime' => strftime(
+                                                        "%a,%e %b %Y %H:%M %p",
+                                                        localtime(
+                                                            $data->{daily}{data}[6]
+                                                            {apparentTemperatureHighTime}
+                                                        )
+                                                    ),
+                                                    'apparenttempMin' =>
+                                                    int(sprintf("%.1f",$data->{daily}{data}[6]{apparentTemperatureMin}) + 0.5),
+                                                    'apparenttempMinTime' => strftime(
+                                                        "%a,%e %b %Y %H:%M %p",
+                                                        localtime(
+                                                            $data->{daily}{data}[6]
+                                                            {apparentTemperatureMinTime}
+                                                        )
+                                                    ),
+                                                    'apparenttempMax' =>
+                                                    int(sprintf("%.1f",$data->{daily}{data}[6]{apparentTemperatureMax}) + 0.5),
+                                                    'apparenttempMaxTime' => strftime(
+                                                        "%a,%e %b %Y %H:%M %p",
+                                                        localtime(
+                                                            $data->{daily}{data}[6]
+                                                            {apparentTemperatureMaxTime}
+                                                        )
+                                                    ),
+                                                    'code' => $codes{ $data->{daily}{data}[6]{icon} },
+                                                    'iconAPI' => $data->{daily}{data}[6]{icon},
+                                                    'condition' =>
+                                                    encode_utf8( $data->{daily}{data}[6]{summary} ),
+                                                    'ozone'       => $data->{daily}{data}[6]{ozone},
+                                                    'uvIndex'     => $data->{daily}{data}[6]{uvIndex},
+                                                    'uvIndexTime' => strftime(
+                                                        "%a,%e %b %Y %H:%M %p",
+                                                        localtime(
+                                                            $data->{daily}{data}[6]{uvIndexTime}
+                                                        )
+                                                    ),
+                                                    'precipIntensity' =>
+                                                    $data->{daily}{data}[6]{precipIntensity},
+                                                    'precipIntensityMax' =>
+                                                    $data->{daily}{data}[6]{precipIntensityMax},
+                                                    'precipIntensityMaxTime' => strftime(
+                                                        "%a,%e %b %Y %H:%M %p",
+                                                        localtime(
+                                                            $data->{daily}{data}[6]
+                                                            {precipIntensityMaxTime}
+                                                        )
+                                                    ),
+                                                    'dewPoint'   => $data->{daily}{data}[6]{dewPoint},
+                                                    'humidity'   => $data->{daily}{data}[6]{humidity} * 100,
+                                                    'cloudCover' => $data->{daily}{data}[6]{cloudCover},
+                                                    'precipType' => $data->{daily}{data}[6]{precipType},
+
+                                                    'wind_direction' =>
+                                                    $data->{daily}{data}[6]{windBearing},
+                                                    'wind'       => $data->{daily}{data}[6]{windSpeed},
+                                                    'wind_speed' => $data->{daily}{data}[6]{windSpeed},
+                                                    'windGust'   => $data->{daily}{data}[6]{windGust},
+                                                    'windGustTime' => strftime(
+                                                        "%a,%e %b %Y %H:%M %p",
+                                                        localtime(
+                                                            $data->{daily}{data}[6]{windGustTime}
+                                                        )
+                                                    ),
+                                                    'moonPhase'  => $data->{daily}{data}[6]{moonPhase},
+                                                    'sunsetTime' => strftime(
+                                                        "%a,%e %b %Y %H:%M %p",
+                                                        localtime(
+                                                            $data->{daily}{data}[6]{sunsetTime}
+                                                        )
+                                                    ),
+                                                    'sunriseTime' => strftime(
+                                                        "%a,%e %b %Y %H:%M %p",
+                                                        localtime(
+                                                            $data->{daily}{data}[6]{sunriseTime}
+                                                        )
+                                                    ),
+
+                                                    'precipProbability' =>
+                                                    $data->{daily}{data}[6]{precipProbability},
+                                                    'pressure'   => $data->{daily}{data}[6]{pressure},
+                                                    'visibility' => $data->{daily}{data}[6]{visibility},
+                                                },
+                                                {
+                                                    'date' => strftime(
+                                                        "%a, %d.%m.%Y",
+                                                        localtime( $data->{daily}{data}[7]{'time'} )
+                                                    ),
+                                                    'day_of_week' => strftime(
+                                                        "%a",
+                                                        localtime( $data->{daily}{data}[7]{'time'} )
+                                                    ),
+                                                    'low_c' => int(sprintf("%.1f",$data->{daily}{data}[7]{temperatureLow}) + 0.5),
+                                                    'high_c' =>
+                                                    int(sprintf("%.1f",$data->{daily}{data}[7]{temperatureHigh}) + 0.5),
+                                                    'tempMin' =>
+                                                    int(sprintf("%.1f",$data->{daily}{data}[7]{temperatureMin}) + 0.5),
+                                                    'tempMinTime' => strftime(
+                                                        "%a,%e %b %Y %H:%M %p",
+                                                        localtime(
+                                                            $data->{daily}{data}[7]{temperatureMinTime}
+                                                        )
+                                                    ),
+                                                    'tempMax' =>
+                                                    int(sprintf("%.1f",$data->{daily}{data}[7]{temperatureMax}) + 0.5),
+                                                    'tempMaxTime' => strftime(
+                                                        "%a,%e %b %Y %H:%M %p",
+                                                        localtime(
+                                                            $data->{daily}{data}[7]{temperatureMaxTime}
+                                                        )
+                                                    ),
+                                                    'tempLow' =>
+                                                    int(sprintf("%.1f",$data->{daily}{data}[7]{temperatureLow}) + 0.5),
+                                                    'tempLowTime' => strftime(
+                                                        "%a,%e %b %Y %H:%M %p",
+                                                        localtime(
+                                                            $data->{daily}{data}[7]{temperatureLowTime}
+                                                        )
+                                                    ),
+                                                    'tempHigh' =>
+                                                    int(sprintf("%.1f",$data->{daily}{data}[7]{temperatureHigh}) + 0.5),
+                                                    'tempHighTime' => strftime(
+                                                        "%a,%e %b %Y %H:%M %p",
+                                                        localtime(
+                                                            $data->{daily}{data}[7]{temperatureHighTime}
+                                                        )
+                                                    ),
+                                                    'apparentTempLow' =>
+                                                    int(sprintf("%.1f",$data->{daily}{data}[7]{apparentTemperatureLow}) + 0.5),
+                                                    'apparentTempLowTime' => strftime(
+                                                        "%a,%e %b %Y %H:%M %p",
+                                                        localtime(
+                                                            $data->{daily}{data}[7]
+                                                            {apparentTemperatureLowTime}
+                                                        )
+                                                    ),
+                                                    'apparentTempHigh' =>
+                                                    int(sprintf("%.1f",$data->{daily}{data}[7]{apparentTemperatureHigh}) + 0.5),
+                                                    'apparentTempHighTime' => strftime(
+                                                        "%a,%e %b %Y %H:%M %p",
+                                                        localtime(
+                                                            $data->{daily}{data}[7]
+                                                            {apparentTemperatureHighTime}
+                                                        )
+                                                    ),
+                                                    'apparenttempMin' =>
+                                                    int(sprintf("%.1f",$data->{daily}{data}[7]{apparentTemperatureMin}) + 0.5),
+                                                    'apparenttempMinTime' => strftime(
+                                                        "%a,%e %b %Y %H:%M %p",
+                                                        localtime(
+                                                            $data->{daily}{data}[7]
+                                                            {apparentTemperatureMinTime}
+                                                        )
+                                                    ),
+                                                    'apparenttempMax' =>
+                                                    int(sprintf("%.1f",$data->{daily}{data}[7]{apparentTemperatureMax}) + 0.5),
+                                                    'apparenttempMaxTime' => strftime(
+                                                        "%a,%e %b %Y %H:%M %p",
+                                                        localtime(
+                                                            $data->{daily}{data}[7]
+                                                            {apparentTemperatureMaxTime}
+                                                        )
+                                                    ),
+                                                    'code' => $codes{ $data->{daily}{data}[7]{icon} },
+                                                    'iconAPI' => $data->{daily}{data}[7]{icon},
+                                                    'condition' =>
+                                                    encode_utf8( $data->{daily}{data}[7]{summary} ),
+                                                    'ozone'       => $data->{daily}{data}[7]{ozone},
+                                                    'uvIndex'     => $data->{daily}{data}[7]{uvIndex},
+                                                    'uvIndexTime' => strftime(
+                                                        "%a,%e %b %Y %H:%M %p",
+                                                        localtime(
+                                                            $data->{daily}{data}[7]{uvIndexTime}
+                                                        )
+                                                    ),
+                                                    'precipIntensity' =>
+                                                    $data->{daily}{data}[7]{precipIntensity},
+                                                    'precipIntensityMax' =>
+                                                    $data->{daily}{data}[7]{precipIntensityMax},
+                                                    'precipIntensityMaxTime' => strftime(
+                                                        "%a,%e %b %Y %H:%M %p",
+                                                        localtime(
+                                                            $data->{daily}{data}[7]
+                                                            {precipIntensityMaxTime}
+                                                        )
+                                                    ),
+                                                    'dewPoint'   => $data->{daily}{data}[7]{dewPoint},
+                                                    'humidity'   => $data->{daily}{data}[7]{humidity} * 100,
+                                                    'cloudCover' => $data->{daily}{data}[7]{cloudCover},
+                                                    'precipType' => $data->{daily}{data}[7]{precipType},
+
+                                                    'wind_direction' =>
+                                                    $data->{daily}{data}[7]{windBearing},
+                                                    'wind'       => $data->{daily}{data}[7]{windSpeed},
+                                                    'wind_speed' => $data->{daily}{data}[7]{windSpeed},
+                                                    'windGust'   => $data->{daily}{data}[7]{windGust},
+                                                    'windGustTime' => strftime(
+                                                        "%a,%e %b %Y %H:%M %p",
+                                                        localtime(
+                                                            $data->{daily}{data}[7]{windGustTime}
+                                                        )
+                                                    ),
+                                                    'moonPhase'  => $data->{daily}{data}[7]{moonPhase},
+                                                    'sunsetTime' => strftime(
+                                                        "%a,%e %b %Y %H:%M %p",
+                                                        localtime(
+                                                            $data->{daily}{data}[7]{sunsetTime}
+                                                        )
+                                                    ),
+                                                    'sunriseTime' => strftime(
+                                                        "%a,%e %b %Y %H:%M %p",
+                                                        localtime(
+                                                            $data->{daily}{data}[7]{sunriseTime}
+                                                        )
+                                                    ),
+
+                                                    'precipProbability' =>
+                                                    $data->{daily}{data}[7]{precipProbability},
+                                                    'pressure'   => $data->{daily}{data}[7]{pressure},
+                                                    'visibility' => $data->{daily}{data}[7]{visibility},
+                                                },
+                                            ],
+                                },
+                        },
+                    );

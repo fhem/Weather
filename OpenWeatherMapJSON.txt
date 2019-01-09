@@ -1,0 +1,468 @@
+https://api.openweathermap.org/data/2.5/forecast?lat=52.&lon=13.&APPID=4
+
+https://api.openweathermap.org/data/2.5/forecast?lat=52.&lon=13.&APPID=4
+
+
+
+{
+          'dt' => 1546973400,
+          'weather' => [
+                         {
+                           'description' => 'moderate rain',
+                           'id' => 501,
+                           'main' => 'Rain',
+                           'icon' => '10n'
+                         }
+                       ],
+          'main' => {
+                      'pressure' => 998,
+                      'temp_max' => '277.15',
+                      'humidity' => 86,
+                      'temp_min' => '276.15',
+                      'temp' => '276.53'
+                    },
+          'visibility' => 10000,
+          'wind' => {
+                      'deg' => 290,
+                      'speed' => '6.2'
+                    },
+          'sys' => {
+                     'type' => 1,
+                     'message' => '0.0368',
+                     'country' => 'DE',
+                     'sunrise' => 1546931687,
+                     'id' => 1275,
+                     'sunset' => 1546960424
+                   },
+          'coord' => {
+                       'lon' => '13.',
+                       'lat' => '52.'
+                     },
+          'base' => 'stations',
+          'name' => 'Stahnsdorf',
+          'cod' => 200,
+          'clouds' => {
+                        'all' => 75
+                      },
+          'id' => 2829657
+};
+
+
+
+
+{"cod":429, "message": "Your account is temporary blocked due to exceeding of requests limitation of your subscription type. Please choose the proper subscription http://openweathermap.org/price"}
+
+
+
+http://api.openweathermap.org/data/2.5/weather?         current
+
+{"coord":{"lon":1,"lat":5},
+"weather":[{"id":520,"main":"Rain","description":"light intensity shower rain","icon":"09d"}],
+"base":"stations",
+"main":{"temp":278.47,"pressure":997,"humidity":87,"temp_min":278.15,"temp_max":279.15},
+"visibility":10000,
+"wind":{"speed":9.8,"deg":250,"gust":14.9},
+"clouds":{"all":75},
+"dt":1546944780,
+"sys":{"type":1,"id":1275,"message":0.0243,"country":"DE","sunrise":1546931697,"sunset":1546960397},
+"id":2829657,
+"name":"Stahnsdorf",
+"cod":200}
+
+
+
+
+
+
+
+
+
+http://api.openweathermap.org/data/2.5/forecast?           forcast
+
+{"cod":"200","message":0.0054,"cnt":40,
+
+
+"list":[
+{"dt":1546948800,
+"main":{"temp":278.35,"temp_min":278.034,"temp_max":278.35,"pressure":1003.32,"sea_level":1010.26,"grnd_level":1003.32,"humidity":98,"temp_kf":0.32},
+"weather":[{"id":501,"main":"Rain","description":"moderate rain","icon":"10d"}],
+"clouds":{"all":92},
+"wind":{"speed":11.17,"deg":269.502},
+"rain":{"3h":4.225},
+"sys":{"pod":"d"},
+"dt_txt":"2019-01-08 12:00:00"},
+
+
+{"dt":1546959600,
+"main":{"temp":278.87,"temp_min":278.629,"temp_max":278.87,"pressure":1003.39,"sea_level":1010.29,"grnd_level":1003.39,"humidity":96,"temp_kf":0.24},
+weather":[{"id":500,"main":"Rain","description":"light rain","icon":"10d"}],
+"clouds":{"all":92},
+"wind":{"speed":10.2,"deg":295.502},
+"rain":{"3h":1.125},
+"sys":{"pod":"d"},
+"dt_txt":"2019-01-08 15:00:00"},
+
+
+{"dt":1546970400,
+"main":{"temp":277.13,"temp_min":276.974,"temp_max":277.13,"pressure":1004.37,"sea_level":1011.35,"grnd_level":1004.37,"humidity":98,"temp_kf":0.16},
+"weather":[{"id":500,"main":"Rain","description":"light rain","icon":"10n"}],
+"clouds":{"all":88},
+"wind":{"speed":8.79,"deg":310.001},
+"rain":{"3h":0.37},
+"sys":{"pod":"n"},
+"dt_txt":"2019-01-08 18:00:00"},
+
+
+{"dt":1546981200,
+"main":{"temp":274.9,"temp_min":274.816,"temp_max":274.9,"pressure":1004.8,"sea_level":1011.86,"grnd_level":1004.8,"humidity":98,"temp_kf":0.08},
+"weather":[{"id":500,"main":"Rain","description":"light rain","icon":"10n"}],
+"clouds":{"all":92},
+"wind":{"speed":9.44,"deg":300.004},
+"rain":{"3h":0.5075},
+"snow":{"3h":0.13},
+"sys":{"pod":"n"},
+"dt_txt":"2019-01-08 21:00:00"},
+
+
+{"dt":1546992000,
+"main":{"temp":274.496,"temp_min":274.496,"temp_max":274.496,"pressure":1004.53,"sea_level":1011.62,"grnd_level":1004.53,"humidity":98,"temp_kf":0},
+"weather":[{"id":500,"main":"Rain","description":"light rain","icon":"10n"}],
+"clouds":{"all":88},
+"wind":{"speed":8.63,"deg":311.004},
+"rain":{"3h":0.1275},
+"snow":{"3h":0.97875},
+"sys":{"pod":"n"},
+"dt_txt":"2019-01-09 00:00:00"},
+
+
+{"dt":1547002800,
+"main":{"temp":274.199,"temp_min":274.199,"temp_max":274.199,"pressure":1005.85,"sea_level":1013,"grnd_level":1005.85,"humidity":95,"temp_kf":0},
+"weather":[{"id":500,"main":"Rain","description":"light rain","icon":"10n"}],
+"clouds":{"all":92},
+"wind":{"speed":8.96,"deg":328.001},
+"rain":{"3h":0.055000000000001},
+"snow":{"3h":1.89},
+"sys":{"pod":"n"},
+"dt_txt":"2019-01-09 03:00:00"},
+
+
+{"dt":1547013600,
+"main":{"temp":274.112,"temp_min":274.112,"temp_max":274.112,"pressure":1007.93,"sea_level":1015.04,"grnd_level":1007.93,"humidity":96,"temp_kf":0},
+"weather":[{"id":500,"main":"Rain","description":"light rain","icon":"10n"}],
+"clouds":{"all":92},
+"wind":{"speed":8.89,"deg":339.005},
+"rain":{"3h":0.0099999999999998},
+"snow":{"3h":1.8625},
+"sys":{"pod":"n"},
+"dt_txt":"2019-01-09 06:00:00"},
+
+
+{"dt":1547024400,
+"main":{"temp":273.999,"temp_min":273.999,"temp_max":273.999,"pressure":1010.13,"sea_level":1017.22,"grnd_level":1010.13,"humidity":97,"temp_kf":0},
+"weather":[{"id":600,"main":"Snow","description":"light snow","icon":"13d"}],
+"clouds":{"all":92},
+"wind":{"speed":8.24,"deg":340.002},
+"rain":{},
+"snow":{"3h":0.88375},
+"sys":{"pod":"d"},
+"dt_txt":"2019-01-09 09:00:00"},
+
+
+{"dt":1547035200,
+"main":{"temp":274.568,"temp_min":274.568,"temp_max":274.568,"pressure":1011.45,"sea_level":1018.57,"grnd_level":1011.45,"humidity":95,"temp_kf":0},
+"weather":[{"id":500,"main":"Rain","description":"light rain","icon":"10d"}],
+"clouds":{"all":92},
+"wind":{"speed":8.46,"deg":345},
+"rain":{"3h":0.215},
+"snow":{"3h":1.1525},
+"sys":{"pod":"d"},
+"dt_txt":"2019-01-09 12:00:00"},
+
+
+{"dt":1547046000,
+"main":{"temp":274.905,"temp_min":274.905,"temp_max":274.905,"pressure":1013.5,"sea_level":1020.67,"grnd_level":1013.5,"humidity":93,"temp_kf":0},
+"weather":[{"id":500,"main":"Rain","description":"light rain","icon":"10d"}],
+"clouds":{"all":92},
+"wind":{"speed":8.26,"deg":355.5},
+"rain":{"3h":0.605},
+"snow":{"3h":0.58},
+"sys":{"pod":"d"},
+"dt_txt":"2019-01-09 15:00:00"},
+
+
+{"dt":1547056800,
+"main":{"temp":275.292,"temp_min":275.292,"temp_max":275.292,"pressure":1016.15,"sea_level":1023.39,"grnd_level":1016.15,"humidity":96,"temp_kf":0},
+"weather":[{"id":500,"main":"Rain","description":"light rain","icon":"10n"}],
+"clouds":{"all":92},
+"wind":{"speed":7.89,"deg":2.50183},
+"rain":{"3h":0.81},
+"snow":{"3h":0.05},
+"sys":{"pod":"n"},
+"dt_txt":"2019-01-09 18:00:00"},
+
+
+{"dt":1547067600,
+"main":{"temp":275.616,"temp_min":275.616,"temp_max":275.616,"pressure":1018.97,"sea_level":1026.15,"grnd_level":1018.97,"humidity":96,"temp_kf":0},
+"weather":[{"id":500,"main":"Rain","description":"light rain","icon":"10n"}],
+"clouds":{"all":92},
+"wind":{"speed":6.91,
+"deg":7.00064},
+"rain":{"3h":0.825},
+"snow":{},
+"sys":{"pod":"n"},
+"dt_txt":"2019-01-09 21:00:00"},
+
+
+{"dt":1547078400,
+"main":{"temp":275.176,"temp_min":275.176,"temp_max":275.176,"pressure":1021.42,"sea_level":1028.56,"grnd_level":1021.42,"humidity":95,"temp_kf":0},
+"weather":[{"id":500,"main":"Rain","description":"light rain","icon":"10n"}],
+"clouds":{"all":92},
+"wind":{"speed":6.07,"deg":9.00732},
+"rain":{"3h":0.3},
+"snow":{},
+"sys":{"pod":"n"},
+"dt_txt":"2019-01-10 00:00:00"},
+
+
+{"dt":1547089200,
+"main":{"temp":274.73,"temp_min":274.73,"temp_max":274.73,"pressure":1022.76,"sea_level":1030.03,"grnd_level":1022.76,"humidity":95,"temp_kf":0},
+"weather":[{"id":500,"main":"Rain","description":"light rain","icon":"10n"}],
+"clouds":{"all":92},
+"wind":{"speed":6.26,"deg":0.500885},
+"rain":{"3h":0.22},
+"snow":{"3h":0.0725},
+"sys":{"pod":"n"},
+"dt_txt":"2019-01-10 03:00:00"},
+
+
+{"dt":1547100000,
+"main":{"temp":274.447,"temp_min":274.447,"temp_max":274.447,"pressure":1024.21,"sea_level":1031.46,"grnd_level":1024.21,"humidity":97,"temp_kf":0},
+"weather":[{"id":500,"main":"Rain","description":"light rain","icon":"10n"}],
+"clouds":{"all":88},
+"wind":{"speed":6.56,"deg":1.50931},
+"rain":{"3h":0.13},
+"snow":{"3h":0.19},
+"sys":{"pod":"n"},
+"dt_txt":"2019-01-10 06:00:00"},
+
+
+{"dt":1547110800,
+"main":{"temp":274.451,"temp_min":274.451,"temp_max":274.451,"pressure":1026.46,"sea_level":1033.64,"grnd_level":1026.46,"humidity":95,"temp_kf":0},
+"weather":[{"id":500,"main":"Rain","description":"light rain","icon":"10d"}],
+"clouds":{"all":76},
+"wind":{"speed":6.06,"deg":6.50006},
+"rain":{"3h":0.14},"snow":{"3h":0.3975},
+"sys":{"pod":"d"},
+"dt_txt":"2019-01-10 09:00:00"},
+
+
+{"dt":1547121600,
+"main":{"temp":275.178,"temp_min":275.178,"temp_max":275.178,"pressure":1027.64,"sea_level":1034.83,"grnd_level":1027.64,"humidity":97,"temp_kf":0},
+"weather":[{"id":500,"main":"Rain","description":"light rain","icon":"10d"}],"clouds":{"all":56},"wind":{"speed":5.36,"deg":5.50165},
+"rain":{"3h":0.09},
+"snow":{"3h":0.145},
+"sys":{"pod":"d"},
+"dt_txt":"2019-01-10 12:00:00"},
+
+
+{"dt":1547132400,
+"main":{"temp":274.055,"temp_min":274.055,"temp_max":274.055,"pressure":1028.63,"sea_level":1035.76,"grnd_level":1028.63,"humidity":93,"temp_kf":0},
+"weather":[{"id":500,"main":"Rain","description":"light rain","icon":"10d"}],
+"clouds":{"all":56},
+"wind":{"speed":4.32,"deg":355.007},
+"rain":{"3h":0.0099999999999998},
+"snow":{"3h":0.0075000000000003},
+"sys":{"pod":"d"},
+"dt_txt":"2019-01-10 15:00:00"},
+
+
+{"dt":1547143200,
+"main":{"temp":272.575,"temp_min":272.575,"temp_max":272.575,"pressure":1029.83,"sea_level":1037.09,"grnd_level":1029.83,"humidity":96,"temp_kf":0},
+"weather":[{"id":500,"main":"Rain","description":"light rain","icon":"10n"}],
+"clouds":{"all":56},
+"wind":{"speed":4,"deg":347.001},
+"rain":{"3h":0.0099999999999998},
+"snow":{"3h":0.035},
+"sys":{"pod":"n"},
+"dt_txt":"2019-01-10 18:00:00"},
+
+
+{"dt":1547154000,
+"main":{"temp":271.138,"temp_min":271.138,"temp_max":271.138,"pressure":1030.29,"sea_level":1037.62,"grnd_level":1030.29,"humidity":97,"temp_kf":0},
+"weather":[{"id":600,"main":"Snow","description":"light snow","icon":"13n"}],
+"clouds":{"all":48},
+"wind":{"speed":3.51,"deg":327.003},
+"rain":{},
+"snow":{"3h":0.035},
+"sys":{"pod":"n"},
+"dt_txt":"2019-01-10 21:00:00"},
+
+
+
+{"dt":1547164800,
+"main":{"temp":270.23,"temp_min":270.23,"temp_max":270.23,"pressure":1030.28,"sea_level":1037.69,"grnd_level":1030.28,"humidity":94,"temp_kf":0},
+"weather":[{"id":800,"main":"Clear","description":"clear sky","icon":"01n"}],
+"clouds":{"all":44},
+"wind":{"speed":2.96,"deg":298.001},
+"rain":{},
+"snow":{"3h":0.0175},
+"sys":{"pod":"n"},
+"dt_txt":"2019-01-11 00:00:00"},
+
+
+{"dt":1547175600,
+"main":{"temp":270.201,"temp_min":270.201,"temp_max":270.201,"pressure":1029.39,"sea_level":1036.71,"grnd_level":1029.39,"humidity":94,"temp_kf":0}
+,"weather":[{"id":803,"main":"Clouds","description":"broken clouds","icon":"04n"}],
+"clouds":{"all":76},
+"wind":{"speed":3.36,"deg":276.002},
+"rain":{},
+"snow":{},
+"sys":{"pod":"n"},
+"dt_txt":"2019-01-11 03:00:00"},
+
+
+{"dt":1547186400,
+"main":{"temp":270.741,"temp_min":270.741,"temp_max":270.741,"pressure":1027.81,"sea_level":1035.1,"grnd_level":1027.81,"humidity":93,"temp_kf":0},
+"weather":[{"id":803,"main":"Clouds","description":"broken clouds","icon":"04n"}],
+"clouds":{"all":80},
+"wind":{"speed":3.66,"deg":248.501},
+"rain":{},
+"snow":{},
+"sys":{"pod":"n"},
+"dt_txt":"2019-01-11 06:00:00"},
+
+
+{"dt":1547197200,
+"main":{"temp":271.997,"temp_min":271.997,"temp_max":271.997,"pressure":1026.11,"sea_level":1033.37,"grnd_level":1026.11,"humidity":96,"temp_kf":0},
+"weather":[{"id":600,"main":"Snow","description":"light snow","icon":"13d"}],
+"clouds":{"all":76},
+"wind":{"speed":5.02,"deg":229.002},
+"rain":{},
+"snow":{"3h":0.1475},
+"sys":{"pod":"d"},
+"dt_txt":"2019-01-11 09:00:00"},
+
+
+{"dt":1547208000,
+"main":{"temp":273.695,"temp_min":273.695,"temp_max":273.695,"pressure":1023.62,"sea_level":1030.8,"grnd_level":1023.62,"humidity":98,"temp_kf":0},
+"weather":[{"id":600,"main":"Snow","description":"light snow","icon":"13d"}],
+"clouds":{"all":92},
+"wind":{"speed":6.47,"deg":236.003},
+"rain":{},
+"snow":{"3h":0.625},
+"sys":{"pod":"d"},
+"dt_txt":"2019-01-11 12:00:00"},
+
+
+{"dt":1547218800,
+"main":{"temp":275.073,"temp_min":275.073,"temp_max":275.073,"pressure":1020.92,"sea_level":1028.15,"grnd_level":1020.92,"humidity":93,"temp_kf":0},
+"weather":[{"id":500,"main":"Rain","description":"light rain","icon":"10d"}],
+"clouds":{"all":92},
+"wind":{"speed":5.95,"deg":249.003},
+"rain":{"3h":0.25},
+"snow":{"3h":0.1625},
+"sys":{"pod":"d"},"dt_txt":"2019-01-11 15:00:00"},
+
+
+{"dt":1547229600,
+"main":{"temp":276.411,"temp_min":276.411,"temp_max":276.411,"pressure":1019.61,"sea_level":1026.67,"grnd_level":1019.61,"humidity":93,"temp_kf":0},
+"weather":[{"id":500,"main":"Rain","description":"light rain","icon":"10n"}],
+"clouds":{"all":92},
+"wind":{"speed":6.07,"deg":275.502},
+"rain":{"3h":0.65},
+"snow":{},
+"sys":{"pod":"n"},
+"dt_txt":"2019-01-11 18:00:00"},
+
+
+{"dt":1547240400,
+"main":{"temp":276.543,"temp_min":276.543,"temp_max":276.543,"pressure":1019.21,"sea_level":1026.27,"grnd_level":1019.21,"humidity":94,"temp_kf":0},
+"weather":[{"id":500,"main":"Rain","description":"light rain","icon":"10n"}],
+"clouds":{"all":48},
+"wind":{"speed":6.56,"deg":289.5},
+"rain":{"3h":0.2},
+"snow":{},
+"sys":{"pod":"n"},
+"dt_txt":"2019-01-11 21:00:00"}
+],
+
+"city":{"id":2829657,"name":"","coord":{"lat":52.3833,"lon":13.2167},"country":"DE","population":12964}}
+
+
+
+
+
+
+
+
+
+
+
+https://api.openweathermap.org/data/2.5/forecast?lat=5&lon=1&APPID=
+
+https://api.openweathermap.org/data/2.5/forecast?lat=5&lon=1&APPID=
+
+
+
+{
+          'dt' => 1546973400,
+          'weather' => [
+                         {
+                           'description' => 'moderate rain',
+                           'id' => 501,
+                           'main' => 'Rain',
+                           'icon' => '10n'
+                         }
+                       ],
+          'main' => {
+                      'pressure' => 998,
+                      'temp_max' => '277.15',
+                      'humidity' => 86,
+                      'temp_min' => '276.15',
+                      'temp' => '276.53'
+                    },
+          'visibility' => 10000,
+          'wind' => {
+                      'deg' => 290,
+                      'speed' => '6.2'
+                    },
+          'sys' => {
+                     'type' => 1,
+                     'message' => '0.0368',
+                     'country' => 'DE',
+                     'sunrise' => 1546931687,
+                     'id' => 1275,
+                     'sunset' => 1546960424
+                   },
+          'coord' => {
+                       'lon' => '13.2',
+                       'lat' => '52.39'
+                     },
+          'base' => 'stations',
+          'name' => '',
+          'cod' => 200,
+          'clouds' => {
+                        'all' => 75
+                      },
+          'id' => 2829657
+};
+
+
+
+
+{"cod":429, "message": "Your account is temporary blocked due to exceeding of requests limitation of your subscription type. Please choose the proper subscription http://openweathermap.org/price"}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
