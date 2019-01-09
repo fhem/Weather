@@ -82,6 +82,16 @@ my %codes = (
     521 => 35,
     522 => 35,
     531 => 35,
+    600 => 14,
+    601 => 16,
+    602 => 13,
+    611 => 46,
+    612 => 46,
+    615 => 35,
+    616 => 35,
+    620 => 35,
+    621 => 35,
+    622 => 35,
 );
 
 sub new {
@@ -213,7 +223,7 @@ sub _ProcessingRetrieveData($$) {
                 'OpenWeatherMap Weather decode JSON err ' . $@ );
         }
         elsif ( defined( $data->{cod} ) and defined( $data->{message} ) ) {
-            print 'Dumper2: ' . Dumper $data;
+#             print 'Dumper2: ' . Dumper $data;
             _ErrorHandling( $self, $data->{cod} . ': ' . $data->{message} );
         }
         else {

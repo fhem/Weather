@@ -365,6 +365,7 @@ sub Weather_WriteReadings($$) {
     foreach my $r (keys %{$dataRef} ) {        
         readingsBulkUpdate($hash, $r, $dataRef->{$r}) if ($r ne 'status' and $r ne 'current' and $r ne 'forcast');
     }
+
     readingsBulkUpdate($hash, "validity", "up-to-date");
 
 
