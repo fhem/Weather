@@ -53,9 +53,35 @@ use constant URL => 'https://api.openweathermap.org/data/2.5/';
 ## URL . 'forcast?' for forcast data
 
 my %codes = (
-    200 => 45, 201 => 45, 202 => 45, 210 => 4, 211 => 4, 212 => 3, 221 => 4, 230 => 45, 231 => 45, 232 => 45,
-    300 => 9, 301 => 9, 302 => 9, 310 => 9, 311 => 9, 312 => 9, 313 => 9, 314 => 9, 321 => 9,
-    500 => 35, 501 => 35, 502 => 35, 503 => 35, 504 => 35, 511 => 35, 520 => 35, 521 => 35, 522 => 35, 531 => 35,
+    200 => 45,
+    201 => 45,
+    202 => 45,
+    210 => 4,
+    211 => 4,
+    212 => 3,
+    221 => 4,
+    230 => 45,
+    231 => 45,
+    232 => 45,
+    300 => 9,
+    301 => 9,
+    302 => 9,
+    310 => 9,
+    311 => 9,
+    312 => 9,
+    313 => 9,
+    314 => 9,
+    321 => 9,
+    500 => 35,
+    501 => 35,
+    502 => 35,
+    503 => 35,
+    504 => 35,
+    511 => 35,
+    520 => 35,
+    521 => 35,
+    522 => 35,
+    531 => 35,
 );
 
 sub new {
@@ -72,7 +98,7 @@ sub new {
         fetchTime   => 0,
         endpoint    => 'none',
     };
-    
+
     $self->{cached} = _CreateForcastRef($self);
 
     bless $self, $class;
@@ -109,7 +135,7 @@ sub _RetrieveDataFromOpenWeatherMap($) {
     my $self = shift;
 
     # retrieve data from cache
-    if ( (time() - $self->{fetchTime}) < $self->{cachemaxage} ) {
+    if ( ( time() - $self->{fetchTime} ) < $self->{cachemaxage} ) {
         return _CallWeatherCallbackFn($self);
     }
 
@@ -127,12 +153,15 @@ sub _RetrieveDataFromOpenWeatherMap($) {
         or $self->{key} eq 'none'
         or $missingModul )
     {
-        _RetrieveDataFinished( $paramRef,
-            'The given location is invalid. (wrong latitude or longitude?) put both as an attribute in the global device or set define option location=[LAT],[LONG]',
-            undef )
-          if ( $self->{lat} eq 'error' or $self->{long} eq 'error' );
+        _RetrieveDataFinished(
+            $paramRef,
+'The given location is invalid. (wrong latitude or longitude?) put both as an attribute in the global device or set define option location=[LAT],[LONG]',
+            undef
+        ) if ( $self->{lat} eq 'error' or $self->{long} eq 'error' );
 
-        _RetrieveDataFinished( $paramRef, 'No given api key. (define  myWeather Weather apikey=[KEY])', undef )
+        _RetrieveDataFinished( $paramRef,
+            'No given api key. (define  myWeather Weather apikey=[KEY])',
+            undef )
           if ( $self->{key} eq 'none' );
 
         _RetrieveDataFinished( $paramRef,
@@ -142,14 +171,11 @@ sub _RetrieveDataFromOpenWeatherMap($) {
     else {
         $paramRef->{url} =
             URL
-          . $paramRef->{endpoint} . '?'
-          . 'lat='
-          . $self->{lat} . '&'
-          . 'lon='
+          . $paramRef->{endpoint} . '?' . 'lat='
+          . $self->{lat} . '&' . 'lon='
           . $self->{long} . '&'
           . 'APPID='
-          . $self->{key} . '&'
-          . 'lang='
+          . $self->{key} . '&' . 'lang='
           . $self->{lang};
 
         main::HttpUtils_NonblockingGet($paramRef);
@@ -161,9 +187,8 @@ sub _RetrieveDataFinished($$$) {
     my $self = $paramRef->{self};
 
     if ( !$err ) {
-        $self->{cached}->{status}   = 'ok';
-        $self->{cached}->{validity} = 'up-to-date',
-        $self->{fetchTime} = time();
+        $self->{cached}->{status} = 'ok';
+        $self->{cached}->{validity} = 'up-to-date', $self->{fetchTime} = time();
         _ProcessingRetrieveData( $self, $response );
     }
     else {
@@ -171,81 +196,105 @@ sub _RetrieveDataFinished($$$) {
         _ErrorHandling( $self, $err );
         _ProcessingRetrieveData( $self, $response );
     }
-    
+
     $self->{endpoint} = $paramRef->{endpoint};
 }
 
 sub _ProcessingRetrieveData($$) {
     my ( $self, $response ) = @_;
 
-    if ( $self->{cached}->{status} eq 'ok' and defined($response) )
-        {
-            my $data = eval { decode_json($response) };
-            #print 'Dumper1: ' . Dumper $data;
+    if ( $self->{cached}->{status} eq 'ok' and defined($response) ) {
+        my $data = eval { decode_json($response) };
 
-            if ($@) {
-                _ErrorHandling( $self, 'OpenWeatherMap Weather decode JSON err ' . $@ );
-            }
-            elsif ( defined($data->{cod}) and defined($data->{message}) ) {
-                print 'Dumper2: ' . Dumper $data;
-                _ErrorHandling( $self, $data->{cod} . ': ' . $data->{message} );
-            }
-            else {
-    #             print Dumper $data;       ## für Debugging
-                return if ( $self->{endpoint} eq 'forcast' );
-                
+#         print 'Dumper1: ' . Dumper $data;
 
-                $self->{cached}->{current_date_time} = strftime("%a,%e %b %Y %H:%M %p",localtime( $self->{fetchTime} )),
-                $self->{cached}->{country} = $data->{sys}->{country};
-                $self->{cached}->{city} = $data->{name};
-                $self->{cached}->{current} = {
-                            'temperature' => int(sprintf("%.1f",($data->{main}->{temp} - 273.15 )) + 0.5),
-                            'temp_c'      => int(sprintf("%.1f",($data->{main}->{temp} - 273.15 )) + 0.5),
-                            'low_c'       => int(sprintf("%.1f",($data->{main}->{temp_min} - 273.15 )) + 0.5),
-                            'high_c'      => int(sprintf("%.1f",($data->{main}->{temp_max} - 273.15 )) + 0.5),
-                            'tempLow'     => int(sprintf("%.1f",($data->{main}->{temp_min} - 273.15 )) + 0.5),
-                            'tempHigh'    => int(sprintf("%.1f",($data->{main}->{temp_max} - 273.15 )) + 0.5),
-                            'humidity'    => $data->{main}->{humidity},
-                            'condition' =>
-                            encode_utf8( $data->{weather}[0]{description} ),
-                            'pressure'       => $data->{main}->{pressure},
-                            'wind'           => $data->{wind}->{speed},
-                            'wind_speed'     => $data->{wind}->{speed},
-                            'wind_direction' => $data->{wind}->{deg},
-                            'cloudCover'     => $data->{clouds}->{all},
-                            'visibility'     => $data->{visibility},
-    #                         'code'           => $codes{ $data->{weather}[0]{icon} },
-                            'iconAPI'        => $data->{weather}[0]{icon},
-                            'sunsetTime'     => strftime("%a,%e %b %Y %H:%M %p",localtime($data->{sys}->{sunset})),
-                            'sunriseTime'    => strftime("%a,%e %b %Y %H:%M %p",localtime($data->{sys}->{sunrise})),
-                            'pubDate'        => strftime(
-                                "%a,%e %b %Y %H:%M %p",
-                                localtime( $data->{dt} )
-                            ),
-                        } if ( $self->{endpoint} eq 'weather' );
-            }
+        if ($@) {
+            _ErrorHandling( $self,
+                'OpenWeatherMap Weather decode JSON err ' . $@ );
         }
+        elsif ( defined( $data->{cod} ) and defined( $data->{message} ) ) {
+            print 'Dumper2: ' . Dumper $data;
+            _ErrorHandling( $self, $data->{cod} . ': ' . $data->{message} );
+        }
+        else {
+#             print Dumper $data;       ## für Debugging
+            return if ( $self->{endpoint} eq 'forcast' );
 
-#     $self->{cached} = $forcastRef;         Vorsicht
-    
-    _RetrieveDataFromOpenWeatherMap($self) if ( $self->{endpoint} eq 'weather' );
+            $self->{cached}->{current_date_time} = strftime(
+                "%a,%e %b %Y %H:%M %p",
+                localtime( $self->{fetchTime} )
+              ),
+              $self->{cached}->{country} = $data->{sys}->{country};
+            $self->{cached}->{city}    = $data->{name};
+            $self->{cached}->{current} = {
+                'temperature' => int(
+                    sprintf( "%.1f", ( $data->{main}->{temp} - 273.15 ) ) + 0.5
+                ),
+                'temp_c' => int(
+                    sprintf( "%.1f", ( $data->{main}->{temp} - 273.15 ) ) + 0.5
+                ),
+                'low_c' => int(
+                    sprintf( "%.1f", ( $data->{main}->{temp_min} - 273.15 ) ) +
+                      0.5
+                ),
+                'high_c' => int(
+                    sprintf( "%.1f", ( $data->{main}->{temp_max} - 273.15 ) ) +
+                      0.5
+                ),
+                'tempLow' => int(
+                    sprintf( "%.1f", ( $data->{main}->{temp_min} - 273.15 ) ) +
+                      0.5
+                ),
+                'tempHigh' => int(
+                    sprintf( "%.1f", ( $data->{main}->{temp_max} - 273.15 ) ) +
+                      0.5
+                ),
+                'humidity'   => $data->{main}->{humidity},
+                'condition'  => encode_utf8( $data->{weather}[0]{description} ),
+                'pressure'   => $data->{main}->{pressure},
+                'wind'       => $data->{wind}->{speed},
+                'wind_speed' => $data->{wind}->{speed},
+                'wind_direction' => $data->{wind}->{deg},
+                'cloudCover'     => $data->{clouds}->{all},
+                'visibility'     => $data->{visibility},
+
+#                         'code'           => $codes{ $data->{weather}[0]{icon} },
+                'iconAPI'    => $data->{weather}[0]{icon},
+                'sunsetTime' => strftime(
+                    "%a,%e %b %Y %H:%M %p",
+                    localtime( $data->{sys}->{sunset} )
+                ),
+                'sunriseTime' => strftime(
+                    "%a,%e %b %Y %H:%M %p",
+                    localtime( $data->{sys}->{sunrise} )
+                ),
+                'pubDate' =>
+                  strftime( "%a,%e %b %Y %H:%M %p", localtime( $data->{dt} ) ),
+              }
+              if ( $self->{endpoint} eq 'weather' );
+        }
+    }
+
+    _RetrieveDataFromOpenWeatherMap($self)
+      if ( $self->{endpoint} eq 'weather' );
     $self->{endpoint} = 'none' if ( $self->{endpoint} eq 'forcast' );
-    
+
     _CallWeatherCallbackFn($self);
 }
 
 sub _CallWeatherCallbackFn($) {
     my $self = shift;
-    
+
     #     ## Aufruf der callbackFn
     main::Weather_RetrieveCallbackFn( $self->{devHash} );
 }
 
 sub _ErrorHandling($$) {
-    my ($self,$err) = @_;
+    my ( $self, $err ) = @_;
 
-    $self->{cached}->{current_date_time} = strftime("%a,%e %b %Y %H:%M %p",localtime( $self->{fetchTime} )),
-    $self->{cached}->{status} = $err;
+    $self->{cached}->{current_date_time} =
+      strftime( "%a,%e %b %Y %H:%M %p", localtime( $self->{fetchTime} ) ),
+      $self->{cached}->{status} = $err;
     $self->{cached}->{validity} = 'stale';
 }
 
@@ -253,12 +302,13 @@ sub _CreateForcastRef($) {
     my $self = shift;
 
     my $forcastRef = (
-            {
-                lat      => $self->{lat},
-                long     => $self->{long},
-                apiMaintainer => 'Leon Gaultier (<a href=https://forum.fhem.de/index.php?action=profile;u=13684>CoolTux</a>)',
-            }
-        );
+        {
+            lat  => $self->{lat},
+            long => $self->{long},
+            apiMaintainer =>
+'Leon Gaultier (<a href=https://forum.fhem.de/index.php?action=profile;u=13684>CoolTux</a>)',
+        }
+    );
 
     return $forcastRef;
 }

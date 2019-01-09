@@ -369,17 +369,20 @@ sub Weather_WriteReadings($$) {
 
 
     # current
-    while( my ($r,$v) = each %{$dataRef->{current}} ) {
-        readingsBulkUpdate($hash, $r, $v);
+    if ( ref( $dataRef->{current} ) eq 'HASH' ) {
+        while( my ($r,$v) = each %{$dataRef->{current}} ) {
+            readingsBulkUpdate($hash, $r, $v);
+        }
+        
+        readingsBulkUpdate($hash, 'icon',  $iconlist[$dataRef->{current}{code}]);
+        if (  defined($dataRef->{current}{wind_direction})
+        and defined($dataRef->{current}{wind_speed} ) )
+        {
+            my $wdir= degrees_to_direction($dataRef->{current}{wind_direction}, @directions_txt_i18n);
+            readingsBulkUpdate($hash, 'wind_condition', 'Wind: ' . $wdir . ' ' . $dataRef->{current}{wind_speed} . ' km/h');
+        }
     }
-    readingsBulkUpdate($hash, 'icon',  $iconlist[$dataRef->{current}{code}]);
-    if (  defined($dataRef->{current}{wind_direction})
-      and defined($dataRef->{current}{wind_speed} ) )
-    {
-        my $wdir= degrees_to_direction($dataRef->{current}{wind_direction}, @directions_txt_i18n);
-        readingsBulkUpdate($hash, 'wind_condition', 'Wind: ' . $wdir . ' ' . $dataRef->{current}{wind_speed} . ' km/h');
-    }
-    
+
     # forecast
     if ( ref( $dataRef->{forcast} ) eq 'HASH' ) {
         ## Forcast for hourly
@@ -413,6 +416,7 @@ sub Weather_WriteReadings($$) {
             }
         }
     }
+    
     my $val= 'T:' . $dataRef->{current}{temperature} . '°C'
             .' ' . substr($status_items_txt_i18n{1}, 0, 1) . ':' . $dataRef->{current}{humidity} . '%'
             .' ' . substr($status_items_txt_i18n{0}, 0, 1) . ':' . $dataRef->{current}{wind} . 'km/h'
