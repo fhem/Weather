@@ -336,8 +336,8 @@ sub Weather_ReturnWithError($$) {
 
 sub Weather_RetrieveCallbackFn($) {
 
-    my $hash = shift;
-    my $name = $hash->{NAME};
+    my $name = shift;
+    my $hash = $defs{$name};
     my $responseRef = $hash->{fhem}{api}->getWeather;
     
     if ( $responseRef->{status} eq 'ok' ) {
@@ -602,8 +602,7 @@ sub Weather_Define($$) {
   Weather_LanguageInitialize($hash->{LANG});
 
   my $apistring = $api . '::Weather';
-#   $hash->{fhem}{api} = $api . '::Weather'->new( { hash => $hash, apikey => $hash->{APIKEY}, location => $hash->{LOCATION}, cachemaxage => 600, language => $hash->{LANG} } );
-  $hash->{fhem}{api} = $apistring->new( { hash => $hash, apikey => $hash->{APIKEY}, location => $hash->{LOCATION}, cachemaxage => 600, language => $hash->{LANG} } );
+  $hash->{fhem}{api} = $apistring->new( { devName => $hash->{NAME}, apikey => $hash->{APIKEY}, location => $hash->{LOCATION}, cachemaxage => 600, language => $hash->{LANG} } );
   
   Weather_GetUpdate($hash) if($init_done);
 

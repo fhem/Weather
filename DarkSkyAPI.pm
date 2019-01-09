@@ -66,7 +66,7 @@ sub new {
     my ( $class, $argsRef ) = @_;
 
     my $self = {
-        devHash => $argsRef->{hash},
+        devName => $argsRef->{devName},
         key => ( defined( $argsRef->{apikey} ) ? $argsRef->{apikey} : 'none' ),
         cachemaxage => $argsRef->{cachemaxage},
         lang        => $argsRef->{language},
@@ -437,7 +437,7 @@ sub _CallWeatherCallbackFn($) {
     my $self = shift;
 
     #     ## Aufruf der callbackFn
-    main::Weather_RetrieveCallbackFn( $self->{devHash} );
+    main::Weather_RetrieveCallbackFn( $self->{devName} );
 }
 
 sub _ErrorHandling($$) {
