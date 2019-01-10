@@ -596,7 +596,7 @@ sub Weather_Define($$) {
   Weather_LanguageInitialize($hash->{LANG});
 
   my $apistring = $api . '::Weather';
-  $hash->{fhem}->{api} = $apistring->new( { devName => $hash->{NAME}, apikey => $hash->{APIKEY}, location => $hash->{LOCATION}, cachemaxage => 600, language => $hash->{LANG} } );
+  $hash->{fhem}->{api} = $apistring->new( { devName => $hash->{NAME}, apikey => $hash->{APIKEY}, location => $hash->{LOCATION}, apioptions => $hash->{APIOPTIONS}, language => $hash->{LANG} } );
   
   Weather_GetUpdate($hash) if($init_done);
 

@@ -68,7 +68,7 @@ sub new {
     my $self = {
         devName => $argsRef->{devName},
         key => ( defined( $argsRef->{apikey} ) ? $argsRef->{apikey} : 'none' ),
-        cachemaxage => $argsRef->{cachemaxage},
+        cachemaxage => ( (split(':',$argsRef->{apioptions}))[0] eq 'cachemaxage' ? (split(':',$argsRef->{apioptions}))[1] : 900 ),
         lang        => $argsRef->{language},
         lat         => ( split( ',', $argsRef->{location} ) )[0],
         long        => ( split( ',', $argsRef->{location} ) )[1],
