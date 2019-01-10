@@ -191,13 +191,12 @@ sub Weather_ReturnWithError($$) {
 #     readingsBulkUpdate($hash, "pubDateRemote", $pubDate) if(defined($pubDate));
 #     readingsBulkUpdate($hash, "validity", "stale");
 #     readingsEndUpdate($hash, $doTrigger);
-    print 'In der Return with Error Funktion' . "\n";
 
     readingsBeginUpdate($hash);
     readingsBulkUpdate($hash, 'lastError', $responseRef->{status});
     
     foreach my $r (keys %{$responseRef} ) {
-        readingsBulkUpdate($hash, $r, $responseRef->{$r}) if ($r ne 'status' or ($r ne 'current' and ref($r) ne 'HASH') );
+        readingsBulkUpdate($hash, $r, $responseRef->{$r}) if ( ref($responseRef->{$r}) ne 'HASH' );
     }
     readingsBulkUpdate($hash, 'state', 'API Maintainer: ' . $responseRef->{apiMaintainer} .  ' ErrorMsg: ' . $responseRef->{status});
     readingsEndUpdate($hash, 1);
@@ -370,7 +369,7 @@ sub Weather_WriteReadings($$) {
     readingsBulkUpdate($hash, "validity", "up-to-date");
 
 
-    # current
+    ### current
     if ( defined($dataRef->{current}) and ref( $dataRef->{current} ) eq 'HASH' ) {
         while( my ($r,$v) = each %{$dataRef->{current}} ) {
             readingsBulkUpdate($hash, $r, $v)
@@ -386,28 +385,56 @@ sub Weather_WriteReadings($$) {
         }
     }
 
-    # forecast
-    if (  defined($dataRef->{forecast}) and ref( $dataRef->{forecast} ) eq 'ARRAY'
-    and scalar( @{ $dataRef->{forecast} } ) > 0 )
-    {
-        my $i= 0;
-        foreach my $fc (@{$dataRef->{forecast}}) {
-            $i++;
-            my $f= "fc" . $i ."_";
-            
-            while( my ($r,$v) = each %{$fc} ) {
-                readingsBulkUpdate($hash, $f.$r, $v)
-                  if ( ref($dataRef->{$r}) ne 'HASH' and ref($dataRef->{$r}) ne 'ARRAY' );
+    ### forecast
+    if ( ref( $dataRef->{forecast} ) eq 'HASH' ) {
+        ## hourly
+        if (  defined($dataRef->{forecast}->{hourly}) and ref( $dataRef->{forecast}->{hourly} ) eq 'ARRAY'
+        and scalar( @{ $dataRef->{forecast}->{hourly} } ) > 0 )
+        {
+            my $i= 0;
+            foreach my $fc (@{$dataRef->{forecast}->{hourly}}) {
+                $i++;
+                my $f= "hfc" . $i ."_";
+                
+                while( my ($r,$v) = each %{$fc} ) {
+                    readingsBulkUpdate($hash, $f.$r, $v)
+                    if ( ref($dataRef->{$r}) ne 'HASH' and ref($dataRef->{$r}) ne 'ARRAY' );
+                }
+        #         readingsBulkUpdate($hash, $f . "day_of_week", $wdays_txt_i18n{$fc->{day}});
+                readingsBulkUpdate($hash, $f . 'icon',  $iconlist[$dataRef->{forecast}->{hourly}[$i-1]{code}]);
+                if (  defined($dataRef->{forecast}->{hourly}[$i-1]{wind_direction})
+                and defined($dataRef->{forecast}->{hourly}[$i-1]{wind_speed}) )
+                {
+                    my $wdir= degrees_to_direction($dataRef->{forecast}->{hourly}[$i-1]{wind_direction}, @directions_txt_i18n);
+                    readingsBulkUpdate($hash, $f . 'wind_condition', 'Wind: ' . $wdir . ' ' . $dataRef->{forecast}->{hourly}[$i-1]{wind_speed} . ' km/h');
+                }
+        #         readingsBulkUpdate($hash, $f . 'day_of_week', $wdays_txt_i18n{substr($dataRef->{forecast}->{hourly}[$i-1]{date},0,3)});
             }
-    #         readingsBulkUpdate($hash, $f . "day_of_week", $wdays_txt_i18n{$fc->{day}});
-            readingsBulkUpdate($hash, $f . 'icon',  $iconlist[$dataRef->{forecast}[$i-1]{code}]);
-            if (  defined($dataRef->{forecast}[$i-1]{wind_direction})
-            and defined($dataRef->{forecast}[$i-1]{wind_speed}) )
-            {
-                my $wdir= degrees_to_direction($dataRef->{forecast}[$i-1]{wind_direction}, @directions_txt_i18n);
-                readingsBulkUpdate($hash, $f . 'wind_condition', 'Wind: ' . $wdir . ' ' . $dataRef->{forecast}[$i-1]{wind_speed} . ' km/h');
+        }
+        
+        ## daily
+        if (  defined($dataRef->{forecast}->{daily}) and ref( $dataRef->{forecast}->{daily} ) eq 'ARRAY'
+            and scalar( @{ $dataRef->{forecast}->{daily} } ) > 0 )
+        {
+            my $i= 0;
+            foreach my $fc (@{$dataRef->{forecast}->{daily}}) {
+                $i++;
+                my $f= "fc" . $i ."_";
+                
+                while( my ($r,$v) = each %{$fc} ) {
+                    readingsBulkUpdate($hash, $f.$r, $v)
+                    if ( ref($dataRef->{$r}) ne 'HASH' and ref($dataRef->{$r}) ne 'ARRAY' );
+                }
+        #         readingsBulkUpdate($hash, $f . "day_of_week", $wdays_txt_i18n{$fc->{day}});
+                readingsBulkUpdate($hash, $f . 'icon',  $iconlist[$dataRef->{forecast}->{daily}[$i-1]{code}]);
+                if (  defined($dataRef->{forecast}->{daily}[$i-1]{wind_direction})
+                and defined($dataRef->{forecast}->{daily}[$i-1]{wind_speed}) )
+                {
+                    my $wdir= degrees_to_direction($dataRef->{forecast}->{daily}[$i-1]{wind_direction}, @directions_txt_i18n);
+                    readingsBulkUpdate($hash, $f . 'wind_condition', 'Wind: ' . $wdir . ' ' . $dataRef->{forecast}->{daily}[$i-1]{wind_speed} . ' km/h');
+                }
+        #         readingsBulkUpdate($hash, $f . 'day_of_week', $wdays_txt_i18n{substr($dataRef->{forecast}->{daily}[$i-1]{date},0,3)});
             }
-    #         readingsBulkUpdate($hash, $f . 'day_of_week', $wdays_txt_i18n{substr($dataRef->{forecast}[$i-1]{date},0,3)});
         }
     }
     
