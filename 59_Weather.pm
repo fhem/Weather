@@ -364,6 +364,7 @@ sub Weather_WriteReadings($$) {
     foreach my $r (keys %{$dataRef} ) {        
         readingsBulkUpdate($hash, $r, $dataRef->{$r})
           if ( ref($dataRef->{$r}) ne 'HASH' and ref($dataRef->{$r}) ne 'ARRAY' );
+        readingsBulkUpdate($hash, '.license', $dataRef->{license}->{text});
     }
 
     readingsBulkUpdate($hash, "validity", "up-to-date");
@@ -485,12 +486,13 @@ sub Weather_Get($@) {
   my $value;
 
   if(defined($hash->{READINGS}->{$reading})) {
-        $value= $hash->{READINGS}->{$reading}->{VAL};
+        $value = $hash->{READINGS}->{$reading}->{VAL};
   } else {
-        my $rt= "";
+        my $rt = '';
         if(defined($hash->{READINGS})) {
-                $rt= join(":noArg ", sort keys %{$hash->{READINGS}});
+                $rt = join(":noArg ", sort keys %{$hash->{READINGS}});
         }
+
         return "Unknown reading $reading, choose one of " . $rt;
   }
 

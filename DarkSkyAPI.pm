@@ -192,7 +192,7 @@ sub _ProcessingRetrieveData($$) {
                 localtime( $self->{fetchTime} )
               );
             $self->{cached}->{timezone} = $data->{timezone};
-            $self->{cached}->{license}->{Text} = $data->{flags}->{'meteoalarm-license'};
+            $self->{cached}->{license}{text} = $data->{flags}->{'meteoalarm-license'};
             $self->{cached}->{current} = {
                 'temperature' => int(
                     sprintf( "%.1f", $data->{currently}->{temperature} ) + 0.5

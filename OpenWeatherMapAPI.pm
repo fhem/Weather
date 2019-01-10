@@ -250,6 +250,7 @@ sub _ProcessingRetrieveData($$) {
             if ( $self->{endpoint} eq 'weather' ) {
                 $self->{cached}->{country} = $data->{sys}->{country};
                 $self->{cached}->{city}    = $data->{name};
+                $self->{cached}->{license}{text} = 'none';
                 $self->{cached}->{current} = {
                     'temperature' => int(
                         sprintf( "%.1f", ( $data->{main}->{temp} - 273.15 )
