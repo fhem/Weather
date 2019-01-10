@@ -379,7 +379,10 @@ sub Weather_WriteReadings($$) {
         
         readingsBulkUpdate($hash, 'icon',  $iconlist[$dataRef->{current}->{code}]);
         if (  defined($dataRef->{current}->{wind_direction})
-        and defined($dataRef->{current}->{wind_speed} ) )
+          and $dataRef->{current}->{wind_direction}
+          and defined($dataRef->{current}->{wind_speed})
+          and $dataRef->{current}->{wind_speed}
+          )
         {
             my $wdir= degrees_to_direction($dataRef->{current}->{wind_direction}, @directions_txt_i18n);
             readingsBulkUpdate($hash, 'wind_condition', 'Wind: ' . $wdir . ' ' . $dataRef->{current}->{wind_speed} . ' km/h');
@@ -389,8 +392,9 @@ sub Weather_WriteReadings($$) {
     ### forecast
     if ( ref( $dataRef->{forecast} ) eq 'HASH' ) {
         ## hourly
-        if (  defined($dataRef->{forecast}->{hourly}) and ref( $dataRef->{forecast}->{hourly} ) eq 'ARRAY'
-        and scalar( @{ $dataRef->{forecast}->{hourly} } ) > 0 )
+        if (  defined($dataRef->{forecast}->{hourly})
+          and ref( $dataRef->{forecast}->{hourly} ) eq 'ARRAY'
+          and scalar( @{ $dataRef->{forecast}->{hourly} } ) > 0 )
         {
             my $i= 0;
             foreach my $fc (@{$dataRef->{forecast}->{hourly}}) {
@@ -404,7 +408,10 @@ sub Weather_WriteReadings($$) {
         #         readingsBulkUpdate($hash, $f . "day_of_week", $wdays_txt_i18n{$fc->{day}});
                 readingsBulkUpdate($hash, $f . 'icon',  $iconlist[$dataRef->{forecast}->{hourly}[$i-1]{code}]);
                 if (  defined($dataRef->{forecast}->{hourly}[$i-1]{wind_direction})
-                and defined($dataRef->{forecast}->{hourly}[$i-1]{wind_speed}) )
+                  and $dataRef->{forecast}->{hourly}[$i-1]{wind_direction}
+                  and defined($dataRef->{forecast}->{hourly}[$i-1]{wind_speed})
+                  and $dataRef->{forecast}->{hourly}[$i-1]{wind_speed}
+                  )
                 {
                     my $wdir= degrees_to_direction($dataRef->{forecast}->{hourly}[$i-1]{wind_direction}, @directions_txt_i18n);
                     readingsBulkUpdate($hash, $f . 'wind_condition', 'Wind: ' . $wdir . ' ' . $dataRef->{forecast}->{hourly}[$i-1]{wind_speed} . ' km/h');
@@ -415,7 +422,7 @@ sub Weather_WriteReadings($$) {
         
         ## daily
         if (  defined($dataRef->{forecast}->{daily}) and ref( $dataRef->{forecast}->{daily} ) eq 'ARRAY'
-            and scalar( @{ $dataRef->{forecast}->{daily} } ) > 0 )
+          and scalar( @{ $dataRef->{forecast}->{daily} } ) > 0 )
         {
             my $i= 0;
             foreach my $fc (@{$dataRef->{forecast}->{daily}}) {
@@ -429,7 +436,10 @@ sub Weather_WriteReadings($$) {
         #         readingsBulkUpdate($hash, $f . "day_of_week", $wdays_txt_i18n{$fc->{day}});
                 readingsBulkUpdate($hash, $f . 'icon',  $iconlist[$dataRef->{forecast}->{daily}[$i-1]{code}]);
                 if (  defined($dataRef->{forecast}->{daily}[$i-1]{wind_direction})
-                and defined($dataRef->{forecast}->{daily}[$i-1]{wind_speed}) )
+                  and $dataRef->{forecast}->{daily}[$i-1]{wind_direction}
+                  and defined($dataRef->{forecast}->{daily}[$i-1]{wind_speed})
+                  and $dataRef->{forecast}->{daily}[$i-1]{wind_speed}
+                  )
                 {
                     my $wdir= degrees_to_direction($dataRef->{forecast}->{daily}[$i-1]{wind_direction}, @directions_txt_i18n);
                     readingsBulkUpdate($hash, $f . 'wind_condition', 'Wind: ' . $wdir . ' ' . $dataRef->{forecast}->{daily}[$i-1]{wind_speed} . ' km/h');
@@ -609,9 +619,9 @@ sub Weather_Define($$) {
 
   $hash->{NOTIFYDEV} = "global";
   $hash->{fhem}->{interfaces}= "temperature;humidity;wind";
-  $hash->{LOCATION}     = ( defined($location) ? $location : AttrVal( 'global', 'latitude',  'error' ).','.AttrVal( 'global', 'longitude', 'error' ) );
+  $hash->{LOCATION}     = ( (defined($location) and $location) ? $location : AttrVal( 'global', 'latitude',  'error' ).','.AttrVal( 'global', 'longitude', 'error' ) );
   $hash->{INTERVAL}     = $interval;
-  $hash->{LANG}         = ( defined($lang) ? $lang : lc(AttrVal('global','language','de')) );
+  $hash->{LANG}         = ( (defined($lang) and $lang) ? $lang : lc(AttrVal('global','language','de')) );
   $hash->{API}          = $api;
   $hash->{APIKEY}       = $apikey;
   $hash->{APIOPTIONS}   = $apioptions;

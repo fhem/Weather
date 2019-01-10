@@ -67,12 +67,22 @@ sub new {
 
     my $self = {
         devName => $argsRef->{devName},
-        key => ( defined( $argsRef->{apikey} ) ? $argsRef->{apikey} : 'none' ),
-        cachemaxage => ( (split(':',$argsRef->{apioptions}))[0] eq 'cachemaxage' ? (split(':',$argsRef->{apioptions}))[1] : 900 ),
-        lang        => $argsRef->{language},
-        lat         => ( split( ',', $argsRef->{location} ) )[0],
-        long        => ( split( ',', $argsRef->{location} ) )[1],
-        fetchTime   => 0,
+        key     => (
+            ( defined( $argsRef->{apikey} ) and $argsRef->{apikey} )
+            ? $argsRef->{apikey}
+            : 'none'
+        ),
+        cachemaxage => (
+            ( defined( $argsRef->{apioptions} ) and $argsRef->{apioptions} )
+            ? ( ( split( ':', $argsRef->{apioptions} ) )[0] eq 'cachemaxage'
+                ? ( split( ':', $argsRef->{apioptions} ) )[1]
+                : 900 )
+            : 900
+        ),
+        lang      => $argsRef->{language},
+        lat       => ( split( ',', $argsRef->{location} ) )[0],
+        long      => ( split( ',', $argsRef->{location} ) )[1],
+        fetchTime => 0,
     };
 
     $self->{cached} = _CreateForecastRef($self);
@@ -174,25 +184,32 @@ sub _RetrieveDataFinished($$$) {
 sub _ProcessingRetrieveData($$) {
     my ( $self, $response ) = @_;
 
-    if ( $self->{cached}->{status} eq 'ok' and defined($response) ) {
+    if (    $self->{cached}->{status} eq 'ok'
+        and defined($response)
+        and $response )
+    {
         my $data = eval { decode_json($response) };
 
         if ($@) {
             _ErrorHandling( $self, 'DarkSky Weather decode JSON err ' . $@ );
         }
-        elsif ( defined( $data->{code} ) and defined( $data->{error} ) ) {
+        elsif ( defined( $data->{code} )
+            and $data->{code}
+            and defined( $data->{error} )
+            and $data->{error} )
+        {
             _ErrorHandling( $self,
                 'Code: ' . $data->{code} . ' Error: ' . $data->{error} );
         }
         else {
             #             print Dumper $data;       ## für Debugging
 
-            $self->{cached}->{current_date_time} = strftime(
-                "%a,%e %b %Y %H:%M %p",
-                localtime( $self->{fetchTime} )
-              );
+            $self->{cached}->{current_date_time} =
+              strftime( "%a,%e %b %Y %H:%M %p",
+                localtime( $self->{fetchTime} ) );
             $self->{cached}->{timezone} = $data->{timezone};
-            $self->{cached}->{license}{text} = $data->{flags}->{'meteoalarm-license'};
+            $self->{cached}->{license}{text} =
+              $data->{flags}->{'meteoalarm-license'};
             $self->{cached}->{current} = {
                 'temperature' => int(
                     sprintf( "%.1f", $data->{currently}->{temperature} ) + 0.5
@@ -203,12 +220,12 @@ sub _ProcessingRetrieveData($$) {
                 'dewPoint' => int(
                     sprintf( "%.1f", $data->{currently}->{dewPoint} ) + 0.5
                 ),
-                'humidity'   => $data->{currently}->{humidity} * 100,
-                'condition'  => encode_utf8( $data->{currently}->{summary} ),
-                'pressure'   => int(
+                'humidity'  => $data->{currently}->{humidity} * 100,
+                'condition' => encode_utf8( $data->{currently}->{summary} ),
+                'pressure'  => int(
                     sprintf( "%.1f", $data->{currently}->{pressure} ) + 0.5
                 ),
-                'wind'       => int(
+                'wind' => int(
                     sprintf( "%.1f", $data->{currently}->{windSpeed} ) + 0.5
                 ),
                 'wind_speed' => int(
@@ -218,15 +235,15 @@ sub _ProcessingRetrieveData($$) {
                 'windGust'       => int(
                     sprintf( "%.1f", $data->{currently}->{windGust} ) + 0.5
                 ),
-                'cloudCover'     => $data->{currently}->{cloudCover} * 100,
-                'uvIndex'        => $data->{currently}->{uvIndex},
-                'visibility'     => int(
+                'cloudCover' => $data->{currently}->{cloudCover} * 100,
+                'uvIndex'    => $data->{currently}->{uvIndex},
+                'visibility' => int(
                     sprintf( "%.1f", $data->{currently}->{visibility} ) + 0.5
                 ),
-                'ozone'          => $data->{currently}->{ozone},
-                'code'           => $codes{ $data->{currently}->{icon} },
-                'iconAPI'        => $data->{currently}->{icon},
-                'pubDate'        => strftime(
+                'ozone'   => $data->{currently}->{ozone},
+                'code'    => $codes{ $data->{currently}->{icon} },
+                'iconAPI' => $data->{currently}->{icon},
+                'pubDate' => strftime(
                     "%a,%e %b %Y %H:%M %p",
                     localtime( $data->{currently}->{'time'} )
                 ),
@@ -244,7 +261,7 @@ sub _ProcessingRetrieveData($$) {
             {
                 ### löschen des alten Datensatzes
                 delete $self->{cached}->{forecast};
-                
+
                 my $i = 0;
                 foreach ( @{ $data->{daily}->{data} } ) {
                     push(
@@ -252,120 +269,120 @@ sub _ProcessingRetrieveData($$) {
                         {
                             'date' => strftime(
                                 "%a, %d.%m.%Y",
-                                localtime( $data->{daily}->{data}->[$i]->{'time'} )
+                                localtime(
+                                    $data->{daily}->{data}->[$i]->{'time'}
+                                )
                             ),
                             'day_of_week' => strftime(
                                 "%a",
-                                localtime( $data->{daily}->{data}->[$i]->{'time'} )
+                                localtime(
+                                    $data->{daily}->{data}->[$i]->{'time'}
+                                )
                             ),
                             'low_c' => int(
                                 sprintf( "%.1f",
-                                    $data->{daily}->{data}->[$i]->{temperatureLow} )
-                                  + 0.5
+                                    $data->{daily}->{data}->[$i]
+                                      ->{temperatureLow} ) + 0.5
                             ),
                             'high_c' => int(
                                 sprintf( "%.1f",
-                                    $data->{daily}->{data}->[$i]->{temperatureHigh}
-                                ) + 0.5
+                                    $data->{daily}->{data}->[$i]
+                                      ->{temperatureHigh} ) + 0.5
                             ),
                             'tempMin' => int(
                                 sprintf( "%.1f",
-                                    $data->{daily}->{data}->[$i]->{temperatureMin} )
-                                  + 0.5
+                                    $data->{daily}->{data}->[$i]
+                                      ->{temperatureMin} ) + 0.5
                             ),
                             'tempMinTime' => strftime(
                                 "%a,%e %b %Y %H:%M %p",
                                 localtime(
-                                    $data->{daily}
-                                      ->{data}->[$i]->{temperatureMinTime}
+                                    $data->{daily}->{data}->[$i]
+                                      ->{temperatureMinTime}
                                 )
                             ),
                             'tempMax' => int(
                                 sprintf( "%.1f",
-                                    $data->{daily}->{data}->[$i]->{temperatureMax} )
-                                  + 0.5
+                                    $data->{daily}->{data}->[$i]
+                                      ->{temperatureMax} ) + 0.5
                             ),
                             'tempMaxTime' => strftime(
                                 "%a,%e %b %Y %H:%M %p",
                                 localtime(
-                                    $data->{daily}
-                                      ->{data}->[$i]->{temperatureMaxTime}
+                                    $data->{daily}->{data}->[$i]
+                                      ->{temperatureMaxTime}
                                 )
                             ),
                             'tempLow' => int(
                                 sprintf( "%.1f",
-                                    $data->{daily}->{data}->[$i]->{temperatureLow} )
-                                  + 0.5
+                                    $data->{daily}->{data}->[$i]
+                                      ->{temperatureLow} ) + 0.5
                             ),
                             'tempLowTime' => strftime(
                                 "%a,%e %b %Y %H:%M %p",
                                 localtime(
-                                    $data->{daily}
-                                      ->{data}->[$i]->{temperatureLowTime}
+                                    $data->{daily}->{data}->[$i]
+                                      ->{temperatureLowTime}
                                 )
                             ),
                             'tempHigh' => int(
                                 sprintf( "%.1f",
-                                    $data->{daily}->{data}->[$i]->{temperatureHigh}
-                                ) + 0.5
+                                    $data->{daily}->{data}->[$i]
+                                      ->{temperatureHigh} ) + 0.5
                             ),
                             'tempHighTime' => strftime(
                                 "%a,%e %b %Y %H:%M %p",
                                 localtime(
-                                    $data->{daily}
-                                      ->{data}->[$i]->{temperatureHighTime}
+                                    $data->{daily}->{data}->[$i]
+                                      ->{temperatureHighTime}
                                 )
                             ),
                             'apparentTempLow' => int(
                                 sprintf( "%.1f",
-                                    $data->{daily}
-                                      ->{data}->[$i]->{apparentTemperatureLow} ) +
-                                  0.5
+                                    $data->{daily}->{data}->[$i]
+                                      ->{apparentTemperatureLow} ) + 0.5
                             ),
                             'apparentTempLowTime' => strftime(
                                 "%a,%e %b %Y %H:%M %p",
                                 localtime(
-                                    $data->{daily}
-                                      ->{data}->[$i]->{apparentTemperatureLowTime}
+                                    $data->{daily}->{data}->[$i]
+                                      ->{apparentTemperatureLowTime}
                                 )
                             ),
                             'apparentTempHigh' => int(
                                 sprintf( "%.1f",
-                                    $data->{daily}
-                                      ->{data}->[$i]->{apparentTemperatureHigh} ) +
-                                  0.5
+                                    $data->{daily}->{data}->[$i]
+                                      ->{apparentTemperatureHigh} ) + 0.5
                             ),
                             'apparentTempHighTime' => strftime(
                                 "%a,%e %b %Y %H:%M %p",
                                 localtime(
-                                    $data->{daily}
-                                      ->{data}->[$i]->{apparentTemperatureHighTime}
+                                    $data->{daily}->{data}->[$i]
+                                      ->{apparentTemperatureHighTime}
                                 )
                             ),
                             'apparenttempMin' => int(
                                 sprintf( "%.1f",
-                                    $data->{daily}
-                                      ->{data}->[$i]->{apparentTemperatureMin} ) +
-                                  0.5
+                                    $data->{daily}->{data}->[$i]
+                                      ->{apparentTemperatureMin} ) + 0.5
                             ),
                             'apparenttempMinTime' => strftime(
                                 "%a,%e %b %Y %H:%M %p",
                                 localtime(
-                                    $data->{daily}
-                                      ->{data}->[$i]->{apparentTemperatureMinTime}
+                                    $data->{daily}->{data}->[$i]
+                                      ->{apparentTemperatureMinTime}
                                 )
                             ),
                             'apparenttempMax' => int(
                                 sprintf( "%.1f",
-                                    $data->{daily}
-                                      ->{data}->[$i]->{apparentTemperatureMax} ) +
-                                  0.5
+                                    $data->{daily}->{data}->[$i]
+                                      ->{apparentTemperatureMax} ) + 0.5
                             ),
                             'apparenttempMaxTime' => strftime(
                                 "%a,%e %b %Y %H:%M %p",
                                 localtime(
-                                    $data->{daily}
-                                      ->{data}->[$i]->{apparentTemperatureMaxTime}
+                                    $data->{daily}->{data}->[$i]
+                                      ->{apparentTemperatureMaxTime}
                                 )
                             ),
                             'code' =>
@@ -374,8 +391,9 @@ sub _ProcessingRetrieveData($$) {
                             'condition' => encode_utf8(
                                 $data->{daily}->{data}->[$i]->{summary}
                             ),
-                            'ozone'   => $data->{daily}->{data}->[$i]->{ozone},
-                            'uvIndex' => $data->{daily}->{data}->[$i]->{uvIndex},
+                            'ozone' => $data->{daily}->{data}->[$i]->{ozone},
+                            'uvIndex' =>
+                              $data->{daily}->{data}->[$i]->{uvIndex},
                             'uvIndexTime' => strftime(
                                 "%a,%e %b %Y %H:%M %p",
                                 localtime(
@@ -385,21 +403,22 @@ sub _ProcessingRetrieveData($$) {
                             'precipIntensity' =>
                               $data->{daily}->{data}->[$i]->{precipIntensity},
                             'precipIntensityMax' =>
-                              $data->{daily}->{data}->[$i]->{precipIntensityMax},
+                              $data->{daily}->{data}->[$i]
+                              ->{precipIntensityMax},
                             'precipIntensityMaxTime' => strftime(
                                 "%a,%e %b %Y %H:%M %p",
                                 localtime(
-                                    $data->{daily}
-                                      ->{data}->[$i]->{precipIntensityMaxTime}
+                                    $data->{daily}->{data}->[$i]
+                                      ->{precipIntensityMaxTime}
                                 )
                             ),
                             'dewPoint' => int(
                                 sprintf( "%.1f",
-                                    $data->{daily}->{data}->[$i]->{dewPoint}
-                                    ) + 0.5
+                                    $data->{daily}->{data}->[$i]->{dewPoint} )
+                                  + 0.5
                             ),
-                            'humidity' => $data->{daily}->{data}->[$i]->{humidity}
-                              * 100,
+                            'humidity' =>
+                              $data->{daily}->{data}->[$i]->{humidity} * 100,
                             'cloudCover' =>
                               $data->{daily}->{data}->[$i]->{cloudCover} * 100,
                             'precipType' =>
@@ -409,17 +428,18 @@ sub _ProcessingRetrieveData($$) {
                               $data->{daily}->{data}->[$i]->{windBearing},
                             'wind' => int(
                                 sprintf( "%.1f",
-                                    $data->{daily}->{data}->[$i]->{windSpeed}
-                                    ) + 0.5
+                                    $data->{daily}->{data}->[$i]->{windSpeed} )
+                                  + 0.5
                             ),
                             'wind_speed' => int(
                                 sprintf( "%.1f",
-                                    $data->{daily}->{data}->[$i]->{windSpeed}
-                                    ) + 0.5
+                                    $data->{daily}->{data}->[$i]->{windSpeed} )
+                                  + 0.5
                             ),
                             'windGust' => int(
                                 sprintf( "%.1f",
-                                    $data->{daily}->{data}->[$i]->{windGust}) + 0.5
+                                    $data->{daily}->{data}->[$i]->{windGust} )
+                                  + 0.5
                             ),
                             'windGustTime' => strftime(
                                 "%a,%e %b %Y %H:%M %p",
@@ -446,15 +466,17 @@ sub _ProcessingRetrieveData($$) {
                               $data->{daily}->{data}->[$i]->{precipProbability},
                             'pressure' => int(
                                 sprintf( "%.1f",
-                                    $data->{daily}->{data}->[$i]->{pressure}) + 0.5
+                                    $data->{daily}->{data}->[$i]->{pressure} )
+                                  + 0.5
                             ),
                             'visibility' => int(
                                 sprintf( "%.1f",
-                                    $data->{daily}->{data}->[$i]->{visibility}) + 0.5
+                                    $data->{daily}->{data}->[$i]->{visibility} )
+                                  + 0.5
                             ),
                         }
                     );
-                    
+
                     $i++;
                 }
             }
@@ -476,8 +498,8 @@ sub _ErrorHandling($$) {
     my ( $self, $err ) = @_;
 
     $self->{cached}->{current_date_time} =
-    strftime( "%a,%e %b %Y %H:%M %p", localtime( $self->{fetchTime} ) ),
-    $self->{cached}->{status} = $err;
+      strftime( "%a,%e %b %Y %H:%M %p", localtime( $self->{fetchTime} ) ),
+      $self->{cached}->{status} = $err;
     $self->{cached}->{validity} = 'stale';
 }
 
