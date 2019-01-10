@@ -297,14 +297,17 @@ sub _ProcessingRetrieveData($$) {
                 };
             }
 
-            if ( $self->{endpoint} eq 'forecas' ) {
-                my $i = 0;
+            if ( $self->{endpoint} eq 'forecast' ) {
                 if ( ref( $data->{list} ) eq "ARRAY"
                     and scalar( @{ $data->{list} } ) > 0 )
                 {
+                    ## löschen des alten Datensatzes
+                    delete $self->{cached}->{forecast};
+                    
+                    my $i = 0;
                     foreach ( @{ $data->{list} } ) {
                         push(
-                            @{ $self->{cached}->{forecast}->{daily} },
+                            @{ $self->{cached}->{forecast} },
                             {
                                 'temperature' => int(
                                     sprintf( "%.1f", ( $data->{list}[$i]{main}->{temp} - 273.15 ) ) + 0.5
@@ -340,7 +343,7 @@ sub _ProcessingRetrieveData($$) {
                                 'iconAPI'    => $data->{list}[$i]{weather}[0]{icon},
                                 
                                 'pubDate' =>
-                                strftime( "%a,%e %b %Y %H:%M %p", localtime( $data->{list}[$i]{dt} ) ),
+                                strftime( "%a,%e %b %Y %H:%M %p", localtime( ($data->{list}[$i]{dt}) - 3600 ) ),
                             }
                         );
                         

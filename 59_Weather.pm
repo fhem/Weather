@@ -364,7 +364,7 @@ sub Weather_WriteReadings($$) {
     readingsBulkUpdate($hash, 'lastError', '');
     foreach my $r (keys %{$dataRef} ) {        
         readingsBulkUpdate($hash, $r, $dataRef->{$r})
-          if ( ref($dataRef->{$r}) ne 'HASH' );
+          if ( ref($dataRef->{$r}) ne 'HASH' and ref($dataRef->{$r}) ne 'ARRAY' );
     }
 
     readingsBulkUpdate($hash, "validity", "up-to-date");
@@ -373,7 +373,8 @@ sub Weather_WriteReadings($$) {
     # current
     if ( defined($dataRef->{current}) and ref( $dataRef->{current} ) eq 'HASH' ) {
         while( my ($r,$v) = each %{$dataRef->{current}} ) {
-            readingsBulkUpdate($hash, $r, $v);
+            readingsBulkUpdate($hash, $r, $v)
+              if ( ref($dataRef->{$r}) ne 'HASH' and ref($dataRef->{$r}) ne 'ARRAY' );
         }
         
         readingsBulkUpdate($hash, 'icon',  $iconlist[$dataRef->{current}->{code}]);
@@ -386,36 +387,27 @@ sub Weather_WriteReadings($$) {
     }
 
     # forecast
-    if ( defined($dataRef->{forecast}) and ref( $dataRef->{forecast} ) eq 'HASH' ) {
-        ## Forecast for hourly
-        if (  defined($dataRef->{forecast}->{hourly}) and ref( $dataRef->{forecast}->{hourly} ) eq "ARRAY"
-        and scalar( @{ $dataRef->{forecast}->{daily} } ) > 0 )
-        {
-        
-        }
-        
-        ## Forecast for Daily
-        if (  defined($dataRef->{forecast}->{daily}) and ref( $dataRef->{forecast}->{daily} ) eq "ARRAY"
-        and scalar( @{ $dataRef->{forecast}->{daily} } ) > 0 )
-        {
-            my $i= 0;
-            foreach my $fc (@{$dataRef->{forecast}->{daily}}) {
-                $i++;
-                my $f= "fc" . $i ."_";
-                
-                while( my ($r,$v) = each %{$fc} ) {
-                    readingsBulkUpdate($hash, $f.$r, $v);
-                }
-        #         readingsBulkUpdate($hash, $f . "day_of_week", $wdays_txt_i18n{$fc->{day}});
-                readingsBulkUpdate($hash, $f . 'icon',  $iconlist[$dataRef->{forecast}->{daily}[$i-1]{code}]);
-                if (  defined($dataRef->{forecast}->{daily}[$i-1]{wind_direction})
-                and defined($dataRef->{forecast}->{daily}[$i-1]{wind_speed}) )
-                {
-                    my $wdir= degrees_to_direction($dataRef->{forecast}->{daily}[$i-1]{wind_direction}, @directions_txt_i18n);
-                    readingsBulkUpdate($hash, $f . 'wind_condition', 'Wind: ' . $wdir . ' ' . $dataRef->{forecast}->{daily}[$i-1]{wind_speed} . ' km/h');
-                }
-        #         readingsBulkUpdate($hash, $f . 'day_of_week', $wdays_txt_i18n{substr($dataRef->{forecast}[$i-1]{date},0,3)});
+    if (  defined($dataRef->{forecast}) and ref( $dataRef->{forecast} ) eq 'ARRAY'
+    and scalar( @{ $dataRef->{forecast} } ) > 0 )
+    {
+        my $i= 0;
+        foreach my $fc (@{$dataRef->{forecast}}) {
+            $i++;
+            my $f= "fc" . $i ."_";
+            
+            while( my ($r,$v) = each %{$fc} ) {
+                readingsBulkUpdate($hash, $f.$r, $v)
+                  if ( ref($dataRef->{$r}) ne 'HASH' and ref($dataRef->{$r}) ne 'ARRAY' );
             }
+    #         readingsBulkUpdate($hash, $f . "day_of_week", $wdays_txt_i18n{$fc->{day}});
+            readingsBulkUpdate($hash, $f . 'icon',  $iconlist[$dataRef->{forecast}[$i-1]{code}]);
+            if (  defined($dataRef->{forecast}[$i-1]{wind_direction})
+            and defined($dataRef->{forecast}[$i-1]{wind_speed}) )
+            {
+                my $wdir= degrees_to_direction($dataRef->{forecast}[$i-1]{wind_direction}, @directions_txt_i18n);
+                readingsBulkUpdate($hash, $f . 'wind_condition', 'Wind: ' . $wdir . ' ' . $dataRef->{forecast}[$i-1]{wind_speed} . ' km/h');
+            }
+    #         readingsBulkUpdate($hash, $f . 'day_of_week', $wdays_txt_i18n{substr($dataRef->{forecast}[$i-1]{date},0,3)});
         }
     }
     
@@ -470,7 +462,7 @@ sub Weather_Get($@) {
   } else {
         my $rt= "";
         if(defined($hash->{READINGS})) {
-                $rt= join(" ", sort keys %{$hash->{READINGS}});
+                $rt= join(":noArg ", sort keys %{$hash->{READINGS}});
         }
         return "Unknown reading $reading, choose one of " . $rt;
   }
@@ -490,7 +482,7 @@ sub Weather_Set($@) {
     Weather_GetUpdate($hash);
     return undef;
   } else {
-    return "Unknown argument $cmd, choose one of update";
+    return "Unknown argument $cmd, choose one of update:noArg";
   }
 }
 
@@ -630,8 +622,7 @@ use constant ICONSCALE => 0.5;
 
 #####################################
 
-sub
-WeatherIconIMGTag($) {
+sub WeatherIconIMGTag($) {
 
   my $width= int(ICONSCALE*ICONWIDTH);
   my ($icon)= @_;
@@ -643,8 +634,7 @@ WeatherIconIMGTag($) {
 
 #####################################
 
-sub
-WeatherAsHtmlV($;$)
+sub WeatherAsHtmlV($;$)
 {
 
   my ($d,$items) = @_;
@@ -676,20 +666,18 @@ WeatherAsHtmlV($;$)
   return $ret;
 }
 
-sub
-WeatherAsHtml($;$)
+sub WeatherAsHtml($;$)
 {
   my ($d,$i) = @_;
   WeatherAsHtmlV($d,$i);
 }
 
-sub
-WeatherAsHtmlH($;$)
+sub WeatherAsHtmlH($;$)
 {
 
   my ($d,$items) = @_;
   $d = "<none>" if(!$d);
-  $items = 10 if( !$items );
+  $items = 9 if( !$items );
   return "$d is not a Weather instance<br>"
         if(!$defs{$d} || $defs{$d}->{TYPE} ne "Weather");
 
@@ -733,8 +721,7 @@ WeatherAsHtmlH($;$)
   return $ret;
 }
 
-sub
-WeatherAsHtmlD($;$)
+sub WeatherAsHtmlD($;$)
 {
   my ($d,$i) = @_;
   if($FW_ss) {
