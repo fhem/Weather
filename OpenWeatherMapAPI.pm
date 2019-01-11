@@ -260,7 +260,7 @@ sub _ProcessingRetrieveData($$) {
 
             ###### Ab hier wird die ResponseHash Referenze für die Rückgabe zusammen gestellt
             $self->{cached}->{current_date_time} =
-              strftime( "%a,%e %b %Y %H:%M %p",
+              strftime( "%a, %e %b %Y %H:%M %p",
                 localtime( $self->{fetchTime} ) );
 
             if ( $self->{endpoint} eq 'weather' ) {
@@ -308,15 +308,15 @@ sub _ProcessingRetrieveData($$) {
                     'code'       => $codes{ $data->{weather}->[0]->{id} },
                     'iconAPI'    => $data->{weather}->[0]->{icon},
                     'sunsetTime' => strftime(
-                        "%a,%e %b %Y %H:%M %p",
+                        "%a, %e %b %Y %H:%M %p",
                         localtime( $data->{sys}->{sunset} )
                     ),
                     'sunriseTime' => strftime(
-                        "%a,%e %b %Y %H:%M %p",
+                        "%a, %e %b %Y %H:%M %p",
                         localtime( $data->{sys}->{sunrise} )
                     ),
                     'pubDate' => strftime(
-                        "%a,%e %b %Y %H:%M %p",
+                        "%a, %e %b %Y %H:%M %p",
                         localtime( $data->{dt} )
                     ),
                 };
@@ -334,6 +334,12 @@ sub _ProcessingRetrieveData($$) {
                         push(
                             @{ $self->{cached}->{forecast}->{hourly} },
                             {
+                                'pubDate' => strftime(
+                                    "%a, %e %b %Y %H:%M %p",
+                                    localtime(
+                                        ( $data->{list}->[$i]->{dt} ) - 3600
+                                    )
+                                ),
                                 'temperature' => int(
                                     sprintf(
                                         "%.1f",
@@ -416,12 +422,6 @@ sub _ProcessingRetrieveData($$) {
                                       ->{id} },
                                 'iconAPI' =>
                                   $data->{list}->[$i]->{weather}->[0]->{icon},
-                                'pubDate' => strftime(
-                                    "%a,%e %b %Y %H:%M %p",
-                                    localtime(
-                                        ( $data->{list}->[$i]->{dt} ) - 3600
-                                    )
-                                ),
                             },
                         );
 
@@ -452,7 +452,7 @@ sub _ErrorHandling($$) {
     my ( $self, $err ) = @_;
 
     $self->{cached}->{current_date_time} =
-      strftime( "%a,%e %b %Y %H:%M %p", localtime( $self->{fetchTime} ) ),
+      strftime( "%a, %e %b %Y %H:%M %p", localtime( $self->{fetchTime} ) ),
       $self->{cached}->{status} = $err;
     $self->{cached}->{validity} = 'stale';
 }

@@ -205,7 +205,7 @@ sub _ProcessingRetrieveData($$) {
             #             print Dumper $data;       ## für Debugging
 
             $self->{cached}->{current_date_time} =
-              strftime( "%a,%e %b %Y %H:%M %p",
+              strftime( "%a, %e %b %Y %H:%M %p",
                 localtime( $self->{fetchTime} ) );
             $self->{cached}->{timezone} = $data->{timezone};
             $self->{cached}->{license}{text} =
@@ -244,7 +244,7 @@ sub _ProcessingRetrieveData($$) {
                 'code'    => $codes{ $data->{currently}->{icon} },
                 'iconAPI' => $data->{currently}->{icon},
                 'pubDate' => strftime(
-                    "%a,%e %b %Y %H:%M %p",
+                    "%a, %e %b %Y %H:%M %p",
                     localtime( $data->{currently}->{'time'} )
                 ),
                 'precipProbability' => $data->{currently}->{precipProbability},
@@ -267,14 +267,8 @@ sub _ProcessingRetrieveData($$) {
                     push(
                         @{ $self->{cached}->{forecast}->{daily} },
                         {
-                            'date' => strftime(
-                                "%a, %d.%m.%Y",
-                                localtime(
-                                    $data->{daily}->{data}->[$i]->{'time'}
-                                )
-                            ),
-                            'day_of_week' => strftime(
-                                "%a",
+                            'pubDate' => strftime(
+                                "%a, %e %b %Y %H:%M %p",
                                 localtime(
                                     $data->{daily}->{data}->[$i]->{'time'}
                                 )
@@ -295,7 +289,7 @@ sub _ProcessingRetrieveData($$) {
                                       ->{temperatureMin} ) + 0.5
                             ),
                             'tempMinTime' => strftime(
-                                "%a,%e %b %Y %H:%M %p",
+                                "%a, %e %b %Y %H:%M %p",
                                 localtime(
                                     $data->{daily}->{data}->[$i]
                                       ->{temperatureMinTime}
@@ -307,7 +301,7 @@ sub _ProcessingRetrieveData($$) {
                                       ->{temperatureMax} ) + 0.5
                             ),
                             'tempMaxTime' => strftime(
-                                "%a,%e %b %Y %H:%M %p",
+                                "%a, %e %b %Y %H:%M %p",
                                 localtime(
                                     $data->{daily}->{data}->[$i]
                                       ->{temperatureMaxTime}
@@ -319,7 +313,7 @@ sub _ProcessingRetrieveData($$) {
                                       ->{temperatureLow} ) + 0.5
                             ),
                             'tempLowTime' => strftime(
-                                "%a,%e %b %Y %H:%M %p",
+                                "%a, %e %b %Y %H:%M %p",
                                 localtime(
                                     $data->{daily}->{data}->[$i]
                                       ->{temperatureLowTime}
@@ -331,7 +325,7 @@ sub _ProcessingRetrieveData($$) {
                                       ->{temperatureHigh} ) + 0.5
                             ),
                             'tempHighTime' => strftime(
-                                "%a,%e %b %Y %H:%M %p",
+                                "%a, %e %b %Y %H:%M %p",
                                 localtime(
                                     $data->{daily}->{data}->[$i]
                                       ->{temperatureHighTime}
@@ -343,7 +337,7 @@ sub _ProcessingRetrieveData($$) {
                                       ->{apparentTemperatureLow} ) + 0.5
                             ),
                             'apparentTempLowTime' => strftime(
-                                "%a,%e %b %Y %H:%M %p",
+                                "%a, %e %b %Y %H:%M %p",
                                 localtime(
                                     $data->{daily}->{data}->[$i]
                                       ->{apparentTemperatureLowTime}
@@ -355,7 +349,7 @@ sub _ProcessingRetrieveData($$) {
                                       ->{apparentTemperatureHigh} ) + 0.5
                             ),
                             'apparentTempHighTime' => strftime(
-                                "%a,%e %b %Y %H:%M %p",
+                                "%a, %e %b %Y %H:%M %p",
                                 localtime(
                                     $data->{daily}->{data}->[$i]
                                       ->{apparentTemperatureHighTime}
@@ -367,7 +361,7 @@ sub _ProcessingRetrieveData($$) {
                                       ->{apparentTemperatureMin} ) + 0.5
                             ),
                             'apparenttempMinTime' => strftime(
-                                "%a,%e %b %Y %H:%M %p",
+                                "%a, %e %b %Y %H:%M %p",
                                 localtime(
                                     $data->{daily}->{data}->[$i]
                                       ->{apparentTemperatureMinTime}
@@ -379,7 +373,7 @@ sub _ProcessingRetrieveData($$) {
                                       ->{apparentTemperatureMax} ) + 0.5
                             ),
                             'apparenttempMaxTime' => strftime(
-                                "%a,%e %b %Y %H:%M %p",
+                                "%a, %e %b %Y %H:%M %p",
                                 localtime(
                                     $data->{daily}->{data}->[$i]
                                       ->{apparentTemperatureMaxTime}
@@ -395,7 +389,7 @@ sub _ProcessingRetrieveData($$) {
                             'uvIndex' =>
                               $data->{daily}->{data}->[$i]->{uvIndex},
                             'uvIndexTime' => strftime(
-                                "%a,%e %b %Y %H:%M %p",
+                                "%a, %e %b %Y %H:%M %p",
                                 localtime(
                                     $data->{daily}->{data}->[$i]->{uvIndexTime}
                                 )
@@ -406,7 +400,7 @@ sub _ProcessingRetrieveData($$) {
                               $data->{daily}->{data}->[$i]
                               ->{precipIntensityMax},
                             'precipIntensityMaxTime' => strftime(
-                                "%a,%e %b %Y %H:%M %p",
+                                "%a, %e %b %Y %H:%M %p",
                                 localtime(
                                     $data->{daily}->{data}->[$i]
                                       ->{precipIntensityMaxTime}
@@ -442,7 +436,7 @@ sub _ProcessingRetrieveData($$) {
                                   + 0.5
                             ),
                             'windGustTime' => strftime(
-                                "%a,%e %b %Y %H:%M %p",
+                                "%a, %e %b %Y %H:%M %p",
                                 localtime(
                                     $data->{daily}->{data}->[$i]->{windGustTime}
                                 )
@@ -450,13 +444,13 @@ sub _ProcessingRetrieveData($$) {
                             'moonPhase' =>
                               $data->{daily}->{data}->[$i]->{moonPhase},
                             'sunsetTime' => strftime(
-                                "%a,%e %b %Y %H:%M %p",
+                                "%a, %e %b %Y %H:%M %p",
                                 localtime(
                                     $data->{daily}->{data}->[$i]->{sunsetTime}
                                 )
                             ),
                             'sunriseTime' => strftime(
-                                "%a,%e %b %Y %H:%M %p",
+                                "%a, %e %b %Y %H:%M %p",
                                 localtime(
                                     $data->{daily}->{data}->[$i]->{sunriseTime}
                                 )
@@ -498,7 +492,7 @@ sub _ErrorHandling($$) {
     my ( $self, $err ) = @_;
 
     $self->{cached}->{current_date_time} =
-      strftime( "%a,%e %b %Y %H:%M %p", localtime( $self->{fetchTime} ) ),
+      strftime( "%a, %e %b %Y %H:%M %p", localtime( $self->{fetchTime} ) ),
       $self->{cached}->{status} = $err;
     $self->{cached}->{validity} = 'stale';
 }

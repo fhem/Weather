@@ -138,7 +138,7 @@ sub Weather_Initialize($) {
   $hash->{UndefFn} = "Weather_Undef";
   $hash->{GetFn}   = "Weather_Get";
   $hash->{SetFn}   = "Weather_Set";
-  $hash->{AttrList}= "disable " . $readingFnAttributes;
+  $hash->{AttrList}= "disable:0,1 " . $readingFnAttributes;
   $hash->{NotifyFn}= "Weather_Notify";
 
   #Weather_DebugCodes('de');
@@ -416,7 +416,7 @@ sub Weather_WriteReadings($$) {
                     my $wdir= degrees_to_direction($dataRef->{forecast}->{hourly}[$i-1]{wind_direction}, @directions_txt_i18n);
                     readingsBulkUpdate($hash, $f . 'wind_condition', 'Wind: ' . $wdir . ' ' . $dataRef->{forecast}->{hourly}[$i-1]{wind_speed} . ' km/h');
                 }
-        #         readingsBulkUpdate($hash, $f . 'day_of_week', $wdays_txt_i18n{substr($dataRef->{forecast}->{hourly}[$i-1]{date},0,3)});
+                readingsBulkUpdate($hash, $f . 'day_of_week', ( length((split(',', $dataRef->{forecast}->{hourly}[$i-1]{pubDate}))[0]) > 2 ? $wdays_txt_i18n{substr($dataRef->{forecast}->{hourly}[$i-1]{pubDate},0,3)} : substr($dataRef->{forecast}->{hourly}[$i-1]{pubDate},0,2) ) );
             }
         }
         
@@ -444,7 +444,7 @@ sub Weather_WriteReadings($$) {
                     my $wdir= degrees_to_direction($dataRef->{forecast}->{daily}[$i-1]{wind_direction}, @directions_txt_i18n);
                     readingsBulkUpdate($hash, $f . 'wind_condition', 'Wind: ' . $wdir . ' ' . $dataRef->{forecast}->{daily}[$i-1]{wind_speed} . ' km/h');
                 }
-        #         readingsBulkUpdate($hash, $f . 'day_of_week', $wdays_txt_i18n{substr($dataRef->{forecast}->{daily}[$i-1]{date},0,3)});
+                readingsBulkUpdate($hash, $f . 'day_of_week', ( length((split(',', $dataRef->{forecast}->{daily}[$i-1]{pubDate}))[0]) > 2 ? $wdays_txt_i18n{substr($dataRef->{forecast}->{daily}[$i-1]{pubDate},0,3)} : substr($dataRef->{forecast}->{daily}[$i-1]{pubDate},0,2) ) );
             }
         }
     }
