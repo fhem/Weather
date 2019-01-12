@@ -907,31 +907,41 @@ sub WeatherAsHtmlD($;$)
 <a name="Weather"></a>
 <h3>Weather</h3>
 <ul>
-    Es wird das Perl-Modul JSON ben&ouml;tigt. Mit <code>apt-get install libjson-perl</code> kann es unter Debian und Derivaten installiert werden.<br><br>
+    Es wird das Perl-Modul JSON ben&ouml;tigt. Mit <code>apt-get install libjson-perl</code> kann es unter Debian und Derivaten installiert werden.<br>
+    Das Modul arbeitet mit so genanneten API Modulen zusammen. Welche API Module es gibt wird hier bald stehen<br><br>
 
   <a name="Weatherdefine"></a>
   <b>Define</b>
   <ul>
-    <code>define &lt;name&gt; Weather &lt;location&gt; [&lt;interval&gt; [&lt;language&gt;]]</code><br>
+    Eine ganz einfache Definition ist:<br>
+    <code>define &lt;name&gt; Weather</code><br>
+    Bei dieser Definition wird die Standard API von DarkSky verwendet. Diese ben&ouml;tigt einen APIKEY. Folglich muss die Definition entsprechend erweitert werden.<br>
+    <code>define &lt;name&gt; Weather apikey=[APIKEY]</code><br>
     <br>
-    Bezechnet ein virtuelles Gerät für Wettervorhersagen.<br><br>
+    Was eine API als &Uuml;bergabeparameter ben&ouml;tigt ist der jeweiligen API Modulbeschreibung zu entnehmen.<br>
+    Die Default API ben&ouml;tigt noch eine location. Also eine Angabe zur Position Deines Ortes (Latitude und Longitude). Diese Informationen werden aus dem globalen Device gelesen, sofern sie nicht mittels der Option location= mit &uuml;bergeben werden.<br>
+    Es macht generell Sinn diese Informationen eben so wie die Sprache im globalen Device als Attribut zu hinterlegen.<br>
+    Der maximale Aufbau einer Definition lautet:<br>
+    <code>define &lt;name&gt; Weather [&lt;API=OpenWeatherMapAPI:[APIOPTIONEN]&gt;] [&lt;location=[LATITUDE,LONGITUDE] oder ID&gt;] [&lt;interval=INTERVAL&gt;] [&lt;language=LANGUAGE&gt;]</code><br>
+    Die Angaben in [ ] sind immer als Optional an zu sehen. Ein apikey kann genauso gut ein OAuth Token oder &auml;hnliche Authentifizierungm&ouml;glichkeit sein.
+    <br>
+    Eine solche virtuelle Wetterstation sammelt periodisch aktuelle und zuk&uuml;nftige Wetterdaten aus dem angegebenen oder standard API-Modul.<br><br>
 
-    Eine solche virtuelle Wetterstation sammelt periodisch aktuelle und zukünftige Wetterdaten aus der Yahoo-Wetter-API.<br><br>
-
-    Der Parameter <code>location</code> entspricht der sechsstelligen WOEID (WHERE-ON-EARTH-ID). Die WOEID für den eigenen Standort kann auf <a href="http://weather.yahoo.com">http://weather.yahoo.com</a> gefunden werden.<br><br>
+    Der optionale Parameter <code>location</code> kan der Locationen ID des Anbieters vom API Modul entsprechen, oder im einfachsten Fall der Angabe von Latitude,Longitude.<br>
+    Steht Latitude und Longitude im global Device und wird von der API ben&ouml;tigt ist eine Angabe nicht n&ouml;tig<br><br>
 
     Der optionale Parameter  <code>interval</code> gibt die Dauer in Sekunden zwischen den einzelnen Aktualisierungen der Wetterdaten an. Der Standardwert ist 3600 (1 Stunde). Wird kein Wert angegeben, gilt der Standardwert.<br><br>
 
-    Der optionale Parameter für die möglichen Sprachen darf einen der folgende Werte annehmen: <code>de</code>, <code>en</code>, <code>pl</code>, <code>fr</code> oder <code>nl</code>. Er bezeichnet die natürliche Sprache, in der die Wetterinformationen dargestellt werden. Der Standardwert ist <code>en</code>. Wird für die Sprache kein Wert angegeben, gilt der Standardwert. Wird allerdings der Parameter für die Sprache gesetzt, muss ebenfalls ein Wert für das Abfrageintervall gesetzt werden.<br><br>
+    Der optionale Parameter f&uuml;r die m&ouml;glichen Sprachen darf einen der folgende Werte annehmen: <code>de</code>, <code>en</code>, <code>pl</code>, <code>fr</code> oder <code>nl</code>. Er bezeichnet die nat&uuml;rliche Sprache, in der die Wetterinformationen dargestellt werden. Der Standardwert ist <code>en</code>. Wird f&uuml;r die Sprache kein Wert angegeben, gilt der Standardwert.<br><br>
 
 
     Beispiele:
     <pre>
-      define MyWeather Weather 673513
-      define Forecast Weather 673513 1800
+      define MyWeather Weather api=OpenWeatherMapAPI,cachemaxage:600 apikey=09878945fdskv876 location=52.4545,13.4545 interval=3600 language=de
+      define Forecast Weather apikey=987498ghjgf864
      </pre>
 
-    Das Modul unterstützt zusätzlich vier verschiedene Funktionen <code>WeatherAsHtml</code>, <code>WeatherAsHtmlV</code>, <code>WeatherAsHtmlH</code> und <code>WeatherAsHtmlD</code>. Die ersten beiden Funktionen sind identisch: sie erzeugen den HTML-Code für eine vertikale Darstellung des Wetterberichtes. Die dritte Funktion liefert den HTML-Code für eine horizontale Darstellung des Wetterberichtes. Die letztgenannte Funktion wählt automatisch eine Ausrichtung, die abhängig davon ist, ob ein Smallcreen Style ausgewählt ist (vertikale Darstellung) oder nicht (horizontale Darstellung). Alle vier Funnktionen akzeptieren einen zusätzlichen optionalen Paramter um die Anzahl der darzustellenden Icons anzugeben.<br><br>
+    Das Modul unterst&uuml;tzt zus&auml;tzlich vier verschiedene Funktionen <code>WeatherAsHtml</code>, <code>WeatherAsHtmlV</code>, <code>WeatherAsHtmlH</code> und <code>WeatherAsHtmlD</code>. Die ersten beiden Funktionen sind identisch: sie erzeugen den HTML-Code f&uuml;r eine vertikale Darstellung des Wetterberichtes. Die dritte Funktion liefert den HTML-Code f&uuml;r eine horizontale Darstellung des Wetterberichtes. Die letztgenannte Funktion w&auml;hlt automatisch eine Ausrichtung, die abh&auml;ngig davon ist, ob ein Smallcreen Style ausgew&auml;hlt ist (vertikale Darstellung) oder nicht (horizontale Darstellung). Alle vier Funnktionen akzeptieren einen zus&auml;tzlichen optionalen Paramter um die Anzahl der darzustellenden Icons anzugeben.<br><br>
     Beispiel:
     <pre>
       define MyWeatherWeblink weblink htmlCode { WeatherAsHtmlH("MyWeather") }
@@ -946,7 +956,7 @@ sub WeatherAsHtmlD($;$)
   <ul>
     <code>set &lt;name&gt; update</code><br><br>
 
-    Erzwingt eine Abfrage der Wetterdaten. Die darauffolgende Abfrage wird gemäß dem eingestellten Intervall <code>interval</code> Sekunden später durchgeführt.<br><br>
+    Erzwingt eine Abfrage der Wetterdaten. Die darauffolgende Abfrage wird gem&auml;&szlig; dem eingestellten Intervall <code>interval</code> Sekunden sp&auml;ter durchgef&uuml;hrt.<br><br>
   </ul>
   <br>
 
@@ -955,43 +965,34 @@ sub WeatherAsHtmlD($;$)
   <ul>
     <code>get &lt;name&gt; &lt;reading&gt;</code><br><br>
 
-    Gültige ausgelesene Daten (readings) und ihre Bedeutung (das ? kann einen der Werte 1, 2, 3 , 4 oder 5 annehmen und steht für heute, morgen, übermorgen etc.):<br><br>
+    G&uuml;ltige ausgelesene Daten (readings) und ihre Bedeutung (das ? kann einen der Werte 1, 2, 3 , 4 oder 5 annehmen und steht f&uuml;r heute, morgen, &uuml;bermorgen etc.):<br><br>
     <table>
-    <tr><td>city</td><td>Name der Stadt, der aufgrund der WOEID übermittelt wird</td></tr>
-    <tr><td>code</td><td>Code für die aktuellen Wetterverhältnisse</td></tr>
-    <tr><td>condition</td><td>aktuelle Wetterverhältnisse</td></tr>
+    <tr><td>.licens</td><td>Zeigt die Lizense des entsprechenden API Anbieters an, sofern vorhanden</td></tr>
+    <tr><td>city</td><td>Name der Stadt, der aufgrund der location &uuml;bermittelt wird</td></tr>
+    <tr><td>code</td><td>Code f&uuml;r die aktuellen Wetterverh&auml;ltnisse</td></tr>
+    <tr><td>condition</td><td>aktuelle Wetterverh&auml;ltnisse</td></tr>
     <tr><td>current_date_time</td><td>Zeitstempel der letzten Aktualisierung der Wetterdaten vom Server</td></tr>
-    <tr><td>fc?_code</td><td>Code für die vorhergesagten Wetterverhältnisse</td></tr>
-    <tr><td>fc?_condition</td><td>vorhergesagte Wetterverhältnisse</td></tr>
+    <tr><td>fc?_code</td><td>Code f&uuml;r die vorhergesagten Wetterverh&auml;ltnisse</td></tr>
+    <tr><td>fc?_condition</td><td>vorhergesagte Wetterverh&auml;ltnisse</td></tr>
     <tr><td>fc?_day_of_week</td><td>Wochentag des Tages, der durch ? dargestellt wird</td></tr>
     <tr><td>fc?_high_c</td><td>vorhergesagte maximale Tagestemperatur in Grad Celsius</td></tr>
-    <tr><td>fc?_icon</td><td>Icon für Vorhersage</td></tr>
+    <tr><td>fc?_icon</td><td>Icon f&uuml;r Vorhersage</td></tr>
     <tr><td>fc?_low_c</td><td>vorhergesagte niedrigste Tagestemperatur in Grad Celsius</td></tr>
-    <tr><td>humidity</td><td>gegenwärtige Luftfeuchtgkeit in %</td></tr>
-    <tr><td>icon</td><td>relativer Pfad für das aktuelle Icon</td></tr>
+    <tr><td>humidity</td><td>gegenw&auml;rtige Luftfeuchtgkeit in %</td></tr>
+    <tr><td>icon</td><td>relativer Pfad f&uuml;r das aktuelle Icon</td></tr>
     <tr><td>pressure</td><td>Luftdruck in hPa</td></tr>
-    <tr><td>pressure_trend</td><td>Luftdrucktendenz (0= gleichbleibend, 1= steigend, 2= fallend)</td></tr>
-    <tr><td>pressure_trend_txt</td><td>textliche Darstellung der Luftdrucktendenz</td></tr>
-    <tr><td>pressure_trend_sym</td><td>symbolische Darstellung der Luftdrucktendenz</td></tr>
-    <tr><td>temperature</td><td>gegenwärtige Temperatur in Grad Celsius</td></tr>
-    <tr><td>temp_c</td><td>gegenwärtige Temperatur in Grad Celsius</td></tr>
-    <tr><td>temp_f</td><td>gegenwärtige Temperatur in Grad Celsius</td></tr>
+    <tr><td>temperature</td><td>gegenw&auml;rtige Temperatur in Grad Celsius</td></tr>
+    <tr><td>temp_c</td><td>gegenw&auml;rtige Temperatur in Grad Celsius</td></tr>
+    <tr><td>temp_f</td><td>gegenw&auml;rtige Temperatur in Grad Celsius</td></tr>
     <tr><td>visibility</td><td>Sichtweite in km</td></tr>
     <tr><td>wind</td><td>Windgeschwindigkeit in km/h</td></tr>
-    <tr><td>wind_chill</td><td>gefühlte Temperatur in Grad Celsius</td></tr>
     <tr><td>wind_condition</td><td>Windrichtung und -geschwindigkeit</td></tr>
     <tr><td>wind_direction</td><td>Gradangabe der Windrichtung (0 = Nordwind)</td></tr>
     <tr><td>wind_speed</td><td>Windgeschwindigkeit in km/h (mit wind identisch)</td></tr>
-    </table>
-    <br>
-    Die folgenden Daten helfen zu identifizieren, ob ein Workaround angeschlagen hat, der die Verwendung von
-    veralteten Daten auf dem entfernten Server verhindert:
-    <table>
-    <tr><td>pubDate</td><td>Ver&ouml;ffentlichungszeitpunkt der Wettervorhersage in den aktuellen Daten (readings)</td></tr>
-    <tr><td>pubDateRemote</td><td>Ver&ouml;ffentlichungszeitpunkt der Wettervorhersage auf dem entfernten Server</td></tr>
     <tr><td>validity</td><td>stale, wenn der Ver&ouml;ffentlichungszeitpunkt auf dem entfernten Server vor dem Zeitpunkt der aktuellen Daten (readings) liegt</td></tr>
     </table>
-
+    <br>
+    Je nach verwendeter API ist es durchaus m&ouml;glich das weitere Readings geschrieben werden. Die Bedeutung dieser Readings kann man der API Beschreibung des Anbieters entnehmen.
   </ul>
   <br>
 
