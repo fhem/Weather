@@ -273,6 +273,7 @@ sub _ProcessingRetrieveData($$) {
                                     $data->{daily}->{data}->[$i]->{'time'}
                                 )
                             ),
+                            'day_of_week' => strftime("%a",localtime($data->{daily}->{data}->[$i]->{'time'})),
                             'low_c' => int(
                                 sprintf( "%.1f",
                                     $data->{daily}->{data}->[$i]

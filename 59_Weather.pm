@@ -405,8 +405,8 @@ sub Weather_WriteReadings($$) {
                     readingsBulkUpdate($hash, $f.$r, $v)
                     if ( ref($dataRef->{$r}) ne 'HASH' and ref($dataRef->{$r}) ne 'ARRAY' );
                 }
-        #         readingsBulkUpdate($hash, $f . "day_of_week", $wdays_txt_i18n{$fc->{day}});
                 readingsBulkUpdate($hash, $f . 'icon',  $iconlist[$dataRef->{forecast}->{hourly}[$i-1]{code}]);
+                
                 if (  defined($dataRef->{forecast}->{hourly}[$i-1]{wind_direction})
                   and $dataRef->{forecast}->{hourly}[$i-1]{wind_direction}
                   and defined($dataRef->{forecast}->{hourly}[$i-1]{wind_speed})
@@ -416,7 +416,6 @@ sub Weather_WriteReadings($$) {
                     my $wdir= degrees_to_direction($dataRef->{forecast}->{hourly}[$i-1]{wind_direction}, @directions_txt_i18n);
                     readingsBulkUpdate($hash, $f . 'wind_condition', 'Wind: ' . $wdir . ' ' . $dataRef->{forecast}->{hourly}[$i-1]{wind_speed} . ' km/h');
                 }
-                readingsBulkUpdate($hash, $f . 'day_of_week', ( length((split(',', $dataRef->{forecast}->{hourly}[$i-1]{pubDate}))[0]) > 2 ? $wdays_txt_i18n{substr($dataRef->{forecast}->{hourly}[$i-1]{pubDate},0,3)} : substr($dataRef->{forecast}->{hourly}[$i-1]{pubDate},0,2) ) );
             }
         }
         
@@ -433,8 +432,8 @@ sub Weather_WriteReadings($$) {
                     readingsBulkUpdate($hash, $f.$r, $v)
                     if ( ref($dataRef->{$r}) ne 'HASH' and ref($dataRef->{$r}) ne 'ARRAY' );
                 }
-        #         readingsBulkUpdate($hash, $f . "day_of_week", $wdays_txt_i18n{$fc->{day}});
                 readingsBulkUpdate($hash, $f . 'icon',  $iconlist[$dataRef->{forecast}->{daily}[$i-1]{code}]);
+                
                 if (  defined($dataRef->{forecast}->{daily}[$i-1]{wind_direction})
                   and $dataRef->{forecast}->{daily}[$i-1]{wind_direction}
                   and defined($dataRef->{forecast}->{daily}[$i-1]{wind_speed})
@@ -444,7 +443,6 @@ sub Weather_WriteReadings($$) {
                     my $wdir= degrees_to_direction($dataRef->{forecast}->{daily}[$i-1]{wind_direction}, @directions_txt_i18n);
                     readingsBulkUpdate($hash, $f . 'wind_condition', 'Wind: ' . $wdir . ' ' . $dataRef->{forecast}->{daily}[$i-1]{wind_speed} . ' km/h');
                 }
-                readingsBulkUpdate($hash, $f . 'day_of_week', ( length((split(',', $dataRef->{forecast}->{daily}[$i-1]{pubDate}))[0]) > 2 ? $wdays_txt_i18n{substr($dataRef->{forecast}->{daily}[$i-1]{pubDate},0,3)} : substr($dataRef->{forecast}->{daily}[$i-1]{pubDate},0,2) ) );
             }
         }
     }
@@ -678,7 +676,7 @@ sub WeatherAsHtmlV($;$)
 
   my ($d,$items) = @_;
   $d = "<none>" if(!$d);
-  $items = 10 if( !$items );
+  $items = 9 if( !$items );
   return "$d is not a Weather instance<br>"
         if(!$defs{$d} || $defs{$d}->{TYPE} ne "Weather");
 

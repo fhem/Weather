@@ -340,6 +340,7 @@ sub _ProcessingRetrieveData($$) {
                                         ( $data->{list}->[$i]->{dt} ) - 3600
                                     )
                                 ),
+                                'day_of_week' => strftime("%a",localtime(( $data->{list}->[$i]->{dt} ) - 3600)),
                                 'temperature' => int(
                                     sprintf(
                                         "%.1f",
