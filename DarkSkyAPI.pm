@@ -74,9 +74,11 @@ sub new {
         ),
         cachemaxage => (
             ( defined( $argsRef->{apioptions} ) and $argsRef->{apioptions} )
-            ? ( ( split( ':', $argsRef->{apioptions} ) )[0] eq 'cachemaxage'
+            ? (
+                  ( split( ':', $argsRef->{apioptions} ) )[0] eq 'cachemaxage'
                 ? ( split( ':', $argsRef->{apioptions} ) )[1]
-                : 900 )
+                : 900
+              )
             : 900
         ),
         lang      => $argsRef->{language},
@@ -273,7 +275,12 @@ sub _ProcessingRetrieveData($$) {
                                     $data->{daily}->{data}->[$i]->{'time'}
                                 )
                             ),
-                            'day_of_week' => strftime("%a",localtime($data->{daily}->{data}->[$i]->{'time'})),
+                            'day_of_week' => strftime(
+                                "%a",
+                                localtime(
+                                    $data->{daily}->{data}->[$i]->{'time'}
+                                )
+                            ),
                             'low_c' => int(
                                 sprintf( "%.1f",
                                     $data->{daily}->{data}->[$i]
