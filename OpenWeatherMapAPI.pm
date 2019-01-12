@@ -45,7 +45,7 @@ eval "use JSON;1"
   "JSON ";    # apt-get install libperl-JSON on Debian and derivatives
 eval "use Encode qw(encode_utf8);1" or $missingModul .= "Encode ";
 
-use Data::Dumper;    # for Debug only
+# use Data::Dumper;    # for Debug only
 ## API URL
 use constant URL => 'https://api.openweathermap.org/data/2.5/';
 ## URL . 'weather?' for current data
