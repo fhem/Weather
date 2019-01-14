@@ -236,7 +236,7 @@ sub _ProcessingRetrieveData($$) {
                     ),
                     'wind_direction' => $data->{currently}->{windBearing},
                     'windGust'       => int(
-                        sprintf( "%.1f", $data->{currently}->{windGust} ) + 0.5
+                        sprintf( "%.1f", ($data->{currently}->{windGust} * 3.6) ) + 0.5
                     ),
                     'cloudCover' => $data->{currently}->{cloudCover} * 100,
                     'uvIndex'    => $data->{currently}->{uvIndex},
@@ -441,7 +441,7 @@ sub _ProcessingRetrieveData($$) {
                                 ),
                                 'windGust' => int(
                                     sprintf( "%.1f",
-                                        $data->{daily}->{data}->[$i]->{windGust} )
+                                        ($data->{daily}->{data}->[$i]->{windGust} * 3.6) )
                                     + 0.5
                                 ),
                                 'windGustTime' => strftime(
@@ -526,15 +526,23 @@ sub _ProcessingRetrieveData($$) {
                                     $data->{hourly}->{data}->[$i]->{cloudCover} * 100,
                                     'precipType' =>
                                     $data->{hourly}->{data}->[$i]->{precipType},
-
                                     'wind_direction' =>
                                     $data->{hourly}->{data}->[$i]->{windBearing},
-                                    'wind' => sprintf( "%.1f",
-                                            ($data->{hourly}->{data}->[$i]->{windSpeed} * 3.6) ),
-                                    'wind_speed' => sprintf( "%.1f",
-                                            ($data->{hourly}->{data}->[$i]->{windSpeed} * 3.6) ),
-                                    'windGust' => sprintf( "%.1f",
-                                            $data->{hourly}->{data}->[$i]->{windGust} ),
+                                    'wind' => int(
+                                        sprintf( "%.1f",
+                                            ($data->{hourly}->{data}->[$i]->{windSpeed} * 3.6) )
+                                        + 0.5
+                                    ),
+                                    'wind_speed' => int(
+                                        sprintf( "%.1f",
+                                            ($data->{hourly}->{data}->[$i]->{windSpeed} * 3.6) )
+                                        + 0.5
+                                    ),
+                                    'windGust' => int(
+                                        sprintf( "%.1f",
+                                            ($data->{hourly}->{data}->[$i]->{windGust} * 3.6) )
+                                        + 0.5
+                                    ),
                                     'precipProbability' =>
                                     $data->{hourly}->{data}->[$i]->{precipProbability},
                                     'pressure' => sprintf( "%.1f",
