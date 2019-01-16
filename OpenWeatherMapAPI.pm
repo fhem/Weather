@@ -271,43 +271,29 @@ sub _ProcessingRetrieveData($$) {
                     $self->{cached}->{city}          = $data->{name};
                     $self->{cached}->{license}{text} = 'none';
                     $self->{cached}->{current}       = {
-                        'temperature' => int(
-                            sprintf( "%.1f", ( $data->{main}->{temp} - 273.15 ) ) +
-                            0.5
-                        ),
-                        'temp_c' => int(
-                            sprintf( "%.1f", ( $data->{main}->{temp} - 273.15 ) ) +
-                            0.5
-                        ),
-                        'low_c' => int(
-                            sprintf( "%.1f",
-                                ( $data->{main}->{temp_min} - 273.15 ) ) + 0.5
-                        ),
-                        'high_c' => int(
-                            sprintf( "%.1f",
-                                ( $data->{main}->{temp_max} - 273.15 ) ) + 0.5
-                        ),
-                        'tempLow' => int(
-                            sprintf( "%.1f",
-                                ( $data->{main}->{temp_min} - 273.15 ) ) + 0.5
-                        ),
-                        'tempHigh' => int(
-                            sprintf( "%.1f",
-                                ( $data->{main}->{temp_max} - 273.15 ) ) + 0.5
-                        ),
+                        'temperature' => sprintf( "%.1f", ( $data->{main}->{temp} - 273.15 ) ) ,
+                        'temp_c' => sprintf( "%.1f", ( $data->{main}->{temp} - 273.15 ) ) ,
+                        'low_c' => sprintf( "%.1f",
+                                ( $data->{main}->{temp_min} - 273.15 ) ) ,
+                        'high_c' => sprintf( "%.1f",
+                                ( $data->{main}->{temp_max} - 273.15 ) ) ,
+                        'tempLow' => sprintf( "%.1f",
+                                ( $data->{main}->{temp_min} - 273.15 ) ) ,
+                        'tempHigh' => sprintf( "%.1f",
+                                ( $data->{main}->{temp_max} - 273.15 ) ) ,
                         'humidity' => $data->{main}->{humidity},
                         'condition' =>
                         encode_utf8( $data->{weather}->[0]->{description} ),
                         'pressure' =>
-                        int( sprintf( "%.1f", $data->{main}->{pressure} ) + 0.5 ),
+                        sprintf( "%.1f", $data->{main}->{pressure} ) ,
                         'wind' =>
-                        int( sprintf( "%.1f", ($data->{wind}->{speed} * 3.6) ) + 0.5 ),
+                        sprintf( "%.1f", ($data->{wind}->{speed} * 3.6) ) ,
                         'wind_speed' =>
-                        int( sprintf( "%.1f", ($data->{wind}->{speed} * 3.6) ) + 0.5 ),
+                        sprintf( "%.1f", ($data->{wind}->{speed} * 3.6) ) ,
                         'wind_direction' => $data->{wind}->{deg},
                         'cloudCover'     => $data->{clouds}->{all},
                         'visibility' =>
-                        int( sprintf( "%.1f", $data->{visibility} ) + 0.5 ),
+                        sprintf( "%.1f", $data->{visibility} ) ,
                         'code'       => $codes{ $data->{weather}->[0]->{id} },
                         'iconAPI'    => $data->{weather}->[0]->{icon},
                         'sunsetTime' => strftime(
@@ -322,6 +308,7 @@ sub _ProcessingRetrieveData($$) {
                             "%a, %e %b %Y %H:%M",
                             localtime( $data->{dt} )
                         ),
+                        'TimeStamp' => $data->{dt} ,
                     };
                 }
 
@@ -343,87 +330,68 @@ sub _ProcessingRetrieveData($$) {
                                             ( $data->{list}->[$i]->{dt} ) - 3600
                                         )
                                     ),
+								                    'TimeStamp' => $data->{list}->[$i]->{dt} ,
                                     'day_of_week' => strftime(
                                         "%a, %H:%M",
                                         localtime(
                                             ( $data->{list}->[$i]->{dt} ) - 3600
                                         )
                                     ),
-                                    'temperature' => int(
-                                        sprintf(
+                                    'temperature' => sprintf(
                                             "%.1f",
                                             (
                                                 $data->{list}->[$i]->{main}->{temp}
                                                 - 273.15
                                             )
-                                        ) + 0.5
-                                    ),
-                                    'temp_c' => int(
-                                        sprintf(
+                                        ) ,
+                                    'temp_c' => sprintf(
                                             "%.1f",
                                             (
                                                 $data->{list}->[$i]->{main}->{temp}
                                                 - 273.15
                                             )
-                                        ) + 0.5
-                                    ),
-                                    'low_c' => int(
-                                        sprintf(
+                                        ) ,
+                                    'low_c' => sprintf(
                                             "%.1f",
                                             (
                                                 $data->{list}->[$i]->{main}
                                                 ->{temp_min} - 273.15
                                             )
-                                        ) + 0.5
-                                    ),
-                                    'high_c' => int(
-                                        sprintf(
+                                        ) ,
+                                    'high_c' => sprintf(
                                             "%.1f",
                                             (
                                                 $data->{list}->[$i]->{main}
                                                 ->{temp_max} - 273.15
                                             )
-                                        ) + 0.5
-                                    ),
-                                    'tempLow' => int(
-                                        sprintf(
+                                        ) ,
+                                    'tempLow' => sprintf(
                                             "%.1f",
                                             (
                                                 $data->{list}->[$i]->{main}
                                                 ->{temp_min} - 273.15
                                             )
-                                        ) + 0.5
-                                    ),
-                                    'tempHigh' => int(
-                                        sprintf(
+                                        ) ,
+                                    'tempHigh' => sprintf(
                                             "%.1f",
                                             (
                                                 $data->{list}->[$i]->{main}
                                                 ->{temp_max} - 273.15
                                             )
-                                        ) + 0.5
-                                    ),
+                                        ) ,
                                     'humidity' =>
                                         $data->{list}->[$i]->{main}->{humidity},
                                     'condition' => encode_utf8(
                                         $data->{list}->[$i]->{weather}->[0]
                                         ->{description}
                                     ),
-                                    'pressure' => int(
-                                        sprintf( "%.1f",
+                                    'pressure' => sprintf( "%.1f",
                                             $data->{list}->[$i]->{main}->{pressure}
-                                        ) + 0.5
-                                    ),
-                                    'wind' => int(
-                                        sprintf( "%.1f",
-                                            ($data->{list}->[$i]->{wind}->{speed} * 3.6) )
-                                        + 0.5
-                                    ),
-                                    'wind_speed' => int(
-                                        sprintf( "%.1f",
-                                            ($data->{list}->[$i]->{wind}->{speed} * 3.6) )
-                                        + 0.5
-                                    ),
+                                        ) ,
+                                    'wind' => sprintf( "%.1f",
+                                            ($data->{list}->[$i]->{wind}->{speed} * 3.6) ) ,
+                                    'wind_speed' => sprintf( "%.1f",
+                                            ($data->{list}->[$i]->{wind}->{speed} * 3.6) ) ,
                                     'cloudCover' =>
                                         $data->{list}->[$i]->{clouds}->{all},
                                     'code' =>
