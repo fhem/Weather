@@ -60,6 +60,21 @@ my %codes = (
     'thunderstorm'        => 4,
     'tornado'             => 0,
 );
+my %codes_day = (
+    'clear-day'           => 32,
+    'clear-night'         => 32,
+    'rain'                => 11,
+    'snow'                => 16,
+    'sleet'               => 18,
+    'wind'                => 24,
+    'fog'                 => 20,
+    'cloudy'              => 26,
+    'partly-cloudy-day'   => 30,
+    'partly-cloudy-night' => 30,
+    'hail'                => 17,
+    'thunderstorm'        => 4,
+    'tornado'             => 0,
+);
 
 sub new {
     ### geliefert wird ein Hash
@@ -214,35 +229,19 @@ sub _ProcessingRetrieveData($$) {
                 $self->{cached}->{license}{text} =
                 $data->{flags}->{'meteoalarm-license'};
                 $self->{cached}->{current} = {
-                    'temperature' => int(
-                        sprintf( "%.1f", $data->{currently}->{temperature} ) + 0.5
-                    ),
-                    'temp_c' => int(
-                        sprintf( "%.1f", $data->{currently}->{temperature} ) + 0.5
-                    ),
-                    'dewPoint' => int(
-                        sprintf( "%.1f", $data->{currently}->{dewPoint} ) + 0.5
-                    ),
+                    'temperature' => sprintf( "%.1f", $data->{currently}->{temperature} ) ,
+                    'temp_c' => sprintf( "%.1f", $data->{currently}->{temperature} ) ,
+                    'dewPoint' => sprintf( "%.1f", $data->{currently}->{dewPoint} ) ,
                     'humidity'  => $data->{currently}->{humidity} * 100,
                     'condition' => encode_utf8( $data->{currently}->{summary} ),
-                    'pressure'  => int(
-                        sprintf( "%.1f", $data->{currently}->{pressure} ) + 0.5
-                    ),
-                    'wind' => int(
-                        sprintf( "%.1f", ($data->{currently}->{windSpeed} * 3.6) ) + 0.5
-                    ),
-                    'wind_speed' => int(
-                        sprintf( "%.1f", ($data->{currently}->{windSpeed} * 3.6) ) + 0.5
-                    ),
+                    'pressure'  => sprintf( "%.1f", $data->{currently}->{pressure} ) ,
+                    'wind' => sprintf( "%.1f", ($data->{currently}->{windSpeed} * 3.6) ) ,
+                    'wind_speed' => sprintf( "%.1f", ($data->{currently}->{windSpeed} * 3.6) ) ,
                     'wind_direction' => $data->{currently}->{windBearing},
-                    'windGust'       => int(
-                        sprintf( "%.1f", ($data->{currently}->{windGust} * 3.6) ) + 0.5
-                    ),
+                    'windGust'       => sprintf( "%.1f", ($data->{currently}->{windGust} * 3.6) ) ,
                     'cloudCover' => $data->{currently}->{cloudCover} * 100,
                     'uvIndex'    => $data->{currently}->{uvIndex},
-                    'visibility' => int(
-                        sprintf( "%.1f", $data->{currently}->{visibility} ) + 0.5
-                    ),
+                    'visibility' => sprintf( "%.1f", $data->{currently}->{visibility} ) ,
                     'ozone'   => $data->{currently}->{ozone},
                     'code'    => $codes{ $data->{currently}->{icon} },
                     'iconAPI' => $data->{currently}->{icon},
@@ -250,12 +249,11 @@ sub _ProcessingRetrieveData($$) {
                         "%a, %e %b %Y %H:%M",
                         localtime( $data->{currently}->{'time'} )
                     ),
+				            'TimeStamp' => $data->{currently}->{'time'} ,
                     'precipProbability' => $data->{currently}->{precipProbability},
-                    'apparentTemperature' => int(
-                        sprintf(
+                    'apparentTemperature' => sprintf(
                             "%.1f", $data->{currently}->{apparentTemperature}
-                        ) + 0.5
-                    ),
+                        ) ,
                     'precipIntensity' => $data->{currently}->{precipIntensity},
                 };
 
@@ -276,27 +274,22 @@ sub _ProcessingRetrieveData($$) {
                                         $data->{daily}->{data}->[$i]->{'time'}
                                     )
                                 ),
+							                  'TimeStamp' => $data->{daily}->{data}->[$i]->{'time'} ,
                                 'day_of_week' => strftime(
                                     "%a",
                                     localtime(
                                         $data->{daily}->{data}->[$i]->{'time'}
                                     )
                                 ),
-                                'low_c' => int(
-                                    sprintf( "%.1f",
+                                'low_c' => sprintf( "%.1f",
                                         $data->{daily}->{data}->[$i]
-                                        ->{temperatureLow} ) + 0.5
-                                ),
-                                'high_c' => int(
-                                    sprintf( "%.1f",
+                                        ->{temperatureLow} ) ,
+                                'high_c' => sprintf( "%.1f",
                                         $data->{daily}->{data}->[$i]
-                                        ->{temperatureHigh} ) + 0.5
-                                ),
-                                'tempLow' => int(
-                                    sprintf( "%.1f",
+                                        ->{temperatureHigh} ) ,
+                                'tempLow' => sprintf( "%.1f",
                                         $data->{daily}->{data}->[$i]
-                                        ->{temperatureLow} ) + 0.5
-                                ),
+                                        ->{temperatureLow} ) ,
                                 'tempLowTime' => strftime(
                                     "%a, %e %b %Y %H:%M",
                                     localtime(
@@ -304,11 +297,9 @@ sub _ProcessingRetrieveData($$) {
                                         ->{temperatureLowTime}
                                     )
                                 ),
-                                'tempHigh' => int(
-                                    sprintf( "%.1f",
+                                'tempHigh' => sprintf( "%.1f",
                                         $data->{daily}->{data}->[$i]
-                                        ->{temperatureHigh} ) + 0.5
-                                ),
+                                        ->{temperatureHigh} ) ,
                                 'tempHighTime' => strftime(
                                     "%a, %e %b %Y %H:%M",
                                     localtime(
@@ -316,11 +307,9 @@ sub _ProcessingRetrieveData($$) {
                                         ->{temperatureHighTime}
                                     )
                                 ),
-                                'apparentTempLow' => int(
-                                    sprintf( "%.1f",
+                                'apparentTempLow' => sprintf( "%.1f",
                                         $data->{daily}->{data}->[$i]
-                                        ->{apparentTemperatureLow} ) + 0.5
-                                ),
+                                        ->{apparentTemperatureLow} ) ,
                                 'apparentTempLowTime' => strftime(
                                     "%a, %e %b %Y %H:%M",
                                     localtime(
@@ -328,11 +317,9 @@ sub _ProcessingRetrieveData($$) {
                                         ->{apparentTemperatureLowTime}
                                     )
                                 ),
-                                'apparentTempHigh' => int(
-                                    sprintf( "%.1f",
+                                'apparentTempHigh' => sprintf( "%.1f",
                                         $data->{daily}->{data}->[$i]
-                                        ->{apparentTemperatureHigh} ) + 0.5
-                                ),
+                                        ->{apparentTemperatureHigh} ) ,
                                 'apparentTempHighTime' => strftime(
                                     "%a, %e %b %Y %H:%M",
                                     localtime(
@@ -340,8 +327,7 @@ sub _ProcessingRetrieveData($$) {
                                         ->{apparentTemperatureHighTime}
                                     )
                                 ),
-                                'code' =>
-                                $codes{ $data->{daily}->{data}->[$i]->{icon} },
+                                'code' => $codes_day{ $data->{daily}->{data}->[$i]->{icon} },
                                 'iconAPI'   => $data->{daily}->{data}->[$i]->{icon},
                                 'condition' => encode_utf8(
                                     $data->{daily}->{data}->[$i]->{summary}
@@ -367,11 +353,8 @@ sub _ProcessingRetrieveData($$) {
                                         ->{precipIntensityMaxTime}
                                     )
                                 ),
-                                'dewPoint' => int(
-                                    sprintf( "%.1f",
-                                        $data->{daily}->{data}->[$i]->{dewPoint} )
-                                    + 0.5
-                                ),
+                                'dewPoint' => sprintf( "%.1f",
+                                        $data->{daily}->{data}->[$i]->{dewPoint} ) ,
                                 'humidity' =>
                                 $data->{daily}->{data}->[$i]->{humidity} * 100,
                                 'cloudCover' =>
@@ -381,21 +364,12 @@ sub _ProcessingRetrieveData($$) {
 
                                 'wind_direction' =>
                                 $data->{daily}->{data}->[$i]->{windBearing},
-                                'wind' => int(
-                                    sprintf( "%.1f",
-                                        ($data->{daily}->{data}->[$i]->{windSpeed} * 3.6) )
-                                    + 0.5
-                                ),
-                                'wind_speed' => int(
-                                    sprintf( "%.1f",
-                                        ($data->{daily}->{data}->[$i]->{windSpeed} * 3.6) )
-                                    + 0.5
-                                ),
-                                'windGust' => int(
-                                    sprintf( "%.1f",
-                                        ($data->{daily}->{data}->[$i]->{windGust} * 3.6) )
-                                    + 0.5
-                                ),
+                                'wind' => sprintf( "%.1f",
+                                        ($data->{daily}->{data}->[$i]->{windSpeed} * 3.6) ) ,
+                                'wind_speed' => sprintf( "%.1f",
+                                        ($data->{daily}->{data}->[$i]->{windSpeed} * 3.6) ) ,
+                                'windGust' => sprintf( "%.1f",
+                                        ($data->{daily}->{data}->[$i]->{windGust} * 3.6) ) ,
                                 'windGustTime' => strftime(
                                     "%a, %e %b %Y %H:%M",
                                     localtime(
@@ -419,11 +393,8 @@ sub _ProcessingRetrieveData($$) {
 
                                 'precipProbability' =>
                                 $data->{daily}->{data}->[$i]->{precipProbability},
-                                'pressure' => int(
-                                    sprintf( "%.1f",
-                                        $data->{daily}->{data}->[$i]->{pressure} )
-                                    + 0.5
-                                ),
+                                'pressure' => sprintf( "%.1f",
+                                        $data->{daily}->{data}->[$i]->{pressure} ) ,
                                 'visibility' => int(
                                     sprintf( "%.1f",
                                         $data->{daily}->{data}->[$i]->{visibility} )
@@ -452,6 +423,7 @@ sub _ProcessingRetrieveData($$) {
                                             $data->{hourly}->{data}->[$i]->{'time'}
                                         )
                                     ),
+							                      'TimeStamp' => $data->{hourly}->{data}->[$i]->{'time'} ,
                                     'day_of_week' => strftime(
                                         "%a, %H:%M",
                                         localtime(
@@ -480,21 +452,12 @@ sub _ProcessingRetrieveData($$) {
                                     $data->{hourly}->{data}->[$i]->{precipType},
                                     'wind_direction' =>
                                     $data->{hourly}->{data}->[$i]->{windBearing},
-                                    'wind' => int(
-                                        sprintf( "%.1f",
-                                            ($data->{hourly}->{data}->[$i]->{windSpeed} * 3.6) )
-                                        + 0.5
-                                    ),
-                                    'wind_speed' => int(
-                                        sprintf( "%.1f",
-                                            ($data->{hourly}->{data}->[$i]->{windSpeed} * 3.6) )
-                                        + 0.5
-                                    ),
-                                    'windGust' => int(
-                                        sprintf( "%.1f",
-                                            ($data->{hourly}->{data}->[$i]->{windGust} * 3.6) )
-                                        + 0.5
-                                    ),
+                                    'wind' => sprintf( "%.1f",
+                                            ($data->{hourly}->{data}->[$i]->{windSpeed} * 3.6) ) ,
+                                    'wind_speed' => sprintf( "%.1f",
+                                            ($data->{hourly}->{data}->[$i]->{windSpeed} * 3.6) ) ,
+                                    'windGust' => sprintf( "%.1f",
+                                            ($data->{hourly}->{data}->[$i]->{windGust} * 3.6) ) ,
                                     'precipProbability' =>
                                     $data->{hourly}->{data}->[$i]->{precipProbability},
                                     'pressure' => sprintf( "%.1f",
