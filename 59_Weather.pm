@@ -137,8 +137,8 @@ sub Weather_Initialize($) {
     $hash->{SetFn}      = 'Weather_Set';
     $hash->{AttrList}   = 
           'disable:0,1 '
-        . 'forecast:hourly,daily,any,off '
-        . 'forecastLimit: '
+        . 'forecast:hourly,daily,every,off '
+        . 'forecastLimit '
         . $readingFnAttributes;
     $hash->{NotifyFn}= 'Weather_Notify';
 
@@ -226,61 +226,75 @@ sub Weather_WriteReadings($$) {
     }
 
     ### forecast
-    if ( ref( $dataRef->{forecast} ) eq 'HASH' ) {
-        ## hourly
-        if (  defined($dataRef->{forecast}->{hourly})
-          and ref( $dataRef->{forecast}->{hourly} ) eq 'ARRAY'
-          and scalar( @{ $dataRef->{forecast}->{hourly} } ) > 0 )
-        {
-            my $i= 0;
-            foreach my $fc (@{$dataRef->{forecast}->{hourly}}) {
-                $i++;
-                my $f= "hfc" . $i ."_";
+    if (  ref( $dataRef->{forecast} ) eq 'HASH'
+      and AttrVal($name, 'forecast', 'every') ne 'off' ) {
+            ## hourly
+            if (  defined($dataRef->{forecast}->{hourly})
+              and ref( $dataRef->{forecast}->{hourly} ) eq 'ARRAY'
+              and scalar( @{ $dataRef->{forecast}->{hourly} } ) > 0
+              and (AttrVal($name, 'forecast', 'every') eq 'every'
+                or AttrVal($name, 'forecast', 'hourly') eq 'hourly')
+              )
+            {
+                my $i= 0;
+                my $limit = AttrVal($name,'forecastLimit',-1);
+                foreach my $fc (@{$dataRef->{forecast}->{hourly}}) {
+                    $i++;
+                    my $f= "hfc" . $i ."_";
 
-                while( my ($r,$v) = each %{$fc} ) {
-                    readingsBulkUpdate($hash, $f.$r, $v)
-                    if ( ref($dataRef->{$r}) ne 'HASH' and ref($dataRef->{$r}) ne 'ARRAY' );
-                }
-                readingsBulkUpdate($hash, $f . 'icon',  $iconlist[$dataRef->{forecast}->{hourly}[$i-1]{code}]);
+                    while( my ($r,$v) = each %{$fc} ) {
+                        readingsBulkUpdate($hash, $f.$r, $v)
+                        if ( ref($dataRef->{$r}) ne 'HASH' and ref($dataRef->{$r}) ne 'ARRAY' );
+                    }
+                    readingsBulkUpdate($hash, $f . 'icon',  $iconlist[$dataRef->{forecast}->{hourly}[$i-1]{code}]);
 
-                if (  defined($dataRef->{forecast}->{hourly}[$i-1]{wind_direction})
-                  and $dataRef->{forecast}->{hourly}[$i-1]{wind_direction}
-                  and defined($dataRef->{forecast}->{hourly}[$i-1]{wind_speed})
-                  and $dataRef->{forecast}->{hourly}[$i-1]{wind_speed}
-                  )
-                {
-                    my $wdir= degrees_to_direction($dataRef->{forecast}->{hourly}[$i-1]{wind_direction}, @directions_txt_i18n);
-                    readingsBulkUpdate($hash, $f . 'wind_condition', 'Wind: ' . $wdir . ' ' . $dataRef->{forecast}->{hourly}[$i-1]{wind_speed} . ' km/h');
-                }
-            }
-        }
-
-        ## daily
-        if (  defined($dataRef->{forecast}->{daily}) and ref( $dataRef->{forecast}->{daily} ) eq 'ARRAY'
-          and scalar( @{ $dataRef->{forecast}->{daily} } ) > 0 )
-        {
-            my $i= 0;
-            foreach my $fc (@{$dataRef->{forecast}->{daily}}) {
-                $i++;
-                my $f= "fc" . $i ."_";
-
-                while( my ($r,$v) = each %{$fc} ) {
-                    readingsBulkUpdate($hash, $f.$r, $v)
-                    if ( ref($dataRef->{$r}) ne 'HASH' and ref($dataRef->{$r}) ne 'ARRAY' );
-                }
-                readingsBulkUpdate($hash, $f . 'icon',  $iconlist[$dataRef->{forecast}->{daily}[$i-1]{code}]);
-
-                if (  defined($dataRef->{forecast}->{daily}[$i-1]{wind_direction})
-                  and $dataRef->{forecast}->{daily}[$i-1]{wind_direction}
-                  and defined($dataRef->{forecast}->{daily}[$i-1]{wind_speed})
-                  and $dataRef->{forecast}->{daily}[$i-1]{wind_speed}
-                  )
-                {
-                    my $wdir= degrees_to_direction($dataRef->{forecast}->{daily}[$i-1]{wind_direction}, @directions_txt_i18n);
-                    readingsBulkUpdate($hash, $f . 'wind_condition', 'Wind: ' . $wdir . ' ' . $dataRef->{forecast}->{daily}[$i-1]{wind_speed} . ' km/h');
+                    if (  defined($dataRef->{forecast}->{hourly}[$i-1]{wind_direction})
+                    and $dataRef->{forecast}->{hourly}[$i-1]{wind_direction}
+                    and defined($dataRef->{forecast}->{hourly}[$i-1]{wind_speed})
+                    and $dataRef->{forecast}->{hourly}[$i-1]{wind_speed}
+                    )
+                    {
+                        my $wdir= degrees_to_direction($dataRef->{forecast}->{hourly}[$i-1]{wind_direction}, @directions_txt_i18n);
+                        readingsBulkUpdate($hash, $f . 'wind_condition', 'Wind: ' . $wdir . ' ' . $dataRef->{forecast}->{hourly}[$i-1]{wind_speed} . ' km/h');
+                    }
+                    
+                    last if ( $i == $limit and $limit > 0 );
                 }
             }
-        }
+
+            ## daily
+            if (  defined($dataRef->{forecast}->{daily})
+              and ref( $dataRef->{forecast}->{daily} ) eq 'ARRAY'
+              and scalar( @{ $dataRef->{forecast}->{daily} } ) > 0
+              and (AttrVal($name, 'forecast', 'every') eq 'every'
+                or AttrVal($name, 'forecast', 'daily') eq 'daily')
+              )
+            {
+                my $i= 0;
+                my $limit = AttrVal($name,'forecastLimit',-1);
+                foreach my $fc (@{$dataRef->{forecast}->{daily}}) {
+                    $i++;
+                    my $f= "fc" . $i ."_";
+
+                    while( my ($r,$v) = each %{$fc} ) {
+                        readingsBulkUpdate($hash, $f.$r, $v)
+                        if ( ref($dataRef->{$r}) ne 'HASH' and ref($dataRef->{$r}) ne 'ARRAY' );
+                    }
+                    readingsBulkUpdate($hash, $f . 'icon',  $iconlist[$dataRef->{forecast}->{daily}[$i-1]{code}]);
+
+                    if (  defined($dataRef->{forecast}->{daily}[$i-1]{wind_direction})
+                    and $dataRef->{forecast}->{daily}[$i-1]{wind_direction}
+                    and defined($dataRef->{forecast}->{daily}[$i-1]{wind_speed})
+                    and $dataRef->{forecast}->{daily}[$i-1]{wind_speed}
+                    )
+                    {
+                        my $wdir= degrees_to_direction($dataRef->{forecast}->{daily}[$i-1]{wind_direction}, @directions_txt_i18n);
+                        readingsBulkUpdate($hash, $f . 'wind_condition', 'Wind: ' . $wdir . ' ' . $dataRef->{forecast}->{daily}[$i-1]{wind_speed} . ' km/h');
+                    }
+                    
+                    last if ( $i == $limit and $limit > 0 );
+                }
+            }
     }
 
     my $val= 'T: ' . $dataRef->{current}->{temperature} . ' °C'
@@ -480,11 +494,11 @@ sub WeatherIconIMGTag($) {
 
 #####################################
 
-sub WeatherAsHtmlV($;$) {
-    my ($d,$items) = @_;
+sub WeatherAsHtmlV($;$$) {
+    my ($d,$items,$f) = @_;
 
     $d = "<none>" if(!$d);
-    $items = 9 if( !$items );
+    $items = 6 if( !$items );
     return "$d is not a Weather instance<br>"
         if(!$defs{$d} || $defs{$d}->{TYPE} ne "Weather");
 
@@ -492,6 +506,16 @@ sub WeatherAsHtmlV($;$) {
     my $width= int(ICONSCALE*ICONWIDTH);
 
     my $ret = '<table class="weather">';
+    my $fc;
+    if (  defined($f)
+      and ($f eq 'h'
+        or $f eq 'd')
+      )
+    {
+        $fc = ( $f eq 'd' ? 'fc' : 'hfc' );
+    }
+    else { $fc = ( (defined($h->{READINGS}->{fc1_day_of_week}) and $h->{READINGS}->{fc1_day_of_week}) ? 'fc' : 'hfc' ); }
+    
     $ret .= sprintf('<tr><td class="weatherIcon" width=%d>%s</td><td class="weatherValue">%s<br>%s°C  %s%%<br>%s</td></tr>',
         $width,
         WeatherIconIMGTag(ReadingsVal($d, "icon", "")),
@@ -499,14 +523,13 @@ sub WeatherAsHtmlV($;$) {
         ReadingsVal($d, "temp_c", ""), ReadingsVal($d, "humidity", ""),
         ReadingsVal($d, "wind_condition", ""));
 
-    my $fc = ( (defined($h->{READINGS}->{fc1_day_of_week}) and $h->{READINGS}->{fc1_day_of_week}) ? 'fc' : 'hfc' );
     for(my $i=1; $i<$items; $i++) {
-    $ret .= sprintf('<tr><td class="weatherIcon" width=%d>%s</td><td class="weatherValue"><span class="weatherDay">%s: %s</span><br><span class="weatherMin">min %s°C</span> <span class="weatherMax">max %s°C</span></td></tr>',
-        $width,
-        WeatherIconIMGTag(ReadingsVal($d, "${fc}${i}_icon", "")),
-        ReadingsVal($d, "${fc}${i}_day_of_week", ""),
-        ReadingsVal($d, "${fc}${i}_condition", ""),
-        ReadingsVal($d, "${fc}${i}_low_c", ""), ReadingsVal($d, "${fc}${i}_high_c", ""));
+        $ret .= sprintf('<tr><td class="weatherIcon" width=%d>%s</td><td class="weatherValue"><span class="weatherDay">%s: %s</span><br><span class="weatherMin">min %s°C</span> <span class="weatherMax">max %s°C</span></td></tr>',
+            $width,
+            WeatherIconIMGTag(ReadingsVal($d, "${fc}${i}_icon", "")),
+            ReadingsVal($d, "${fc}${i}_day_of_week", ""),
+            ReadingsVal($d, "${fc}${i}_condition", ""),
+            ReadingsVal($d, "${fc}${i}_low_c", " - "), ReadingsVal($d, "${fc}${i}_high_c", " - "));
     }
 
     $ret .= "</table>";
@@ -519,11 +542,11 @@ sub WeatherAsHtml($;$) {
     WeatherAsHtmlV($d,$i);
 }
 
-sub WeatherAsHtmlH($;$) {
-    my ($d,$items) = @_;
+sub WeatherAsHtmlH($;$$) {
+    my ($d,$items,$f) = @_;
 
     $d = "<none>" if(!$d);
-    $items = 9 if( !$items );
+    $items = 6 if( !$items );
     return "$d is not a Weather instance<br>"
         if(!$defs{$d} || $defs{$d}->{TYPE} ne "Weather");
 
@@ -535,19 +558,27 @@ sub WeatherAsHtmlH($;$) {
     my $format= '<td><table border=1><tr><td class="weatherIcon" width=%d>%s</td></tr><tr><td class="weatherValue">%s</td></tr><tr><td class="weatherValue">%s°C %s%%</td></tr><tr><td class="weatherValue">%s</td></tr></table></td>';
 
     my $ret = '<table class="weather">';
-    my $fc = ( (defined($h->{READINGS}->{fc1_day_of_week}) and $h->{READINGS}->{fc1_day_of_week}) ? 'fc' : 'hfc' );
+    my $fc;
+    if (  defined($f)
+      and ($f eq 'h'
+        or $f eq 'd')
+      )
+    {
+        $fc = ( $f eq 'd' ? 'fc' : 'hfc' );
+    }
+    else { $fc = ( (defined($h->{READINGS}->{fc1_day_of_week}) and $h->{READINGS}->{fc1_day_of_week}) ? 'fc' : 'hfc' ); }
 
     # icons
     $ret .= sprintf('<tr><td class="weatherIcon" width=%d>%s</td>', $width, WeatherIconIMGTag(ReadingsVal($d, "icon", "")));
     for(my $i=1; $i<$items; $i++) {
-    $ret .= sprintf('<td class="weatherIcon" width=%d>%s</td>', $width, WeatherIconIMGTag(ReadingsVal($d, "${fc}${i}_icon", "")));
+        $ret .= sprintf('<td class="weatherIcon" width=%d>%s</td>', $width, WeatherIconIMGTag(ReadingsVal($d, "${fc}${i}_icon", "")));
     }
     $ret .= '</tr>';
 
     # condition
     $ret .= sprintf('<tr><td class="weatherDay">%s</td>', ReadingsVal($d, "condition", ""));
     for(my $i=1; $i<$items; $i++) {
-    $ret .= sprintf('<td class="weatherDay">%s: %s</td>', ReadingsVal($d, "${fc}${i}_day_of_week", ""),
+        $ret .= sprintf('<td class="weatherDay">%s: %s</td>', ReadingsVal($d, "${fc}${i}_day_of_week", ""),
         ReadingsVal($d, "${fc}${i}_condition", ""));
     }
     $ret .= '</tr>';
@@ -555,14 +586,14 @@ sub WeatherAsHtmlH($;$) {
     # temp/hum | min
     $ret .= sprintf('<tr><td class="weatherMin">%s°C %s%%</td>', ReadingsVal($d, "temp_c", ""), ReadingsVal($d, "humidity", ""));
     for(my $i=1; $i<$items; $i++) {
-    $ret .= sprintf('<td class="weatherMin">min %s°C</td>', ReadingsVal($d, "${fc}${i}_low_c", ""));
+        $ret .= sprintf('<td class="weatherMin">min %s°C</td>', ReadingsVal($d, "${fc}${i}_low_c", " - "));
     }
     $ret .= '</tr>';
 
     # wind | max
     $ret .= sprintf('<tr><td class="weatherMax">%s</td>', ReadingsVal($d, "wind_condition", ""));
     for(my $i=1; $i<$items; $i++) {
-    $ret .= sprintf('<td class="weatherMax">max %s°C</td>', ReadingsVal($d, "${fc}${i}_high_c", ""));
+        $ret .= sprintf('<td class="weatherMax">max %s°C</td>', ReadingsVal($d, "${fc}${i}_high_c", " - "));
     }
     $ret .= "</tr></table>";
 
@@ -912,8 +943,8 @@ sub WeatherAsHtmlD($;$) {
     gem&auml;&szlig Plan doch es werden keine Daten vom
     API angefordert.</li>
     <li><a href="#readingFnAttributes">readingFnAttributes</a></li>
-    <li>forecast - Anzeige von forecast Daten. Alle, nur Stundenforecast, nur Tageforecast, keine.</li>
-    <li>forecastLimit - Anzahl der Forecast-Datens&auml;tze.</li>
+    <li>forecast - every/hourly/daily/off, Anzeige von forecast Daten. Alle, nur Stundenforecast, nur Tageforecast, keine.</li>
+    <li>forecastLimit - Anzahl der Forecast-Datens&auml;tze welche als Reading geschrieben werden sollen.</li>
   </ul>
   <br>
 </ul>
