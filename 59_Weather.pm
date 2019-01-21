@@ -137,6 +137,8 @@ sub Weather_Initialize($) {
     $hash->{SetFn}      = 'Weather_Set';
     $hash->{AttrList}   = 
           'disable:0,1 '
+        . 'forecast:hourly,daily,any,off '
+        . 'forecastLimit: '
         . $readingFnAttributes;
     $hash->{NotifyFn}= 'Weather_Notify';
 
@@ -910,6 +912,8 @@ sub WeatherAsHtmlD($;$) {
     gem&auml;&szlig Plan doch es werden keine Daten vom
     API angefordert.</li>
     <li><a href="#readingFnAttributes">readingFnAttributes</a></li>
+    <li>forecast - Anzeige von forecast Daten. Alle, nur Stundenforecast, nur Tageforecast, keine.</li>
+    <li>forecastLimit - Anzahl der Forecast-Datens&auml;tze.</li>
   </ul>
   <br>
 </ul>
