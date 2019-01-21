@@ -874,9 +874,11 @@ sub WeatherAsHtmlD($;$) {
     Darstellung des Wetterberichtes. Die letztgenannte Funktion w&auml;hlt
     automatisch eine Ausrichtung, die abh&auml;ngig davon ist, ob ein
     Smallcreen Style ausgew&auml;hlt ist (vertikale Darstellung) oder
-    nicht (horizontale Darstellung). Alle vier Funnktionen akzeptieren
+    nicht (horizontale Darstellung). Alle vier Funktionen akzeptieren
     einen zus&auml;tzlichen optionalen Paramter um die Anzahl der
-    darzustellenden Icons anzugeben.<br><br>
+    darzustellenden Icons anzugeben.<br>
+    Zus&auml;tzlich erlauben die Funktionen 2 und 3 noch einen dritten Parameter (d oder h) welcher die Forecast-Art (h-Hourly oder d-Daily) mit an gibt.<br>
+    Wird der dritte Parameter verwendet muss auch der zweite Parameter f&uuml;r die Anzahl der darzustellenden Icons gesetzt werden.<br><br>
     Beispiel:
     <pre>
       define MyWeatherWeblink weblink htmlCode { WeatherAsHtmlH("MyWeather") }
