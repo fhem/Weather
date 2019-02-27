@@ -48,7 +48,7 @@ use constant DEMODATA => '{"latitude":50.112,"longitude":8.686,"timezone":"Europ
 
 
 use constant URL => 'https://api.darksky.net/forecast/';
-use constant VERSION => '0.2.6-demo';
+use constant VERSION => '0.2.6';
 
 my %codes = (
     'clear-day'           => 32,
