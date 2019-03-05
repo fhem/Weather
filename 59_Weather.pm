@@ -764,10 +764,10 @@ sub WeatherAsHtmlV($;$$) {
     return $ret;
 }
 
-sub WeatherAsHtml($;$) {
-    my ( $d, $i ) = @_;
+sub WeatherAsHtml($;$$) {
+    my ( $d, $items, $i ) = @_;
 
-    WeatherAsHtmlV( $d, $i );
+    WeatherAsHtmlV( $d, $items, $i );
 }
 
 sub WeatherAsHtmlH($;$$) {
@@ -832,8 +832,13 @@ sub WeatherAsHtmlH($;$$) {
         ReadingsVal( $d, "humidity", "" )
     );
     for ( my $i = 1 ; $i < $items ; $i++ ) {
-        $ret .= sprintf( '<td class="weatherMin">min %s°C</td>',
-            ReadingsVal( $d, "${fc}${i}_low_c", " - " ) );
+		    if(defined($h->{READINGS}->{"${fc}${i}_low_c"}) and $h->{READINGS}->{"${fc}${i}_low_c"}){
+            $ret .= sprintf( '<td class="weatherMin">min %s°C</td>',
+                ReadingsVal( $d, "${fc}${i}_low_c", " - " ) );
+		    }else{
+			      $ret .= sprintf( '<td class="weatherMin"> %s°C</td>',
+				        ReadingsVal( $d, "${fc}${i}_temperature", " - " ) );
+		    }
     }
     $ret .= '</tr>';
 
@@ -841,22 +846,24 @@ sub WeatherAsHtmlH($;$$) {
     $ret .= sprintf( '<tr><td class="weatherMax">%s</td>',
         ReadingsVal( $d, "wind_condition", "" ) );
     for ( my $i = 1 ; $i < $items ; $i++ ) {
-        $ret .= sprintf( '<td class="weatherMax">max %s°C</td>',
-            ReadingsVal( $d, "${fc}${i}_high_c", " - " ) );
+		    if(defined($h->{READINGS}->{"${fc}${i}_high_c"}) and $h->{READINGS}->{"${fc}${i}_high_c"}){
+            $ret .= sprintf( '<td class="weatherMax">max %s°C</td>',
+                ReadingsVal( $d, "${fc}${i}_high_c", " - " ) );
+        }
     }
     $ret .= "</tr></table>";
 
     return $ret;
 }
 
-sub WeatherAsHtmlD($;$) {
-    my ( $d, $i ) = @_;
+sub WeatherAsHtmlD($;$$) {
+    my ( $d, $items, $i ) = @_;
 
     if ($FW_ss) {
-        WeatherAsHtmlV( $d, $i );
+        WeatherAsHtmlV( $d, $items, $i );
     }
     else {
-        WeatherAsHtmlH( $d, $i );
+        WeatherAsHtmlH( $d, $items, $i );
     }
 }
 
@@ -957,7 +964,7 @@ sub WeatherAsHtmlD($;$) {
     to limit the numer of icons to display.<br><br>
     Example:
     <pre>
-      define MyWeatherWeblink weblink htmlCode { WeatherAsHtmlH("MyWeather") }
+      define MyWeatherWeblink weblink htmlCode { WeatherAsHtmlH("MyWeather",10,"h") }
     </pre>
 
 
@@ -1130,7 +1137,7 @@ sub WeatherAsHtmlD($;$) {
     Wird der dritte Parameter verwendet muss auch der zweite Parameter f&uuml;r die Anzahl der darzustellenden Icons gesetzt werden.<br><br>
     Beispiel:
     <pre>
-      define MyWeatherWeblink weblink htmlCode { WeatherAsHtmlH("MyWeather") }
+      define MyWeatherWeblink weblink htmlCode { WeatherAsHtmlH("MyWeather",10,"h") }
     </pre>
 
   </ul>
