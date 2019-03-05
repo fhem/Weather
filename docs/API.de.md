@@ -32,7 +32,7 @@ für den Wetter-Service Foobar.
     
 Beim Aufruf des Konstruktors wird diesem ein Hash mitübergeben, welcher Listenelemente beinhaltet. (Hash mit Skalaren).
 
-Jedes Listenelement besteht aus einem Schlüssel und einem Wert. Der Schlüssel muß nicht zwingend in direkter Verbindung zur Bedeutung des Wertes stehen. Der `APIKEY` kann zum Beispiel auch eine Zeichenkette aus der Kombination `Nutzername:Passwort sein, oder auch ein OAuth-Token. Je nachdem was zum Bezug der Daten vom Anbieter benötigt wird.
+Jedes Listenelement besteht aus einem Schlüssel und einem Wert. Der Schlüssel muß nicht zwingend in direkter Verbindung zur Bedeutung des Wertes stehen. Der `APIKEY` kann zum Beispiel auch eine Zeichenkette aus der Kombination `Nutzername:Passwort` sein, oder auch ein OAuth-Token. Je nachdem was zum Bezug der Daten vom Anbieter benötigt wird.
 
 `LOCATION` kann, muss aber nicht, im Format `Latitude,Longitude` angegeben werden, sondern kann auch eine Stations-ID sein. Nur der `devName` muss unbedingt korrekt übergeben und später an die `CallbackFn` zurück gegeben werden.
 
