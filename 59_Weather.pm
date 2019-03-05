@@ -832,25 +832,28 @@ sub WeatherAsHtmlH($;$$) {
         ReadingsVal( $d, "humidity", "" )
     );
     for ( my $i = 1 ; $i < $items ; $i++ ) {
-		    if(defined($h->{READINGS}->{"${fc}${i}_low_c"}) and $h->{READINGS}->{"${fc}${i}_low_c"}){
+        if(defined($h->{READINGS}->{"${fc}${i}_low_c"}) and $h->{READINGS}->{"${fc}${i}_low_c"}){
             $ret .= sprintf( '<td class="weatherMin">min %s°C</td>',
                 ReadingsVal( $d, "${fc}${i}_low_c", " - " ) );
-		    }else{
-			      $ret .= sprintf( '<td class="weatherMin"> %s°C</td>',
-				        ReadingsVal( $d, "${fc}${i}_temperature", " - " ) );
-		    }
+        }
+        else {
+            $ret .= sprintf( '<td class="weatherMin"> %s°C</td>',
+              ReadingsVal( $d, "${fc}${i}_temperature", " - " ) );
+        }
     }
+    
     $ret .= '</tr>';
 
     # wind | max
     $ret .= sprintf( '<tr><td class="weatherMax">%s</td>',
         ReadingsVal( $d, "wind_condition", "" ) );
     for ( my $i = 1 ; $i < $items ; $i++ ) {
-		    if(defined($h->{READINGS}->{"${fc}${i}_high_c"}) and $h->{READINGS}->{"${fc}${i}_high_c"}){
+        if(defined($h->{READINGS}->{"${fc}${i}_high_c"}) and $h->{READINGS}->{"${fc}${i}_high_c"}){
             $ret .= sprintf( '<td class="weatherMax">max %s°C</td>',
-                ReadingsVal( $d, "${fc}${i}_high_c", " - " ) );
+              ReadingsVal( $d, "${fc}${i}_high_c", " - " ) );
         }
     }
+    
     $ret .= "</tr></table>";
 
     return $ret;
