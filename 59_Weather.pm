@@ -709,10 +709,13 @@ sub WeatherIconIMGTag($) {
 #####################################
 
 sub WeatherAsHtmlV($;$$) {
-    my ( $d, $items, $f ) = @_;
+    my ( $d, $f, $items ) = @_;
 
-    $d     = "<none>" if ( !$d );
-    $items = 6        if ( !$items );
+    $f =~ tr/dh/./cd;
+    $f = "h" if ( !$f || length($f) > 1);
+    $items =~ tr/0-9/./cd;
+    $items = 6   if ( !$items );
+    
     return "$d is not a Weather instance<br>"
       if ( !$defs{$d} || $defs{$d}->{TYPE} ne "Weather" );
 
@@ -749,15 +752,28 @@ sub WeatherAsHtmlV($;$$) {
     );
 
     for ( my $i = 1 ; $i < $items ; $i++ ) {
-        $ret .= sprintf(
-'<tr><td class="weatherIcon" width=%d>%s</td><td class="weatherValue"><span class="weatherDay">%s: %s</span><br><span class="weatherMin">min %s°C</span> <span class="weatherMax">max %s°C</span></td></tr>',
-            $width,
-            WeatherIconIMGTag( ReadingsVal( $d, "${fc}${i}_icon", "" ) ),
-            ReadingsVal( $d, "${fc}${i}_day_of_week", "" ),
-            ReadingsVal( $d, "${fc}${i}_condition",   "" ),
-            ReadingsVal( $d, "${fc}${i}_low_c",       " - " ),
-            ReadingsVal( $d, "${fc}${i}_high_c",      " - " )
-        );
+        if(defined($h->{READINGS}->{"${fc}${i}_low_c"}) and $h->{READINGS}->{"${fc}${i}_low_c"}){
+            $ret .= sprintf(
+    '<tr><td class="weatherIcon" width=%d>%s</td><td class="weatherValue"><span class="weatherDay">%s: %s</span><br><span class="weatherMin">min %s°C</span> <span class="weatherMax">max %s°C</span><br>%s</td></tr>',
+                $width,
+                WeatherIconIMGTag( ReadingsVal( $d, "${fc}${i}_icon", "" ) ),
+                ReadingsVal( $d, "${fc}${i}_day_of_week", "" ),<br>%s
+                ReadingsVal( $d, "${fc}${i}_condition",   "" ),
+                ReadingsVal( $d, "${fc}${i}_low_c",       " - " ),
+                ReadingsVal( $d, "${fc}${i}_high_c",      " - " )
+                ReadingsVal( $d, "${fc}${i}_wind_condition",      " - " )
+            );
+        }else{
+            $ret .= sprintf(
+      '<tr><td class="weatherIcon" width=%d>%s</td><td class="weatherValue"><span class="weatherDay">%s: %s</span><br><span class="weatherTemp"> %s°C</span><br>%s</td></tr>',
+                $width,
+                WeatherIconIMGTag( ReadingsVal( $d, "${fc}${i}_icon", "" ) ),
+                ReadingsVal( $d, "${fc}${i}_day_of_week", "" ),
+                ReadingsVal( $d, "${fc}${i}_condition",   "" ),
+                ReadingsVal( $d, "${fc}${i}_temperature",       " - " )
+                ReadingsVal( $d, "${fc}${i}_wind_condition",      " - " )
+            );
+        }
     }
 
     $ret .= "</table>";
@@ -765,16 +781,24 @@ sub WeatherAsHtmlV($;$$) {
 }
 
 sub WeatherAsHtml($;$$) {
-    my ( $d, $items, $i ) = @_;
+    my ( $d, $f, $items ) = @_;
 
-    WeatherAsHtmlV( $d, $items, $i );
+    $f =~ tr/dh/./cd;
+    $f = "h" if ( !$f || length($f) > 1);
+    $items =~ tr/0-9/./cd;
+    $items = 6   if ( !$items );
+
+    WeatherAsHtmlV( $d, $f, $items );
 }
 
 sub WeatherAsHtmlH($;$$) {
-    my ( $d, $items, $f ) = @_;
+    my ( $d, $f, $items ) = @_;
 
-    $d     = "<none>" if ( !$d );
-    $items = 6        if ( !$items );
+    $f =~ tr/dh/./cd;
+    $f = "h" if ( !$f || length($f) > 1);
+    $items =~ tr/0-9/./cd;
+    $items = 6   if ( !$items );
+    
     return "$d is not a Weather instance<br>"
       if ( !$defs{$d} || $defs{$d}->{TYPE} ne "Weather" );
 
@@ -860,13 +884,18 @@ sub WeatherAsHtmlH($;$$) {
 }
 
 sub WeatherAsHtmlD($;$$) {
-    my ( $d, $items, $i ) = @_;
+    my ( $d, $f, $items ) = @_;
+
+    $f =~ tr/dh/./cd;
+    $f = "h" if ( !$f || length($f) > 1);
+    $items =~ tr/0-9/./cd;
+    $items = 6   if ( !$items );
 
     if ($FW_ss) {
-        WeatherAsHtmlV( $d, $items, $i );
+        WeatherAsHtmlV( $d, $f , $items);
     }
     else {
-        WeatherAsHtmlH( $d, $items, $i );
+        WeatherAsHtmlH( $d, $f , $items);
     }
 }
 
@@ -967,7 +996,7 @@ sub WeatherAsHtmlD($;$$) {
     to limit the numer of icons to display.<br><br>
     Example:
     <pre>
-      define MyWeatherWeblink weblink htmlCode { WeatherAsHtmlH("MyWeather",10,"h") }
+      define MyWeatherWeblink weblink htmlCode { WeatherAsHtmlH("MyWeather","h",10) }
     </pre>
 
 
@@ -1140,7 +1169,7 @@ sub WeatherAsHtmlD($;$$) {
     Wird der dritte Parameter verwendet muss auch der zweite Parameter f&uuml;r die Anzahl der darzustellenden Icons gesetzt werden.<br><br>
     Beispiel:
     <pre>
-      define MyWeatherWeblink weblink htmlCode { WeatherAsHtmlH("MyWeather",10,"h") }
+      define MyWeatherWeblink weblink htmlCode { WeatherAsHtmlH("MyWeather","h",10) }
     </pre>
 
   </ul>
