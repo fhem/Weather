@@ -757,10 +757,10 @@ sub WeatherAsHtmlV($;$$) {
     '<tr><td class="weatherIcon" width=%d>%s</td><td class="weatherValue"><span class="weatherDay">%s: %s</span><br><span class="weatherMin">min %s°C</span> <span class="weatherMax">max %s°C</span><br>%s</td></tr>',
                 $width,
                 WeatherIconIMGTag( ReadingsVal( $d, "${fc}${i}_icon", "" ) ),
-                ReadingsVal( $d, "${fc}${i}_day_of_week", "" ),<br>%s
+                ReadingsVal( $d, "${fc}${i}_day_of_week", "" ),
                 ReadingsVal( $d, "${fc}${i}_condition",   "" ),
                 ReadingsVal( $d, "${fc}${i}_low_c",       " - " ),
-                ReadingsVal( $d, "${fc}${i}_high_c",      " - " )
+                ReadingsVal( $d, "${fc}${i}_high_c",      " - " ),
                 ReadingsVal( $d, "${fc}${i}_wind_condition",      " - " )
             );
         }else{
@@ -770,7 +770,7 @@ sub WeatherAsHtmlV($;$$) {
                 WeatherIconIMGTag( ReadingsVal( $d, "${fc}${i}_icon", "" ) ),
                 ReadingsVal( $d, "${fc}${i}_day_of_week", "" ),
                 ReadingsVal( $d, "${fc}${i}_condition",   "" ),
-                ReadingsVal( $d, "${fc}${i}_temperature",       " - " )
+                ReadingsVal( $d, "${fc}${i}_temperature",       " - " ),
                 ReadingsVal( $d, "${fc}${i}_wind_condition",      " - " )
             );
         }
