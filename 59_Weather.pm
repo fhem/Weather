@@ -806,6 +806,11 @@ sub WeatherAsHtmlH($;$$) {
     if($op1 =~ /[0-9]/g){ $items = $op1; }
     if($op2 =~ /[dh]/g){ $f = $op2; }
     
+    $f =~ tr/dh/./cd;
+    $f = "h" if ( !$f || length($f) > 1);
+    $items =~ tr/0-9/./cd;
+    $items = 6   if ( !$items );
+    
     return "$d is not a Weather instance<br>"
       if ( !$defs{$d} || $defs{$d}->{TYPE} ne "Weather" );
 
