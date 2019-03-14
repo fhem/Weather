@@ -5,6 +5,11 @@
 #     Copyright by Dr. Boris Neubert
 #     e-mail: omega at online dot de
 #
+#       Contributors:
+#         - Marko Oldenburg (CoolTux)
+#         - Lippie
+#
+#
 #     This file is part of fhem.
 #
 #     Fhem is free software: you can redistribute it and/or modify
