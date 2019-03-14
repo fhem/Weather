@@ -709,7 +709,11 @@ sub WeatherIconIMGTag($) {
 #####################################
 
 sub WeatherAsHtmlV($;$$) {
-    my ( $d, $f, $items ) = @_;
+    my ( $d, $op1, $op2 ) = @_;
+    my $items = $op2;
+    my $f = $op1;
+    if($op1 =~ /[0-9]/g){ $items = $op1; }
+    if($op2 =~ /[dh]/g){ $f = $op2; }
 
     $f =~ tr/dh/./cd;
     $f = "h" if ( !$f || length($f) > 1);
@@ -781,7 +785,11 @@ sub WeatherAsHtmlV($;$$) {
 }
 
 sub WeatherAsHtml($;$$) {
-    my ( $d, $f, $items ) = @_;
+    my ( $d, $op1, $op2 ) = @_;
+    my $items = $op2;
+    my $f = $op1;
+    if($op1 =~ /[0-9]/g){ $items = $op1; }
+    if($op2 =~ /[dh]/g){ $f = $op2; }
 
     $f =~ tr/dh/./cd;
     $f = "h" if ( !$f || length($f) > 1);
@@ -792,8 +800,12 @@ sub WeatherAsHtml($;$$) {
 }
 
 sub WeatherAsHtmlH($;$$) {
-    my ( $d, $f, $items ) = @_;
-
+    my ( $d, $op1, $op2 ) = @_;
+    my $items = $op2;
+    my $f = $op1;
+    if($op1 =~ /[0-9]/g){ $items = $op1; }
+    if($op2 =~ /[dh]/g){ $f = $op2; }
+    
     $f =~ tr/dh/./cd;
     $f = "h" if ( !$f || length($f) > 1);
     $items =~ tr/0-9/./cd;
@@ -884,7 +896,11 @@ sub WeatherAsHtmlH($;$$) {
 }
 
 sub WeatherAsHtmlD($;$$) {
-    my ( $d, $f, $items ) = @_;
+    my ( $d, $op1, $op2 ) = @_;
+    my $items = $op2;
+    my $f = $op1;
+    if($op1 =~ /[0-9]/g){ $items = $op1; }
+    if($op2 =~ /[dh]/g){ $f = $op2; }
 
     $f =~ tr/dh/./cd;
     $f = "h" if ( !$f || length($f) > 1);
