@@ -28,7 +28,7 @@
 #
 ###############################################################################
 
-package DarkSkyAPI::Weather;
+package FHEM::DarkSkyAPI::Weather;
 use strict;
 use warnings;
 
@@ -48,7 +48,7 @@ use constant DEMODATA => '{"latitude":50.112,"longitude":8.686,"timezone":"Europ
 
 
 use constant URL => 'https://api.darksky.net/forecast/';
-use constant VERSION => '0.2.6';
+use constant VERSION => '0.2.7';
 
 my %codes = (
     'clear-day'           => 32,

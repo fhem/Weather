@@ -664,7 +664,7 @@ sub Weather_Define($$) {
     readingsSingleUpdate( $hash, 'state', 'Initialized', 1 );
     Weather_LanguageInitialize( $hash->{LANG} );
 
-    my $apistring = $api . '::Weather';
+    my $apistring = 'FHEM::' . $api . '::Weather';
     $hash->{fhem}->{api} = $apistring->new(
         {
             devName    => $hash->{NAME},
