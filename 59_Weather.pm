@@ -715,25 +715,8 @@ sub WeatherIconIMGTag($) {
 
 sub WeatherAsHtmlV($;$$) {
     my ( $d, $op1, $op2 ) = @_;
-    my $items = $op2;
-    my $f = $op1;
-
-        if( defined($op1) and $op1 and $op1 =~ /[0-9]/g){ $items = $op1; }
-    if( defined($op2) and $op2 and $op2 =~ /[dh]/g){ $f = $op2; }
     
-    $f =~ tr/dh/./cd if ( defined $f and $f );
-    $items =~ tr/0-9/./cd if (defined($items) and $items );
-    
-    $items = 6   if ( !$items );
-    
-    return "$d is not a Weather instance<br>"
-      if ( !$defs{$d} || $defs{$d}->{TYPE} ne "Weather" );
-
-    if ( AttrVal($d,'forecast','none') ne 'none' ) {
-        $f = ( AttrVal($d,'forecast','none') eq 'daily' ? 'd' : 'h' );
-    }
-    
-    $f = 'h' if ( !$f || length($f) > 1);
+    my ($f,$items) = WeatherCheckOptions($d,$op1,$op2);
 
     my $h     = $defs{$d};
     my $width = int( ICONSCALE * ICONWIDTH );
@@ -798,50 +781,16 @@ sub WeatherAsHtmlV($;$$) {
 
 sub WeatherAsHtml($;$$) {
     my ( $d, $op1, $op2 ) = @_;
-    my $items = $op2;
-    my $f = $op1;
     
-    if( defined($op1) and $op1 and $op1 =~ /[0-9]/g){ $items = $op1; }
-    if( defined($op2) and $op2 and $op2 =~ /[dh]/g){ $f = $op2; }
-    
-    $f =~ tr/dh/./cd if ( defined $f and $f );
-    $items =~ tr/0-9/./cd if (defined($items) and $items );
-    
-    $items = 6   if ( !$items );
-    
-    return "$d is not a Weather instance<br>"
-      if ( !$defs{$d} || $defs{$d}->{TYPE} ne "Weather" );
-
-    if ( AttrVal($d,'forecast','none') ne 'none' ) {
-        $f = ( AttrVal($d,'forecast','none') eq 'daily' ? 'd' : 'h' );
-    }
-    
-    $f = 'h' if ( !$f || length($f) > 1);
+    my ($f,$items) = WeatherCheckOptions($d,$op1,$op2);
 
     WeatherAsHtmlV( $d, $f, $items );
 }
 
 sub WeatherAsHtmlH($;$$) {
     my ( $d, $op1, $op2 ) = @_;
-    my $items = $op2;
-    my $f = $op1;
-    
-    if( defined($op1) and $op1 and $op1 =~ /[0-9]/g){ $items = $op1; }
-    if( defined($op2) and $op2 and $op2 =~ /[dh]/g){ $f = $op2; }
-    
-    $f =~ tr/dh/./cd if ( defined $f and $f );
-    $items =~ tr/0-9/./cd if (defined($items) and $items );
-    
-    $items = 6   if ( !$items );
-    
-    return "$d is not a Weather instance<br>"
-      if ( !$defs{$d} || $defs{$d}->{TYPE} ne "Weather" );
 
-    if ( AttrVal($d,'forecast','none') ne 'none' ) {
-        $f = ( AttrVal($d,'forecast','none') eq 'daily' ? 'd' : 'h' );
-    }
-    
-    $f = 'h' if ( !$f || length($f) > 1);
+    my ($f,$items) = WeatherCheckOptions($d,$op1,$op2);
 
     my $h     = $defs{$d};
     my $width = int( ICONSCALE * ICONWIDTH );
@@ -926,9 +875,23 @@ sub WeatherAsHtmlH($;$$) {
 
 sub WeatherAsHtmlD($;$$) {
     my ( $d, $op1, $op2 ) = @_;
+
+    my ($f,$items) = WeatherCheckOptions($d,$op1,$op2);
+
+    if ($FW_ss) {
+        WeatherAsHtmlV( $d, $f , $items);
+    }
+    else {
+        WeatherAsHtmlH( $d, $f , $items);
+    }
+}
+
+sub WeatherCheckOptions($@) {
+    my ($d,$op1,$op2)    = @_;
+    
     my $items = $op2;
     my $f = $op1;
-    
+
     if( defined($op1) and $op1 and $op1 =~ /[0-9]/g){ $items = $op1; }
     if( defined($op2) and $op2 and $op2 =~ /[dh]/g){ $f = $op2; }
 
@@ -946,12 +909,7 @@ sub WeatherAsHtmlD($;$$) {
     
     $f = 'h' if ( !$f || length($f) > 1);
 
-    if ($FW_ss) {
-        WeatherAsHtmlV( $d, $f , $items);
-    }
-    else {
-        WeatherAsHtmlH( $d, $f , $items);
-    }
+    return ($f,$items);
 }
 
 #####################################
