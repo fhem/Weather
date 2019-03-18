@@ -166,7 +166,7 @@ sub _RetrieveDataFromDarkSky($) {
           . $self->{long}
           . '?lang='
           . $self->{lang}
-          . '&units=auto';
+          . '&units=auto&extend=hourly';
 
         if ( lc($self->{key}) eq 'demo' )
         { _RetrieveDataFinished($paramRef,undef,DEMODATA); }
