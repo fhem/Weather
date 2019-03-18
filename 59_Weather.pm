@@ -92,13 +92,13 @@ my %wdays_txt_de = (
     'Sun' => 'So'
 );
 my %wdays_txt_nl = (
-    'Mon' => 'Maa',
-    'Tue' => 'Din',
-    'Wed' => 'Woe',
-    'Thu' => 'Don',
-    'Fri' => 'Vri',
-    'Sat' => 'Zat',
-    'Sun' => 'Zon'
+    'Mon' => 'Ma',
+    'Tue' => 'Di',
+    'Wed' => 'Wo',
+    'Thu' => 'Do',
+    'Fri' => 'Vr',
+    'Sat' => 'Za',
+    'Sun' => 'Zo'
 );
 my %wdays_txt_fr = (
     'Mon' => 'Lun',
@@ -146,7 +146,7 @@ my %status_items_txt_nl = (
     0 => "Wind",
     1 => "Vochtigheid",
     2 => "Temperatuur",
-    3 => "Direct",
+    3 => "Actueel",
     4 => "Weersvoorspelling voor "
 );
 my %status_items_txt_fr = (
