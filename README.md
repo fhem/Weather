@@ -14,5 +14,4 @@ This module is a sub-module of [Weather](https://github.com/fhem/Weather).
 Identified bugs and feature requests are tracked using [Github Issues](https://github.com/fhem/Weather/issues) for that module.
 
 ## Pull requests / How to participate into development
-This module is a sub-module of [Weather](https://github.com/fhem/Weather).
-Follow the pull request information of the [README.md](https://github.com/fhem/Weather/blob/devel/README.md) file of that module.
+You are invited to send pull requests to the dev branch whenever you think you can contribute with some useful improvements to the module. The module maintainer will review you code and decide wether it is going to be part of the module in a future release.
