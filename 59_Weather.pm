@@ -576,7 +576,7 @@ sub Weather_Set($@) {
 sub Weather_RearmTimer($$) {
     my ( $hash, $t ) = @_;
 
-    Log3( $hash, 3, "Weather $hash->{NAME}: Rearm new Timer" );
+    Log3( $hash, 4, "Weather $hash->{NAME}: Rearm new Timer" );
     InternalTimer( $t, "Weather_GetUpdate", $hash, 0 );
 
 }
