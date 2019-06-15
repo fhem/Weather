@@ -47,7 +47,7 @@ eval "use Encode qw(encode_utf8);1" or $missingModul .= "Encode ";
 
 # use Data::Dumper;    # for Debug only
 ## API URL
-use constant URL => 'https://api.openweathermap.org/data/2.5/';
+use constant URL     => 'https://api.openweathermap.org/data/2.5/';
 use constant VERSION => '0.2.5';
 ## URL . 'weather?' for current data
 ## URL . 'forecast?' for forecast data
@@ -112,7 +112,7 @@ my %codes = (
 sub new {
     ### geliefert wird ein Hash
     my ( $class, $argsRef ) = @_;
-    my $apioptions = parseApiOptions($argsRef->{apioptions});
+    my $apioptions = parseApiOptions( $argsRef->{apioptions} );
 
     my $self = {
         devName => $argsRef->{devName},
@@ -128,7 +128,10 @@ sub new {
         endpoint  => 'none',
     };
 
-    $self->{cachemaxage} = ( defined($apioptions->{cachemaxage}) ? $apioptions->{cachemaxage} : 900 );
+    $self->{cachemaxage} = (
+        defined( $apioptions->{cachemaxage} )
+        ? $apioptions->{cachemaxage}
+        : 900 );
     $self->{cached} = _CreateForecastRef($self);
 
     bless $self, $class;
@@ -140,15 +143,15 @@ sub parseApiOptions($) {
 
     my @params;
     my %h;
-    
-    @params = split(',',$apioptions);
+
+    @params = split( ',', $apioptions );
     while (@params) {
         my $param = shift(@params);
-        next if($param eq '');
-        my ($key, $value) = split(':', $param, 2 );
+        next if ( $param eq '' );
+        my ( $key, $value ) = split( ':', $param, 2 );
         $h{$key} = $value;
     }
-    
+
     return \%h;
 }
 
@@ -271,24 +274,24 @@ sub _ProcessingRetrieveData($$) {
             }
             else {
                 ### Debug
-#                 print 'Response: ' . Dumper $data;
+                #                 print 'Response: ' . Dumper $data;
                 ###### Ab hier wird die ResponseHash Referenze für die Rückgabe zusammen gestellt
                 $self->{cached}->{current_date_time} =
-                strftimeWrapper( "%a, %e %b %Y %H:%M",
+                  strftimeWrapper( "%a, %e %b %Y %H:%M",
                     localtime( $self->{fetchTime} ) );
 
                 if ( $self->{endpoint} eq 'weather' ) {
-                    $self->{cached}->{country}       = $data->{sys}->{country};
-                    $self->{cached}->{city}          = encode_utf8($data->{name});
+                    $self->{cached}->{country} = $data->{sys}->{country};
+                    $self->{cached}->{city}    = encode_utf8( $data->{name} );
                     $self->{cached}->{license}{text} = 'none';
-                    $self->{cached}->{current}       = {
+                    $self->{cached}->{current} = {
                         'temperature' => int(
-                            sprintf( "%.1f", ( $data->{main}->{temp} - 273.15 ) ) +
-                            0.5
+                            sprintf( "%.1f",
+                                ( $data->{main}->{temp} - 273.15 ) ) + 0.5
                         ),
                         'temp_c' => int(
-                            sprintf( "%.1f", ( $data->{main}->{temp} - 273.15 ) ) +
-                            0.5
+                            sprintf( "%.1f",
+                                ( $data->{main}->{temp} - 273.15 ) ) + 0.5
                         ),
                         'low_c' => int(
                             sprintf( "%.1f",
@@ -308,17 +311,22 @@ sub _ProcessingRetrieveData($$) {
                         ),
                         'humidity' => $data->{main}->{humidity},
                         'condition' =>
-                            encode_utf8( $data->{weather}->[0]->{description} ),
-                        'pressure' =>
-                            int( sprintf( "%.1f", $data->{main}->{pressure} ) + 0.5 ),
-                        'wind' =>
-                            int( sprintf( "%.1f", ($data->{wind}->{speed} * 3.6) ) + 0.5 ),
-                        'wind_speed' =>
-                            int( sprintf( "%.1f", ($data->{wind}->{speed} * 3.6) ) + 0.5 ),
+                          encode_utf8( $data->{weather}->[0]->{description} ),
+                        'pressure' => int(
+                            sprintf( "%.1f", $data->{main}->{pressure} ) + 0.5
+                        ),
+                        'wind' => int(
+                            sprintf( "%.1f", ( $data->{wind}->{speed} * 3.6 ) )
+                              + 0.5
+                        ),
+                        'wind_speed' => int(
+                            sprintf( "%.1f", ( $data->{wind}->{speed} * 3.6 ) )
+                              + 0.5
+                        ),
                         'wind_direction' => $data->{wind}->{deg},
                         'cloudCover'     => $data->{clouds}->{all},
                         'visibility' =>
-                            int( sprintf( "%.1f", $data->{visibility} ) + 0.5 ),
+                          int( sprintf( "%.1f", $data->{visibility} ) + 0.5 ),
                         'code'       => $codes{ $data->{weather}->[0]->{id} },
                         'iconAPI'    => $data->{weather}->[0]->{icon},
                         'sunsetTime' => strftimeWrapper(
@@ -364,8 +372,8 @@ sub _ProcessingRetrieveData($$) {
                                         sprintf(
                                             "%.1f",
                                             (
-                                                $data->{list}->[$i]->{main}->{temp}
-                                                - 273.15
+                                                $data->{list}->[$i]->{main}
+                                                  ->{temp} - 273.15
                                             )
                                         ) + 0.5
                                     ),
@@ -373,8 +381,8 @@ sub _ProcessingRetrieveData($$) {
                                         sprintf(
                                             "%.1f",
                                             (
-                                                $data->{list}->[$i]->{main}->{temp}
-                                                - 273.15
+                                                $data->{list}->[$i]->{main}
+                                                  ->{temp} - 273.15
                                             )
                                         ) + 0.5
                                     ),
@@ -383,7 +391,7 @@ sub _ProcessingRetrieveData($$) {
                                             "%.1f",
                                             (
                                                 $data->{list}->[$i]->{main}
-                                                ->{temp_min} - 273.15
+                                                  ->{temp_min} - 273.15
                                             )
                                         ) + 0.5
                                     ),
@@ -392,7 +400,7 @@ sub _ProcessingRetrieveData($$) {
                                             "%.1f",
                                             (
                                                 $data->{list}->[$i]->{main}
-                                                ->{temp_max} - 273.15
+                                                  ->{temp_max} - 273.15
                                             )
                                         ) + 0.5
                                     ),
@@ -401,7 +409,7 @@ sub _ProcessingRetrieveData($$) {
                                             "%.1f",
                                             (
                                                 $data->{list}->[$i]->{main}
-                                                ->{temp_min} - 273.15
+                                                  ->{temp_min} - 273.15
                                             )
                                         ) + 0.5
                                     ),
@@ -410,46 +418,56 @@ sub _ProcessingRetrieveData($$) {
                                             "%.1f",
                                             (
                                                 $data->{list}->[$i]->{main}
-                                                ->{temp_max} - 273.15
+                                                  ->{temp_max} - 273.15
                                             )
                                         ) + 0.5
                                     ),
                                     'humidity' =>
-                                        $data->{list}->[$i]->{main}->{humidity},
+                                      $data->{list}->[$i]->{main}->{humidity},
                                     'condition' => encode_utf8(
                                         $data->{list}->[$i]->{weather}->[0]
-                                        ->{description}
+                                          ->{description}
                                     ),
                                     'pressure' => int(
                                         sprintf( "%.1f",
-                                            $data->{list}->[$i]->{main}->{pressure}
-                                        ) + 0.5
+                                            $data->{list}->[$i]->{main}
+                                              ->{pressure} ) + 0.5
                                     ),
                                     'wind' => int(
-                                        sprintf( "%.1f",
-                                            ($data->{list}->[$i]->{wind}->{speed} * 3.6) )
-                                        + 0.5
+                                        sprintf(
+                                            "%.1f",
+                                            (
+                                                $data->{list}->[$i]->{wind}
+                                                  ->{speed} * 3.6
+                                            )
+                                        ) + 0.5
                                     ),
                                     'wind_speed' => int(
-                                        sprintf( "%.1f",
-                                            ($data->{list}->[$i]->{wind}->{speed} * 3.6) )
-                                        + 0.5
+                                        sprintf(
+                                            "%.1f",
+                                            (
+                                                $data->{list}->[$i]->{wind}
+                                                  ->{speed} * 3.6
+                                            )
+                                        ) + 0.5
                                     ),
                                     'cloudCover' =>
-                                        $data->{list}->[$i]->{clouds}->{all},
-                                    'code' =>
-                                        $codes{ $data->{list}->[$i]->{weather}->[0]
-                                        ->{id} },
+                                      $data->{list}->[$i]->{clouds}->{all},
+                                    'code' => $codes{
+                                        $data->{list}->[$i]->{weather}->[0]
+                                          ->{id}
+                                    },
                                     'iconAPI' =>
-                                        $data->{list}->[$i]->{weather}->[0]->{icon},
+                                      $data->{list}->[$i]->{weather}->[0]
+                                      ->{icon},
                                     'rain1h' =>
-                                        $data->{list}->[$i]->{rain}->{'1h'},
+                                      $data->{list}->[$i]->{rain}->{'1h'},
                                     'rain3h' =>
-                                        $data->{list}->[$i]->{rain}->{'3h'},
+                                      $data->{list}->[$i]->{rain}->{'3h'},
                                     'snow1h' =>
-                                        $data->{list}->[$i]->{snow}->{'1h'},
+                                      $data->{list}->[$i]->{snow}->{'1h'},
                                     'snow3h' =>
-                                        $data->{list}->[$i]->{snow}->{'3h'},
+                                      $data->{list}->[$i]->{snow}->{'3h'},
                                 },
                             );
 
