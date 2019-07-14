@@ -1,4 +1,4 @@
-# $Id: wundergroundAPI.pm 19827 2019-07-14 11:46:47Z loredo $
+# $Id$
 
 package wundergroundAPI;
 use strict;
