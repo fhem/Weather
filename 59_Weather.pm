@@ -1,4 +1,4 @@
-# $Id: 59_Weather.pm 16644 2018-04-22 08:07:35Z neubert $
+# $Id$
 ##############################################################################
 #
 #     59_Weather.pm
@@ -310,6 +310,10 @@ sub Weather_ReturnWithError($$) {
 
 sub Weather_RetrieveCallbackFn($) {
     my $name        = shift;
+    
+    return undef
+      unless ( IsDevice($name) );
+
     my $hash        = $defs{$name};
     my $responseRef = $hash->{fhem}->{api}->getWeather;
 
