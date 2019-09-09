@@ -230,7 +230,7 @@ sub _RetrieveDataFromDarkSky($) {
 
     $self->{cached}->{lat}  = $self->{lat}
       unless ( $self->{cached}->{lat} == $self->{lat} );
-    $self->{cached}->{long} = $self{long}
+    $self->{cached}->{long} = $self->{long}
       unless ( $self->{cached}->{long} == $self->{long} );
 
     my $paramRef = {
