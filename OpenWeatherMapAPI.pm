@@ -116,7 +116,7 @@ eval "use Encode qw(encode_utf8);1" or $missingModul .= "Encode ";
 # use Data::Dumper;    # for Debug only
 ## API URL
 use constant URL     => 'https://api.openweathermap.org/data/2.5/';
-use constant VERSION => '0.4.0';
+use constant VERSION => '0.5.0';
 ## URL . 'weather?' for current data
 ## URL . 'forecast?' for forecast data
 
@@ -237,6 +237,15 @@ sub setRetrieveData {
     return 0;
 }
 
+sub setLocation {
+    my ($self,$lat,$long) = @_;
+
+    $self->{lat}            = $lat;
+    $self->{long}           = $long;
+
+    return 0;
+}
+
 sub getFetchTime {
     my $self = shift;
 
@@ -253,11 +262,18 @@ sub _RetrieveDataFromOpenWeatherMap($) {
     my $self = shift;
 
     # retrieve data from cache
-    if ( $self->{endpoint} eq 'none' ) {
-        if ( ( time() - $self->{fetchTime} ) < $self->{cachemaxage} ) {
-            return _CallWeatherCallbackFn($self);
-        }
+    if (  ( time() - $self->{fetchTime} ) < $self->{cachemaxage}
+        and $self->{cached}->{lat} == $self->{lat}
+        and $self->{cached}->{long} == $self->{long}
+      )
+    {
+        return _CallWeatherCallbackFn($self);
     }
+
+    $self->{cached}->{lat}  = $self->{lat}
+      unless ( $self->{cached}->{lat} == $self->{lat} );
+    $self->{cached}->{long} = $self->{long}
+      unless ( $self->{cached}->{long} == $self->{long} );
 
     my $paramRef = {
         timeout  => 15,

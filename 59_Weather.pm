@@ -571,8 +571,19 @@ sub Weather_Set($@) {
         Weather_GetUpdate($hash);
         return undef;
     }
+    elsif ( ( @a == 3 ) && ( $a[1] eq "newLocation" ) ) {
+        if ( $hash->{API} eq 'DarkSkyAPI'
+          or $hash->{API} eq 'OpenWeatherMapAPI' )
+        {
+            $hash->{fhem}->{api}->setLocation((split(':',$a[2]))[0],(split(':',$a[2]))[1]);
+            Weather_DisarmTimer($hash);
+            Weather_GetUpdate($hash);
+            return undef;
+        }
+        else { return 'this API is not ' . $a[1] .' supported' }
+    }
     else {
-        return "Unknown argument $cmd, choose one of update:noArg";
+        return "Unknown argument $cmd, choose one of update:noArg newLocation";
     }
 }
 
