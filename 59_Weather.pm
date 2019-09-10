@@ -571,11 +571,17 @@ sub Weather_Set($@) {
         Weather_GetUpdate($hash);
         return undef;
     }
-    elsif ( ( @a == 3 ) && ( $a[1] eq "newLocation" ) ) {
+    elsif ( ( @a >= 2 ) && ( $a[1] eq "newLocation" ) ) {
         if ( $hash->{API} eq 'DarkSkyAPI'
           or $hash->{API} eq 'OpenWeatherMapAPI' )
         {
-            $hash->{fhem}->{api}->setLocation((split(':',$a[2]))[0],(split(':',$a[2]))[1]);
+            my ($lat,$long);
+            ($lat,$long) = split(',',$a[2])
+              if ( defined($a[2]) and $a[2] );
+            ($lat,$long) = split(',',$hash->{fhem}->{LOCATION})
+              unless ( defined($lat) and defined($long) );
+
+            $hash->{fhem}->{api}->setLocation($lat,$long);
             Weather_DisarmTimer($hash);
             Weather_GetUpdate($hash);
             return undef;
@@ -664,7 +670,7 @@ sub Weather_Define($$) {
 
     $hash->{NOTIFYDEV}          = "global";
     $hash->{fhem}->{interfaces} = "temperature;humidity;wind";
-    $hash->{LOCATION}           = (
+    $hash->{fhem}->{LOCATION}   = (
         ( defined($location) and $location )
         ? $location
         : AttrVal( 'global', 'latitude', 'error' ) . ','
@@ -680,8 +686,10 @@ sub Weather_Define($$) {
     $hash->{MODEL}                                 = $api;
     $hash->{APIKEY}                                = $apikey;
     $hash->{APIOPTIONS}                            = $apioptions;
-    $hash->{READINGS}->{current_date_time}->{TIME} = TimeNow();
-    $hash->{READINGS}->{current_date_time}->{VAL}  = "none";
+    readingsSingleUpdate($hash,'current_date_time',TimeNow(),0);
+    readingsSingleUpdate($hash,'current_date_time','none',0);
+    #$hash->{READINGS}->{current_date_time}->{TIME} = TimeNow();
+    #$hash->{READINGS}->{current_date_time}->{VAL}  = "none";
     $hash->{fhem}->{allowCache}                    = 1;
 
     readingsSingleUpdate( $hash, 'state', 'Initialized', 1 );
@@ -692,7 +700,7 @@ sub Weather_Define($$) {
         {
             devName    => $hash->{NAME},
             apikey     => $hash->{APIKEY},
-            location   => $hash->{LOCATION},
+            location   => $hash->{fhem}->{LOCATION},
             apioptions => $hash->{APIOPTIONS},
             language   => $hash->{LANG}
         }
