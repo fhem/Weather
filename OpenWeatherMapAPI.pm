@@ -116,7 +116,7 @@ eval "use Encode qw(encode_utf8);1" or $missingModul .= "Encode ";
 # use Data::Dumper;    # for Debug only
 ## API URL
 use constant URL     => 'https://api.openweathermap.org/data/2.5/';
-use constant VERSION => '0.5.0';
+use constant VERSION => '1.0.0';
 ## URL . 'weather?' for current data
 ## URL . 'forecast?' for forecast data
 
