@@ -1057,10 +1057,19 @@ sub WeatherCheckOptions($@) {
   <a name="Weatherset"></a>
   <b>Set </b>
   <ul>
-    <code>set &lt;name&gt; update</code><br><br>
+    <li>
+      <code>set &lt;name&gt; update</code><br><br>
 
-    Forces the retrieval of the weather data. The next automatic retrieval is scheduled to occur
-    <code>interval</code> seconds later.<br><br>
+      Forces the retrieval of the weather data. The next automatic retrieval is scheduled to occur
+      <code>interval</code> seconds later.
+    </li>
+    <li>
+      <code>set &lt;name&gt; newLocation latitude,longitude</code><br><br>
+      
+      set a new temporary location.
+      the value pair Latitude Longitude is separated by a comma.
+      if no value is entered (empty value), the location detected by definition is automatically taken.<br><br>
+    </li>
   </ul>
   <br>
 
@@ -1230,11 +1239,20 @@ sub WeatherCheckOptions($@) {
   <a name="Weatherset"></a>
   <b>Set </b>
   <ul>
-    <code>set &lt;name&gt; update</code><br><br>
+    <li>
+      <code>set &lt;name&gt; update</code><br><br>
 
-    Erzwingt eine Abfrage der Wetterdaten. Die darauffolgende Abfrage
-    wird gem&auml;&szlig; dem eingestellten
-    Intervall <code>interval</code> Sekunden sp&auml;ter durchgef&uuml;hrt.<br><br>
+      Erzwingt eine Abfrage der Wetterdaten. Die darauffolgende Abfrage
+      wird gem&auml;&szlig; dem eingestellten
+      Intervall <code>interval</code> Sekunden sp&auml;ter durchgef&uuml;hrt.
+    </li>
+    <li>
+      <code>set &lt;name&gt; newLocation latitude,longitude</code><br><br>
+      
+      Gibt die M&ouml;glichkeit eine neue tempor&auml;re Location zu setzen.
+      Das Wertepaar Latitude Longitude wird durch ein Komma getrennt &uuml;bergeben.
+      Wird kein Wert mitgegebn (leere &Uuml;bergabe) wird automatisch die per Definition erkannte Location genommen<br><br>
+    </li>
   </ul>
   <br>
 
