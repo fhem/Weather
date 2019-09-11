@@ -28,14 +28,14 @@
 #
 ###############################################################################
 
-package wundergroundAPI;
+package DarkSkyAPI;
 use strict;
 use warnings;
 use FHEM::Meta;
 use Data::Dumper;
 
 FHEM::Meta::Load(__PACKAGE__);
-use version 0.50; our $VERSION = $main::packages{wundergroundAPI}{META}{version};
+use version 0.50; our $VERSION = $main::packages{DarkSkyAPI}{META}{version};
 
 package DarkSkyAPI::Weather;
 use strict;
@@ -772,7 +772,7 @@ sub _CreateForecastRef($) {
             long => $self->{long},
             apiMaintainer =>
 'Leon Gaultier (<a href=https://forum.fhem.de/index.php?action=profile;u=13684>CoolTux</a>)',
-            apiVersion    => DarkSkyAPI->VERSION(),
+            apiVersion    => version->parse(DarkSkyAPI->VERSION())->normal,
         }
     );
 
@@ -809,10 +809,10 @@ sub strftimeWrapper(@) {
 
 =for :application/json;q=META.json DarkSkyAPI.pm
 {
-  "abstract": "Weather API for Weather Dark Sky",
+  "abstract": "Weather API for Weather DarkSky",
   "x_lang": {
     "de": {
-      "abstract": "Wetter API für Weather Dark Sky"
+      "abstract": "Wetter API für Weather DarkSky"
     }
   },
   "version": "v1.0.0",
