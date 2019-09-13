@@ -572,8 +572,10 @@ sub Weather_Set($@) {
         return undef;
     }
     elsif ( ( @a >= 2 ) && ( $a[1] eq "newLocation" ) ) {
-        if ( $hash->{API} eq 'DarkSkyAPI'
-          or $hash->{API} eq 'OpenWeatherMapAPI' )
+        if (   $hash->{API} eq 'DarkSkyAPI'
+            or $hash->{API} eq 'OpenWeatherMapAPI'
+            or $hash->{API} eq 'wundergroundAPI'
+          )
         {
             my ($lat,$long);
             ($lat,$long) = split(',',$a[2])
