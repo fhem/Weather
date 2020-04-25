@@ -36,7 +36,6 @@ package OpenWeatherMapAPI;
 use strict;
 use warnings;
 use FHEM::Meta;
-use Data::Dumper;
 
 FHEM::Meta::Load(__PACKAGE__);
 use version 0.50; our $VERSION = $main::packages{OpenWeatherMapAPI}{META}{version};
@@ -47,6 +46,8 @@ use warnings;
 
 use POSIX;
 use HttpUtils;
+
+# use Data::Dumper;
 
 # try to use JSON::MaybeXS wrapper
 #   for chance of better performance + open code
@@ -424,8 +425,6 @@ sub _ProcessingRetrieveData {
                         ),
                         'wind_direction' => $data->{wind}->{deg},
                         'cloudCover'     => $data->{clouds}->{all},
-                        'visibility' =>
-                          int( sprintf( "%.1f", $data->{visibility} ) + 0.5 ),
                         'code'       => $codes{ $data->{weather}->[0]->{id} },
                         'iconAPI'    => $data->{weather}->[0]->{icon},
                         'sunsetTime' => strftimeWrapper(
@@ -438,12 +437,12 @@ sub _ProcessingRetrieveData {
                         ),
                         'pubDate' => strftimeWrapper(
                             "%a, %e %b %Y %H:%M",
-                            ( exists $data->{dt}
-                                ? localtime( $data->{dt} )
-                                : localtime( time )
-                            )
+                            localtime( $data->{dt} )
                         ),
                     };
+
+                    $self->{cached}->{current}->{'visibility'} = int(sprintf( "%.1f", $data->{visibility} ) + 0.5)
+                        if ( exists $data->{visibility} );
                 }
 
                 if ( $self->{endpoint} eq 'forecast' ) {
@@ -660,7 +659,7 @@ sub strftimeWrapper {
       "abstract": "Wetter API für OpenWeatherMap"
     }
   },
-  "version": "v1.0.1",
+  "version": "v1.0.2",
   "author": [
     "Marko Oldenburg <leongaultier@gmail.com>"
   ],
