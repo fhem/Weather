@@ -125,7 +125,7 @@ eval "use Encode qw(encode_utf8);1" or $missingModul .= "Encode ";
 
 # use Data::Dumper;    # for Debug only
 ## API URL
-use constant URL     => 'https://api.openweathermap.org/data/2.5/';
+use constant URL => 'https://api.openweathermap.org/data/2.5/';
 ## URL . 'weather?' for current data
 ## URL . 'forecast?' for forecast data
 
@@ -208,7 +208,8 @@ sub new {
     $self->{cachemaxage} = (
         defined( $apioptions->{cachemaxage} )
         ? $apioptions->{cachemaxage}
-        : 900 );
+        : 900
+    );
     $self->{cached} = _CreateForecastRef($self);
 
     bless $self, $class;
@@ -247,10 +248,10 @@ sub setRetrieveData {
 }
 
 sub setLocation {
-    my ($self,$lat,$long) = @_;
+    my ( $self, $lat, $long ) = @_;
 
-    $self->{lat}            = $lat;
-    $self->{long}           = $long;
+    $self->{lat}  = $lat;
+    $self->{long} = $long;
 
     return 0;
 }
@@ -271,15 +272,14 @@ sub _RetrieveDataFromOpenWeatherMap {
     my $self = shift;
 
     # retrieve data from cache
-    if (  ( time() - $self->{fetchTime} ) < $self->{cachemaxage}
+    if (    ( time() - $self->{fetchTime} ) < $self->{cachemaxage}
         and $self->{cached}->{lat} == $self->{lat}
-        and $self->{cached}->{long} == $self->{long}
-      )
+        and $self->{cached}->{long} == $self->{long} )
     {
         return _CallWeatherCallbackFn($self);
     }
 
-    $self->{cached}->{lat}  = $self->{lat}
+    $self->{cached}->{lat} = $self->{lat}
       unless ( $self->{cached}->{lat} == $self->{lat} );
     $self->{cached}->{long} = $self->{long}
       unless ( $self->{cached}->{long} == $self->{long} );
@@ -328,10 +328,10 @@ sub _RetrieveDataFromOpenWeatherMap {
 }
 
 sub _RetrieveDataFinished {
-    my $paramRef    = shift;
-    my $err         = shift;
-    my $response    = shift;
-    my $self = $paramRef->{self};
+    my $paramRef = shift;
+    my $err      = shift;
+    my $response = shift;
+    my $self     = $paramRef->{self};
 
     if ( !$err ) {
         $self->{cached}->{status} = 'ok';
@@ -346,8 +346,8 @@ sub _RetrieveDataFinished {
 }
 
 sub _ProcessingRetrieveData {
-    my $self        = shift;
-    my $response    = shift;
+    my $self     = shift;
+    my $response = shift;
 
     if (    $self->{cached}->{status} eq 'ok'
         and defined($response)
@@ -441,8 +441,9 @@ sub _ProcessingRetrieveData {
                         ),
                     };
 
-                    $self->{cached}->{current}->{'visibility'} = int(sprintf( "%.1f", $data->{visibility} ) + 0.5)
-                        if ( exists $data->{visibility} );
+                    $self->{cached}->{current}->{'visibility'} =
+                      int( sprintf( "%.1f", $data->{visibility} ) + 0.5 )
+                      if ( exists $data->{visibility} );
                 }
 
                 if ( $self->{endpoint} eq 'forecast' ) {
@@ -598,8 +599,8 @@ sub _CallWeatherCallbackFn {
 }
 
 sub _ErrorHandling {
-    my $self    = shift;
-    my $err     = shift;
+    my $self = shift;
+    my $err  = shift;
 
     $self->{cached}->{current_date_time} =
       strftimeWrapper( "%a, %e %b %Y %H:%M", localtime( $self->{fetchTime} ) ),
@@ -616,7 +617,8 @@ sub _CreateForecastRef {
             long => $self->{long},
             apiMaintainer =>
 'Leon Gaultier (<a href=https://forum.fhem.de/index.php?action=profile;u=13684>CoolTux</a>)',
-            apiVersion    => version->parse(OpenWeatherMapAPI->VERSION())->normal,
+            apiVersion =>
+              version->parse( OpenWeatherMapAPI->VERSION() )->normal,
         }
     );
 
@@ -645,7 +647,6 @@ sub strftimeWrapper {
 ##############################################################################
 
 1;
-
 
 =pod
 
