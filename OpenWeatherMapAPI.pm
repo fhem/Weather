@@ -423,6 +423,10 @@ sub _ProcessingRetrieveData {
                             sprintf( "%.1f", ( $data->{wind}->{speed} * 3.6 ) )
                               + 0.5
                         ),
+                        'wind_gust' => int(
+                            sprintf( "%.1f", ( $data->{wind}->{gust} * 3.6 ) )
+                              + 0.5
+                        ),
                         'wind_direction' => $data->{wind}->{deg},
                         'cloudCover'     => $data->{clouds}->{all},
                         'code'       => $codes{ $data->{weather}->[0]->{id} },
@@ -550,6 +554,15 @@ sub _ProcessingRetrieveData {
                                             (
                                                 $data->{list}->[$i]->{wind}
                                                   ->{speed} * 3.6
+                                            )
+                                        ) + 0.5
+                                    ),
+                                    'wind_gust' => int(
+                                        sprintf(
+                                            "%.1f",
+                                            (
+                                                $data->{list}->[$i]->{wind}
+                                                  ->{gust} * 3.6
                                             )
                                         ) + 0.5
                                     ),
