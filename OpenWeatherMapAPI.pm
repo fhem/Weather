@@ -673,7 +673,7 @@ sub strftimeWrapper {
       "abstract": "Wetter API für OpenWeatherMap"
     }
   },
-  "version": "v1.0.2",
+  "version": "v1.0.3",
   "author": [
     "Marko Oldenburg <leongaultier@gmail.com>"
   ],
