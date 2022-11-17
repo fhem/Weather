@@ -280,8 +280,8 @@ sub _RetrieveDataFromOpenWeatherMap {
         timeout  => 15,
         self     => $self,
         endpoint => $self->{endpoint} eq 'none' ? 'weather'
-        : $self->{endpoint} eq 'forecast' ? 'onecall'
-        : 'forecast',
+        : $self->{endpoint} eq 'weather' ? 'onecall'
+        : 'weather',
         callback => \&_RetrieveDataFinished,
     };
 
@@ -380,7 +380,7 @@ sub _ProcessingRetrieveData {
                         $self->{cached}->{country} = $data->{sys}->{country};
                         $self->{cached}->{city} = encode_utf8( $data->{name} );
                         $self->{cached}->{license}{text} = 'none';
-                        $self->{cached}->{current} = {
+                        $self->{cached}->{current}       = {
                             'temperature' => int(
                                 sprintf( "%.1f",
                                     ( $data->{main}->{temp} - 273.15 ) ) + 0.5
@@ -435,6 +435,7 @@ sub _ProcessingRetrieveData {
                                     ( $data->{wind}->{gust} * 3.6 ) ) + 0.5
                             ),
                             'wind_direction' => $data->{wind}->{deg},
+                            'rain_1h'        => $data->{rain}->{'1h'},
                             'cloudCover'     => $data->{clouds}->{all},
                             'code'    => $codes{ $data->{weather}->[0]->{id} },
                             'iconAPI' => $data->{weather}->[0]->{icon},
@@ -457,38 +458,38 @@ sub _ProcessingRetrieveData {
                           if ( exists $data->{visibility} );
                     }
 
-                    when ('forecast') {
-                        if ( ref( $data->{list} ) eq "ARRAY"
-                            && scalar( @{ $data->{list} } ) > 0 )
+                    when ('onecall') {
+                        if ( ref( $data->{hourly} ) eq "ARRAY"
+                            && scalar( @{ $data->{hourly} } ) > 0 )
                         {
                             ## löschen des alten Datensatzes
                             delete $self->{cached}->{forecast};
 
                             my $i = 0;
-                            for ( @{ $data->{list} } ) {
+                            for ( @{ $data->{hourly} } ) {
                                 push(
                                     @{ $self->{cached}->{forecast}->{hourly} },
                                     {
                                         'pubDate' => strftimeWrapper(
                                             "%a, %e %b %Y %H:%M",
                                             localtime(
-                                                ( $data->{list}->[$i]->{dt} ) -
-                                                  3600
+                                                ( $data->{hourly}->[$i]->{dt} )
+                                                - 3600
                                             )
                                         ),
                                         'day_of_week' => strftime(
                                             "%a, %H:%M",
                                             localtime(
-                                                ( $data->{list}->[$i]->{dt} ) -
-                                                  3600
+                                                ( $data->{hourly}->[$i]->{dt} )
+                                                - 3600
                                             )
                                         ),
                                         'temperature' => int(
                                             sprintf(
                                                 "%.1f",
                                                 (
-                                                    $data->{list}->[$i]->{main}
-                                                      ->{temp} - 273.15
+                                                    $data->{hourly}->[$i]
+                                                      ->{main}->{temp} - 273.15
                                                 )
                                             ) + 0.5
                                         ),
@@ -496,8 +497,8 @@ sub _ProcessingRetrieveData {
                                             sprintf(
                                                 "%.1f",
                                                 (
-                                                    $data->{list}->[$i]->{main}
-                                                      ->{temp} - 273.15
+                                                    $data->{hourly}->[$i]
+                                                      ->{main}->{temp} - 273.15
                                                 )
                                             ) + 0.5
                                         ),
@@ -505,8 +506,9 @@ sub _ProcessingRetrieveData {
                                             sprintf(
                                                 "%.1f",
                                                 (
-                                                    $data->{list}->[$i]->{main}
-                                                      ->{temp_min} - 273.15
+                                                    $data->{hourly}->[$i]
+                                                      ->{main}->{temp_min} -
+                                                      273.15
                                                 )
                                             ) + 0.5
                                         ),
@@ -514,8 +516,9 @@ sub _ProcessingRetrieveData {
                                             sprintf(
                                                 "%.1f",
                                                 (
-                                                    $data->{list}->[$i]->{main}
-                                                      ->{temp_max} - 273.15
+                                                    $data->{hourly}->[$i]
+                                                      ->{main}->{temp_max} -
+                                                      273.15
                                                 )
                                             ) + 0.5
                                         ),
@@ -523,8 +526,9 @@ sub _ProcessingRetrieveData {
                                             sprintf(
                                                 "%.1f",
                                                 (
-                                                    $data->{list}->[$i]->{main}
-                                                      ->{temp_min} - 273.15
+                                                    $data->{hourly}->[$i]
+                                                      ->{main}->{temp_min} -
+                                                      273.15
                                                 )
                                             ) + 0.5
                                         ),
@@ -532,29 +536,30 @@ sub _ProcessingRetrieveData {
                                             sprintf(
                                                 "%.1f",
                                                 (
-                                                    $data->{list}->[$i]->{main}
-                                                      ->{temp_max} - 273.15
+                                                    $data->{hourly}->[$i]
+                                                      ->{main}->{temp_max} -
+                                                      273.15
                                                 )
                                             ) + 0.5
                                         ),
                                         'humidity' =>
-                                          $data->{list}->[$i]->{main}
+                                          $data->{hourly}->[$i]->{main}
                                           ->{humidity},
                                         'condition' => encode_utf8(
-                                            $data->{list}->[$i]->{weather}->[0]
-                                              ->{description}
+                                            $data->{hourly}->[$i]->{weather}
+                                              ->[0]->{description}
                                         ),
                                         'pressure' => int(
                                             sprintf( "%.1f",
-                                                $data->{list}->[$i]->{main}
+                                                $data->{hourly}->[$i]->{main}
                                                   ->{pressure} ) + 0.5
                                         ),
                                         'wind' => int(
                                             sprintf(
                                                 "%.1f",
                                                 (
-                                                    $data->{list}->[$i]->{wind}
-                                                      ->{speed} * 3.6
+                                                    $data->{hourly}->[$i]
+                                                      ->{wind}->{speed} * 3.6
                                                 )
                                             ) + 0.5
                                         ),
@@ -562,8 +567,8 @@ sub _ProcessingRetrieveData {
                                             sprintf(
                                                 "%.1f",
                                                 (
-                                                    $data->{list}->[$i]->{wind}
-                                                      ->{speed} * 3.6
+                                                    $data->{hourly}->[$i]
+                                                      ->{wind}->{speed} * 3.6
                                                 )
                                             ) + 0.5
                                         ),
@@ -571,37 +576,36 @@ sub _ProcessingRetrieveData {
                                             sprintf(
                                                 "%.1f",
                                                 (
-                                                    $data->{list}->[$i]->{wind}
-                                                      ->{gust} * 3.6
+                                                    $data->{hourly}->[$i]
+                                                      ->{wind}->{gust} * 3.6
                                                 )
                                             ) + 0.5
                                         ),
                                         'cloudCover' =>
-                                          $data->{list}->[$i]->{clouds}->{all},
+                                          $data->{hourly}->[$i]->{clouds}
+                                          ->{all},
                                         'code' => $codes{
-                                            $data->{list}->[$i]->{weather}->[0]
-                                              ->{id}
+                                            $data->{hourly}->[$i]->{weather}
+                                              ->[0]->{id}
                                         },
                                         'iconAPI' =>
-                                          $data->{list}->[$i]->{weather}->[0]
+                                          $data->{hourly}->[$i]->{weather}->[0]
                                           ->{icon},
                                         'rain1h' =>
-                                          $data->{list}->[$i]->{rain}->{'1h'},
+                                          $data->{hourly}->[$i]->{rain}->{'1h'},
                                         'rain3h' =>
-                                          $data->{list}->[$i]->{rain}->{'3h'},
+                                          $data->{hourly}->[$i]->{rain}->{'3h'},
                                         'snow1h' =>
-                                          $data->{list}->[$i]->{snow}->{'1h'},
+                                          $data->{hourly}->[$i]->{snow}->{'1h'},
                                         'snow3h' =>
-                                          $data->{list}->[$i]->{snow}->{'3h'},
+                                          $data->{hourly}->[$i]->{snow}->{'3h'},
                                     },
                                 );
 
                                 $i++;
                             }
                         }
-                    }
 
-                    when ('onecall') {
                         if ( ref( $data->{daily} ) eq "ARRAY"
                             && scalar( @{ $data->{daily} } ) > 0 )
                         {
@@ -789,8 +793,7 @@ sub _ProcessingRetrieveData {
     $self->{endpoint} = 'none' if ( $self->{endpoint} eq 'onecall' );
 
     _RetrieveDataFromOpenWeatherMap($self)
-      if ( $self->{endpoint} eq 'weather'
-        || $self->{endpoint} eq 'forecast' );
+      if ( $self->{endpoint} eq 'weather' );
 
     _CallWeatherCallbackFn($self) if ( $self->{endpoint} eq 'none' );
 
@@ -824,8 +827,8 @@ sub _CreateForecastRef {
 
     my $forecastRef = (
         {
-            lat  => $self->{lat},
-            long => $self->{long},
+            lat           => $self->{lat},
+            long          => $self->{long},
             apiMaintainer =>
 'Marko Oldenburg (<a href=https://forum.fhem.de/index.php?action=profile;u=13684>CoolTux</a>)',
             apiVersion =>

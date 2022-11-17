@@ -1,0 +1,1523 @@
+!!!DEBUG!!! Endpoint ist: weather!!!DEBUG!!! Response DATA: $VAR1 = {
+          'id' => 2935132,
+          'main' => {
+                      'grnd_level' => 996,
+                      'temp_min' => '275.94',
+                      'temp' => '276.64',
+                      'feels_like' => '271.67',
+                      'pressure' => 1002,
+                      'temp_max' => '277.57',
+                      'humidity' => 90,
+                      'sea_level' => 1002
+                    },
+          'cod' => 200,
+          'coord' => {
+                       'lat' => '52.3901',
+                       'lon' => '13.1968'
+                     },
+          'timezone' => 3600,
+          'weather' => [
+                         {
+                           'main' => 'Clouds',
+                           'description' => 'Bedeckt',
+                           'id' => 804,
+                           'icon' => '04n'
+                         }
+                       ],
+          'wind' => {
+                      'gust' => '12.2',
+                      'speed' => '7.14',
+                      'deg' => 103
+                    },
+          'name' => 'Dreilinden',
+          'clouds' => {
+                        'all' => 100
+                      },
+          'sys' => {
+                     'id' => 2038087,
+                     'sunrise' => 1668666709,
+                     'sunset' => 1668697964,
+                     'type' => 2,
+                     'country' => 'DE'
+                   },
+          'dt' => 1668708257,
+          'visibility' => 10000,
+          'base' => 'stations'
+        };
+
+!!!DEBUG!!! Endpoint ist: onecall!!!DEBUG!!! Response DATA: $VAR1 = {
+          'timezone' => 'Europe/Berlin',
+          'timezone_offset' => 3600,
+          'daily' => [
+                       {
+                         'sunset' => 1668697964,
+                         'moonrise' => 0,
+                         'humidity' => 76,
+                         'clouds' => 100,
+                         'wind_gust' => '13.89',
+                         'pressure' => 1003,
+                         'dt' => 1668679200,
+                         'moonset' => 1668690780,
+                         'feels_like' => {
+                                           'morn' => '272.6',
+                                           'eve' => '272.24',
+                                           'night' => '271.21',
+                                           'day' => '273.02'
+                                         },
+                         'dew_point' => '274.06',
+                         'sunrise' => 1668666709,
+                         'weather' => [
+                                        {
+                                          'main' => 'Rain',
+                                          'description' => 'Leichter Regen',
+                                          'id' => 500,
+                                          'icon' => '10d'
+                                        }
+                                      ],
+                         'rain' => '1.54',
+                         'temp' => {
+                                     'morn' => '277.24',
+                                     'eve' => '277.13',
+                                     'max' => '278.68',
+                                     'night' => '275.86',
+                                     'min' => '275.86',
+                                     'day' => '277.91'
+                                   },
+                         'uvi' => '0.61',
+                         'wind_speed' => '7.97',
+                         'moon_phase' => '0.78',
+                         'pop' => '0.73',
+                         'wind_deg' => 109
+                       },
+                       {
+                         'moon_phase' => '0.81',
+                         'uvi' => '0.57',
+                         'wind_speed' => '6.3',
+                         'temp' => {
+                                     'night' => '271.21',
+                                     'eve' => '274.04',
+                                     'morn' => '274.75',
+                                     'max' => '276.16',
+                                     'day' => '274.87',
+                                     'min' => '271.21'
+                                   },
+                         'wind_deg' => 80,
+                         'pop' => '0.64',
+                         'dew_point' => '266.1',
+                         'sunrise' => 1668753214,
+                         'feels_like' => {
+                                           'day' => '269.75',
+                                           'night' => '268.07',
+                                           'eve' => '269.54',
+                                           'morn' => '269.65'
+                                         },
+                         'moonset' => 1668777900,
+                         'weather' => [
+                                        {
+                                          'icon' => '04d',
+                                          'id' => 804,
+                                          'main' => 'Clouds',
+                                          'description' => 'Bedeckt'
+                                        }
+                                      ],
+                         'wind_gust' => 13,
+                         'clouds' => 88,
+                         'pressure' => 1008,
+                         'dt' => 1668765600,
+                         'sunset' => 1668784284,
+                         'humidity' => 52,
+                         'moonrise' => 1668726960
+                       },
+                       {
+                         'dew_point' => '266.22',
+                         'sunrise' => 1668839718,
+                         'feels_like' => {
+                                           'eve' => '269.78',
+                                           'morn' => '267.78',
+                                           'day' => '273.08',
+                                           'night' => '267.39'
+                                         },
+                         'moonset' => 1668865020,
+                         'weather' => [
+                                        {
+                                          'main' => 'Clouds',
+                                          'description' => 'Bedeckt',
+                                          'id' => 804,
+                                          'icon' => '04d'
+                                        }
+                                      ],
+                         'moon_phase' => '0.84',
+                         'wind_speed' => '2.23',
+                         'uvi' => '0.68',
+                         'temp' => {
+                                     'min' => '270.22',
+                                     'day' => '273.08',
+                                     'max' => '274.08',
+                                     'morn' => '270.31',
+                                     'eve' => '271.57',
+                                     'night' => '270.35'
+                                   },
+                         'wind_deg' => 83,
+                         'pop' => 0,
+                         'sunset' => 1668870607,
+                         'humidity' => 60,
+                         'moonrise' => 1668817920,
+                         'wind_gust' => '3.93',
+                         'clouds' => 98,
+                         'pressure' => 1015,
+                         'dt' => 1668852000
+                       },
+                       {
+                         'wind_deg' => 163,
+                         'pop' => 0,
+                         'moon_phase' => '0.87',
+                         'wind_speed' => '3.12',
+                         'uvi' => '0.63',
+                         'temp' => {
+                                     'night' => '273.94',
+                                     'eve' => '275.16',
+                                     'morn' => '269.75',
+                                     'max' => '275.87',
+                                     'day' => '272.53',
+                                     'min' => '269.57'
+                                   },
+                         'weather' => [
+                                        {
+                                          'id' => 800,
+                                          'description' => 'Klarer Himmel',
+                                          'main' => 'Clear',
+                                          'icon' => '01d'
+                                        }
+                                      ],
+                         'dew_point' => '267.18',
+                         'sunrise' => 1668926222,
+                         'feels_like' => {
+                                           'night' => '270.5',
+                                           'day' => '269.52',
+                                           'morn' => '266.49',
+                                           'eve' => '272.45'
+                                         },
+                         'moonset' => 1668952080,
+                         'dt' => 1668938400,
+                         'clouds' => 8,
+                         'pressure' => 1010,
+                         'wind_gust' => '7.87',
+                         'humidity' => 67,
+                         'moonrise' => 1668908880,
+                         'sunset' => 1668956932
+                       },
+                       {
+                         'sunrise' => 1669012725,
+                         'dew_point' => '275.1',
+                         'moonset' => 1669039200,
+                         'feels_like' => {
+                                           'day' => '274.08',
+                                           'night' => '271.6',
+                                           'eve' => '274.02',
+                                           'morn' => '271.39'
+                                         },
+                         'weather' => [
+                                        {
+                                          'id' => 804,
+                                          'main' => 'Clouds',
+                                          'description' => 'Bedeckt',
+                                          'icon' => '04d'
+                                        }
+                                      ],
+                         'moon_phase' => '0.91',
+                         'temp' => {
+                                     'day' => '276.85',
+                                     'min' => '274.31',
+                                     'night' => '274.53',
+                                     'max' => '277.63',
+                                     'morn' => '274.31',
+                                     'eve' => '276.43'
+                                   },
+                         'wind_speed' => '3.04',
+                         'uvi' => '0.58',
+                         'pop' => '0.02',
+                         'wind_deg' => 171,
+                         'sunset' => 1669043260,
+                         'moonrise' => 1669000020,
+                         'humidity' => 88,
+                         'clouds' => 100,
+                         'pressure' => 1009,
+                         'wind_gust' => '9.03',
+                         'dt' => 1669024800
+                       },
+                       {
+                         'sunset' => 1669129590,
+                         'humidity' => 82,
+                         'moonrise' => 1669091460,
+                         'clouds' => 48,
+                         'wind_gust' => '7.23',
+                         'pressure' => 1005,
+                         'dt' => 1669111200,
+                         'dew_point' => '272.56',
+                         'sunrise' => 1669099226,
+                         'feels_like' => {
+                                           'eve' => '273.5',
+                                           'morn' => '270.61',
+                                           'day' => '271.81',
+                                           'night' => '271.49'
+                                         },
+                         'moonset' => 1669126500,
+                         'weather' => [
+                                        {
+                                          'id' => 802,
+                                          'description' => "M\x{e4}\x{df}ig bew\x{f6}lkt",
+                                          'main' => 'Clouds',
+                                          'icon' => '03d'
+                                        }
+                                      ],
+                         'moon_phase' => '0.94',
+                         'wind_speed' => '3.77',
+                         'uvi' => '0.55',
+                         'temp' => {
+                                     'day' => '275.39',
+                                     'min' => '273.06',
+                                     'night' => '274.03',
+                                     'morn' => '273.73',
+                                     'eve' => '276.24',
+                                     'max' => '278.19'
+                                   },
+                         'wind_deg' => 110,
+                         'pop' => 0
+                       },
+                       {
+                         'wind_gust' => '3.49',
+                         'clouds' => 100,
+                         'pressure' => 1007,
+                         'dt' => 1669197600,
+                         'sunset' => 1669215923,
+                         'humidity' => 78,
+                         'moonrise' => 1669183200,
+                         'moon_phase' => 0,
+                         'wind_speed' => '2.07',
+                         'uvi' => 1,
+                         'temp' => {
+                                     'morn' => '273.32',
+                                     'eve' => '275.73',
+                                     'max' => '276.61',
+                                     'night' => '274.34',
+                                     'min' => '273.32',
+                                     'day' => '274.89'
+                                   },
+                         'wind_deg' => 103,
+                         'pop' => '0.02',
+                         'dew_point' => '271.43',
+                         'sunrise' => 1669185726,
+                         'feels_like' => {
+                                           'night' => '274.34',
+                                           'day' => '272.93',
+                                           'eve' => '275.73',
+                                           'morn' => '270.81'
+                                         },
+                         'moonset' => 1669214100,
+                         'weather' => [
+                                        {
+                                          'icon' => '04d',
+                                          'description' => 'Bedeckt',
+                                          'main' => 'Clouds',
+                                          'id' => 804
+                                        }
+                                      ]
+                       },
+                       {
+                         'moonrise' => 1669275060,
+                         'humidity' => 79,
+                         'sunset' => 1669302259,
+                         'dt' => 1669284000,
+                         'pressure' => 1013,
+                         'clouds' => 73,
+                         'wind_gust' => '2.19',
+                         'weather' => [
+                                        {
+                                          'icon' => '04d',
+                                          'id' => 803,
+                                          'main' => 'Clouds',
+                                          'description' => "\x{dc}berwiegend bew\x{f6}lkt"
+                                        }
+                                      ],
+                         'moonset' => 1669302240,
+                         'feels_like' => {
+                                           'eve' => '275.96',
+                                           'morn' => '274.91',
+                                           'night' => '271.47',
+                                           'day' => '274.51'
+                                         },
+                         'dew_point' => '272.35',
+                         'sunrise' => 1669272225,
+                         'pop' => 0,
+                         'wind_deg' => 137,
+                         'temp' => {
+                                     'night' => '273.77',
+                                     'morn' => '274.91',
+                                     'eve' => '275.96',
+                                     'max' => '278.22',
+                                     'day' => '275.67',
+                                     'min' => '273.62'
+                                   },
+                         'uvi' => 1,
+                         'wind_speed' => '1.96',
+                         'moon_phase' => '0.02'
+                       }
+                     ],
+          'lon' => '13.1968',
+          'hourly' => [
+                        {
+                          'feels_like' => '271.67',
+                          'dew_point' => '275.16',
+                          'weather' => [
+                                         {
+                                           'description' => 'Bedeckt',
+                                           'main' => 'Clouds',
+                                           'id' => 804,
+                                           'icon' => '04n'
+                                         }
+                                       ],
+                          'wind_speed' => '7.14',
+                          'uvi' => 0,
+                          'temp' => '276.64',
+                          'wind_deg' => 103,
+                          'pop' => '0.42',
+                          'humidity' => 90,
+                          'wind_gust' => '12.2',
+                          'clouds' => 100,
+                          'pressure' => 1002,
+                          'visibility' => 10000,
+                          'dt' => 1668708000
+                        },
+                        {
+                          'feels_like' => '271.74',
+                          'dew_point' => '274.82',
+                          'rain' => {
+                                      '1h' => '0.42'
+                                    },
+                          'weather' => [
+                                         {
+                                           'icon' => '10n',
+                                           'id' => 500,
+                                           'description' => 'Leichter Regen',
+                                           'main' => 'Rain'
+                                         }
+                                       ],
+                          'uvi' => 0,
+                          'wind_speed' => '6.88',
+                          'temp' => '276.62',
+                          'wind_deg' => 100,
+                          'pop' => '0.61',
+                          'humidity' => 88,
+                          'pressure' => 1002,
+                          'wind_gust' => '12.71',
+                          'clouds' => 100,
+                          'visibility' => 10000,
+                          'dt' => 1668711600
+                        },
+                        {
+                          'feels_like' => '271.59',
+                          'dew_point' => '274.76',
+                          'rain' => {
+                                      '1h' => '0.75'
+                                    },
+                          'weather' => [
+                                         {
+                                           'icon' => '10n',
+                                           'id' => 500,
+                                           'description' => 'Leichter Regen',
+                                           'main' => 'Rain'
+                                         }
+                                       ],
+                          'temp' => '276.4',
+                          'uvi' => 0,
+                          'wind_speed' => '6.56',
+                          'pop' => '0.66',
+                          'wind_deg' => 98,
+                          'humidity' => 89,
+                          'wind_gust' => '12.75',
+                          'clouds' => 100,
+                          'pressure' => 1002,
+                          'visibility' => 10000,
+                          'dt' => 1668715200
+                        },
+                        {
+                          'pop' => '0.73',
+                          'wind_deg' => 97,
+                          'temp' => '276.07',
+                          'uvi' => 0,
+                          'wind_speed' => '6.28',
+                          'weather' => [
+                                         {
+                                           'main' => 'Rain',
+                                           'description' => 'Leichter Regen',
+                                           'id' => 500,
+                                           'icon' => '10n'
+                                         }
+                                       ],
+                          'rain' => {
+                                      '1h' => '0.22'
+                                    },
+                          'feels_like' => '271.28',
+                          'dew_point' => '274.9',
+                          'visibility' => 7053,
+                          'dt' => 1668718800,
+                          'clouds' => 100,
+                          'wind_gust' => '12.69',
+                          'pressure' => 1003,
+                          'humidity' => 92
+                        },
+                        {
+                          'pop' => '0.72',
+                          'wind_deg' => 94,
+                          'temp' => '275.86',
+                          'uvi' => 0,
+                          'wind_speed' => '5.85',
+                          'rain' => {
+                                      '1h' => '0.15'
+                                    },
+                          'weather' => [
+                                         {
+                                           'icon' => '10n',
+                                           'description' => 'Leichter Regen',
+                                           'main' => 'Rain',
+                                           'id' => 500
+                                         }
+                                       ],
+                          'feels_like' => '271.21',
+                          'dew_point' => '274.39',
+                          'visibility' => 10000,
+                          'dt' => 1668722400,
+                          'wind_gust' => '12.01',
+                          'clouds' => 100,
+                          'pressure' => 1003,
+                          'humidity' => 90
+                        },
+                        {
+                          'dew_point' => '273.5',
+                          'feels_like' => '271.19',
+                          'weather' => [
+                                         {
+                                           'id' => 804,
+                                           'main' => 'Clouds',
+                                           'description' => 'Bedeckt',
+                                           'icon' => '04n'
+                                         }
+                                       ],
+                          'wind_speed' => '5.62',
+                          'uvi' => 0,
+                          'temp' => '275.76',
+                          'wind_deg' => 93,
+                          'pop' => '0.64',
+                          'humidity' => 85,
+                          'wind_gust' => '11.28',
+                          'clouds' => 100,
+                          'pressure' => 1003,
+                          'dt' => 1668726000,
+                          'visibility' => 10000
+                        },
+                        {
+                          'weather' => [
+                                         {
+                                           'icon' => '04n',
+                                           'id' => 804,
+                                           'main' => 'Clouds',
+                                           'description' => 'Bedeckt'
+                                         }
+                                       ],
+                          'feels_like' => '271.25',
+                          'dew_point' => '272.46',
+                          'pop' => '0.6',
+                          'wind_deg' => 89,
+                          'temp' => '275.81',
+                          'wind_speed' => '5.63',
+                          'uvi' => 0,
+                          'humidity' => 79,
+                          'visibility' => 10000,
+                          'dt' => 1668729600,
+                          'wind_gust' => '10.97',
+                          'pressure' => 1003,
+                          'clouds' => 100
+                        },
+                        {
+                          'clouds' => 100,
+                          'wind_gust' => '11.12',
+                          'pressure' => 1003,
+                          'visibility' => 10000,
+                          'dt' => 1668733200,
+                          'humidity' => 74,
+                          'wind_speed' => '5.94',
+                          'uvi' => 0,
+                          'temp' => '275.68',
+                          'wind_deg' => 84,
+                          'pop' => 0,
+                          'feels_like' => '270.94',
+                          'dew_point' => '271.41',
+                          'weather' => [
+                                         {
+                                           'icon' => '04n',
+                                           'main' => 'Clouds',
+                                           'description' => 'Bedeckt',
+                                           'id' => 804
+                                         }
+                                       ]
+                        },
+                        {
+                          'humidity' => 72,
+                          'wind_gust' => '10.72',
+                          'clouds' => 100,
+                          'pressure' => 1004,
+                          'dt' => 1668736800,
+                          'visibility' => 10000,
+                          'dew_point' => '270.95',
+                          'feels_like' => '271.04',
+                          'weather' => [
+                                         {
+                                           'icon' => '04n',
+                                           'description' => 'Bedeckt',
+                                           'main' => 'Clouds',
+                                           'id' => 804
+                                         }
+                                       ],
+                          'temp' => '275.45',
+                          'wind_speed' => '5.14',
+                          'uvi' => 0,
+                          'pop' => 0,
+                          'wind_deg' => 89
+                        },
+                        {
+                          'weather' => [
+                                         {
+                                           'id' => 804,
+                                           'description' => 'Bedeckt',
+                                           'main' => 'Clouds',
+                                           'icon' => '04n'
+                                         }
+                                       ],
+                          'feels_like' => '270.61',
+                          'dew_point' => '270.75',
+                          'wind_deg' => 84,
+                          'pop' => 0,
+                          'uvi' => 0,
+                          'wind_speed' => '5.34',
+                          'temp' => '275.19',
+                          'humidity' => 73,
+                          'visibility' => 10000,
+                          'dt' => 1668740400,
+                          'clouds' => 100,
+                          'wind_gust' => '10.26',
+                          'pressure' => 1004
+                        },
+                        {
+                          'pop' => 0,
+                          'wind_deg' => 77,
+                          'temp' => '274.75',
+                          'uvi' => 0,
+                          'wind_speed' => '6.17',
+                          'weather' => [
+                                         {
+                                           'main' => 'Clouds',
+                                           'description' => 'Bedeckt',
+                                           'id' => 804,
+                                           'icon' => '04n'
+                                         }
+                                       ],
+                          'dew_point' => '270.39',
+                          'feels_like' => '269.65',
+                          'dt' => 1668744000,
+                          'visibility' => 10000,
+                          'clouds' => 100,
+                          'wind_gust' => '11.93',
+                          'pressure' => 1004,
+                          'humidity' => 73
+                        },
+                        {
+                          'wind_deg' => 80,
+                          'pop' => 0,
+                          'uvi' => 0,
+                          'wind_speed' => '6.09',
+                          'temp' => '274.27',
+                          'weather' => [
+                                         {
+                                           'icon' => '04n',
+                                           'id' => 804,
+                                           'description' => 'Bedeckt',
+                                           'main' => 'Clouds'
+                                         }
+                                       ],
+                          'dew_point' => '269.84',
+                          'feels_like' => '269.08',
+                          'dt' => 1668747600,
+                          'visibility' => 10000,
+                          'wind_gust' => '12.46',
+                          'clouds' => 100,
+                          'pressure' => 1005,
+                          'humidity' => 72
+                        },
+                        {
+                          'humidity' => 72,
+                          'clouds' => 100,
+                          'wind_gust' => '12.57',
+                          'pressure' => 1005,
+                          'visibility' => 10000,
+                          'dt' => 1668751200,
+                          'feels_like' => '268.51',
+                          'dew_point' => '269.29',
+                          'weather' => [
+                                         {
+                                           'description' => 'Bedeckt',
+                                           'main' => 'Clouds',
+                                           'id' => 804,
+                                           'icon' => '04n'
+                                         }
+                                       ],
+                          'wind_speed' => '6.08',
+                          'uvi' => 0,
+                          'temp' => '273.82',
+                          'wind_deg' => 80,
+                          'pop' => 0
+                        },
+                        {
+                          'humidity' => 69,
+                          'clouds' => 100,
+                          'wind_gust' => 13,
+                          'pressure' => 1006,
+                          'dt' => 1668754800,
+                          'visibility' => 10000,
+                          'dew_point' => '268.4',
+                          'feels_like' => '268.05',
+                          'weather' => [
+                                         {
+                                           'icon' => '04d',
+                                           'main' => 'Clouds',
+                                           'description' => 'Bedeckt',
+                                           'id' => 804
+                                         }
+                                       ],
+                          'wind_speed' => '6.12',
+                          'uvi' => 0,
+                          'temp' => '273.47',
+                          'wind_deg' => 79,
+                          'pop' => 0
+                        },
+                        {
+                          'dew_point' => '267.74',
+                          'feels_like' => '268.16',
+                          'weather' => [
+                                         {
+                                           'description' => 'Bedeckt',
+                                           'main' => 'Clouds',
+                                           'id' => 804,
+                                           'icon' => '04d'
+                                         }
+                                       ],
+                          'temp' => '273.49',
+                          'wind_speed' => '5.94',
+                          'uvi' => '0.06',
+                          'pop' => 0,
+                          'wind_deg' => 80,
+                          'humidity' => 65,
+                          'clouds' => 99,
+                          'wind_gust' => '12.76',
+                          'pressure' => 1007,
+                          'dt' => 1668758400,
+                          'visibility' => 10000
+                        },
+                        {
+                          'wind_deg' => 80,
+                          'pop' => 0,
+                          'wind_speed' => '6.08',
+                          'uvi' => '0.16',
+                          'temp' => '274.01',
+                          'weather' => [
+                                         {
+                                           'icon' => '04d',
+                                           'description' => 'Bedeckt',
+                                           'main' => 'Clouds',
+                                           'id' => 804
+                                         }
+                                       ],
+                          'dew_point' => '266.97',
+                          'feels_like' => '268.75',
+                          'dt' => 1668762000,
+                          'visibility' => 10000,
+                          'clouds' => 98,
+                          'wind_gust' => '12.35',
+                          'pressure' => 1008,
+                          'humidity' => 59
+                        },
+                        {
+                          'wind_deg' => 82,
+                          'pop' => 0,
+                          'uvi' => '0.47',
+                          'wind_speed' => '6.28',
+                          'temp' => '274.87',
+                          'weather' => [
+                                         {
+                                           'icon' => '04d',
+                                           'description' => 'Bedeckt',
+                                           'main' => 'Clouds',
+                                           'id' => 804
+                                         }
+                                       ],
+                          'feels_like' => '269.75',
+                          'dew_point' => '266.1',
+                          'visibility' => 10000,
+                          'dt' => 1668765600,
+                          'pressure' => 1008,
+                          'wind_gust' => '10.99',
+                          'clouds' => 88,
+                          'humidity' => 52
+                        },
+                        {
+                          'weather' => [
+                                         {
+                                           'icon' => '04d',
+                                           'main' => 'Clouds',
+                                           'description' => "\x{dc}berwiegend bew\x{f6}lkt",
+                                           'id' => 803
+                                         }
+                                       ],
+                          'feels_like' => '270.78',
+                          'dew_point' => '265.68',
+                          'pop' => 0,
+                          'wind_deg' => 80,
+                          'temp' => '275.68',
+                          'uvi' => '0.57',
+                          'wind_speed' => '6.3',
+                          'humidity' => 48,
+                          'visibility' => 10000,
+                          'dt' => 1668769200,
+                          'wind_gust' => '9.62',
+                          'clouds' => 75,
+                          'pressure' => 1008
+                        },
+                        {
+                          'weather' => [
+                                         {
+                                           'id' => 803,
+                                           'main' => 'Clouds',
+                                           'description' => "\x{dc}berwiegend bew\x{f6}lkt",
+                                           'icon' => '04d'
+                                         }
+                                       ],
+                          'feels_like' => '271.45',
+                          'dew_point' => '265.86',
+                          'pop' => 0,
+                          'wind_deg' => 79,
+                          'temp' => '276.11',
+                          'uvi' => '0.51',
+                          'wind_speed' => '6.01',
+                          'humidity' => 47,
+                          'visibility' => 10000,
+                          'dt' => 1668772800,
+                          'clouds' => 63,
+                          'wind_gust' => '8.61',
+                          'pressure' => 1009
+                        },
+                        {
+                          'visibility' => 10000,
+                          'dt' => 1668776400,
+                          'wind_gust' => '7.9',
+                          'clouds' => 2,
+                          'pressure' => 1009,
+                          'humidity' => 48,
+                          'pop' => 0,
+                          'wind_deg' => 78,
+                          'temp' => '276.16',
+                          'uvi' => '0.44',
+                          'wind_speed' => '5.55',
+                          'weather' => [
+                                         {
+                                           'main' => 'Clear',
+                                           'description' => 'Klarer Himmel',
+                                           'id' => 800,
+                                           'icon' => '01d'
+                                         }
+                                       ],
+                          'feels_like' => '271.73',
+                          'dew_point' => '266.24'
+                        },
+                        {
+                          'weather' => [
+                                         {
+                                           'icon' => '01d',
+                                           'main' => 'Clear',
+                                           'description' => 'Klarer Himmel',
+                                           'id' => 800
+                                         }
+                                       ],
+                          'feels_like' => '271.33',
+                          'dew_point' => '266.57',
+                          'pop' => 0,
+                          'wind_deg' => 76,
+                          'temp' => '275.71',
+                          'uvi' => '0.21',
+                          'wind_speed' => '5.21',
+                          'humidity' => 51,
+                          'visibility' => 10000,
+                          'dt' => 1668780000,
+                          'clouds' => 4,
+                          'wind_gust' => '8.05',
+                          'pressure' => 1009
+                        },
+                        {
+                          'weather' => [
+                                         {
+                                           'main' => 'Clear',
+                                           'description' => 'Klarer Himmel',
+                                           'id' => 800,
+                                           'icon' => '01d'
+                                         }
+                                       ],
+                          'dew_point' => '266.69',
+                          'feels_like' => '270.22',
+                          'pop' => 0,
+                          'wind_deg' => 72,
+                          'temp' => '274.72',
+                          'uvi' => 0,
+                          'wind_speed' => '4.96',
+                          'humidity' => 55,
+                          'dt' => 1668783600,
+                          'visibility' => 10000,
+                          'wind_gust' => '9.04',
+                          'clouds' => 4,
+                          'pressure' => 1010
+                        },
+                        {
+                          'humidity' => 59,
+                          'pressure' => 1011,
+                          'wind_gust' => '9.44',
+                          'clouds' => 4,
+                          'visibility' => 10000,
+                          'dt' => 1668787200,
+                          'feels_like' => '269.54',
+                          'dew_point' => '266.84',
+                          'weather' => [
+                                         {
+                                           'icon' => '01n',
+                                           'main' => 'Clear',
+                                           'description' => 'Klarer Himmel',
+                                           'id' => 800
+                                         }
+                                       ],
+                          'wind_speed' => '4.66',
+                          'uvi' => 0,
+                          'temp' => '274.04',
+                          'wind_deg' => 71,
+                          'pop' => 0
+                        },
+                        {
+                          'humidity' => 61,
+                          'wind_gust' => '9.44',
+                          'clouds' => 4,
+                          'pressure' => 1011,
+                          'dt' => 1668790800,
+                          'visibility' => 10000,
+                          'dew_point' => '267.02',
+                          'feels_like' => '269.16',
+                          'weather' => [
+                                         {
+                                           'icon' => '01n',
+                                           'id' => 800,
+                                           'description' => 'Klarer Himmel',
+                                           'main' => 'Clear'
+                                         }
+                                       ],
+                          'temp' => '273.61',
+                          'wind_speed' => '4.42',
+                          'uvi' => 0,
+                          'pop' => 0,
+                          'wind_deg' => 69
+                        },
+                        {
+                          'wind_deg' => 70,
+                          'pop' => 0,
+                          'uvi' => 0,
+                          'wind_speed' => '4.1',
+                          'temp' => '273.15',
+                          'weather' => [
+                                         {
+                                           'main' => 'Clear',
+                                           'description' => 'Klarer Himmel',
+                                           'id' => 800,
+                                           'icon' => '01n'
+                                         }
+                                       ],
+                          'dew_point' => '267.15',
+                          'feels_like' => '268.8',
+                          'dt' => 1668794400,
+                          'visibility' => 10000,
+                          'wind_gust' => '9.24',
+                          'clouds' => 4,
+                          'pressure' => 1012,
+                          'humidity' => 64
+                        },
+                        {
+                          'pop' => 0,
+                          'wind_deg' => 73,
+                          'temp' => '272.53',
+                          'wind_speed' => '3.54',
+                          'uvi' => 0,
+                          'weather' => [
+                                         {
+                                           'icon' => '01n',
+                                           'id' => 800,
+                                           'description' => 'Klarer Himmel',
+                                           'main' => 'Clear'
+                                         }
+                                       ],
+                          'feels_like' => '268.45',
+                          'dew_point' => '267.17',
+                          'visibility' => 10000,
+                          'dt' => 1668798000,
+                          'clouds' => 5,
+                          'wind_gust' => '8.35',
+                          'pressure' => 1012,
+                          'humidity' => 67
+                        },
+                        {
+                          'weather' => [
+                                         {
+                                           'description' => 'Klarer Himmel',
+                                           'main' => 'Clear',
+                                           'id' => 800,
+                                           'icon' => '01n'
+                                         }
+                                       ],
+                          'dew_point' => '267.15',
+                          'feels_like' => '268.23',
+                          'wind_deg' => 73,
+                          'pop' => 0,
+                          'uvi' => 0,
+                          'wind_speed' => '2.94',
+                          'temp' => '271.92',
+                          'humidity' => 70,
+                          'dt' => 1668801600,
+                          'visibility' => 10000,
+                          'clouds' => 3,
+                          'wind_gust' => '7.03',
+                          'pressure' => 1013
+                        },
+                        {
+                          'wind_speed' => '2.48',
+                          'uvi' => 0,
+                          'temp' => '271.4',
+                          'wind_deg' => 76,
+                          'pop' => 0,
+                          'feels_like' => '268.08',
+                          'dew_point' => '267.11',
+                          'weather' => [
+                                         {
+                                           'icon' => '01n',
+                                           'id' => 800,
+                                           'description' => 'Klarer Himmel',
+                                           'main' => 'Clear'
+                                         }
+                                       ],
+                          'clouds' => 4,
+                          'wind_gust' => '5.24',
+                          'pressure' => 1013,
+                          'visibility' => 10000,
+                          'dt' => 1668805200,
+                          'humidity' => 73
+                        },
+                        {
+                          'humidity' => 74,
+                          'wind_gust' => '4.22',
+                          'clouds' => 22,
+                          'pressure' => 1013,
+                          'visibility' => 10000,
+                          'dt' => 1668808800,
+                          'feels_like' => '268.07',
+                          'dew_point' => '267.07',
+                          'weather' => [
+                                         {
+                                           'id' => 801,
+                                           'description' => 'Ein paar Wolken',
+                                           'main' => 'Clouds',
+                                           'icon' => '02n'
+                                         }
+                                       ],
+                          'uvi' => 0,
+                          'wind_speed' => '2.29',
+                          'temp' => '271.21',
+                          'wind_deg' => 82,
+                          'pop' => 0
+                        },
+                        {
+                          'dew_point' => '267.06',
+                          'feels_like' => '268.01',
+                          'weather' => [
+                                         {
+                                           'icon' => '03n',
+                                           'id' => 802,
+                                           'main' => 'Clouds',
+                                           'description' => "M\x{e4}\x{df}ig bew\x{f6}lkt"
+                                         }
+                                       ],
+                          'temp' => '271.1',
+                          'wind_speed' => '2.23',
+                          'uvi' => 0,
+                          'pop' => 0,
+                          'wind_deg' => 83,
+                          'humidity' => 74,
+                          'wind_gust' => '3.93',
+                          'pressure' => 1014,
+                          'clouds' => 27,
+                          'dt' => 1668812400,
+                          'visibility' => 10000
+                        },
+                        {
+                          'humidity' => 76,
+                          'clouds' => 24,
+                          'wind_gust' => '3.47',
+                          'pressure' => 1014,
+                          'visibility' => 10000,
+                          'dt' => 1668816000,
+                          'feels_like' => '267.7',
+                          'dew_point' => '267.03',
+                          'weather' => [
+                                         {
+                                           'id' => 801,
+                                           'main' => 'Clouds',
+                                           'description' => 'Ein paar Wolken',
+                                           'icon' => '02n'
+                                         }
+                                       ],
+                          'wind_speed' => '2.22',
+                          'uvi' => 0,
+                          'temp' => '270.82',
+                          'wind_deg' => 77,
+                          'pop' => 0
+                        },
+                        {
+                          'feels_like' => '267.7',
+                          'dew_point' => '266.98',
+                          'weather' => [
+                                         {
+                                           'description' => 'Klarer Himmel',
+                                           'main' => 'Clear',
+                                           'id' => 800,
+                                           'icon' => '01n'
+                                         }
+                                       ],
+                          'temp' => '270.64',
+                          'wind_speed' => '2.05',
+                          'uvi' => 0,
+                          'pop' => 0,
+                          'wind_deg' => 77,
+                          'humidity' => 76,
+                          'clouds' => 5,
+                          'wind_gust' => '3.07',
+                          'pressure' => 1015,
+                          'visibility' => 10000,
+                          'dt' => 1668819600
+                        },
+                        {
+                          'clouds' => 5,
+                          'wind_gust' => '2.83',
+                          'pressure' => 1015,
+                          'dt' => 1668823200,
+                          'visibility' => 10000,
+                          'humidity' => 77,
+                          'temp' => '270.51',
+                          'wind_speed' => 2,
+                          'uvi' => 0,
+                          'pop' => 0,
+                          'wind_deg' => 76,
+                          'dew_point' => '266.93',
+                          'feels_like' => '267.62',
+                          'weather' => [
+                                         {
+                                           'icon' => '01n',
+                                           'id' => 800,
+                                           'description' => 'Klarer Himmel',
+                                           'main' => 'Clear'
+                                         }
+                                       ]
+                        },
+                        {
+                          'dew_point' => '266.86',
+                          'feels_like' => '267.66',
+                          'weather' => [
+                                         {
+                                           'id' => 800,
+                                           'main' => 'Clear',
+                                           'description' => 'Klarer Himmel',
+                                           'icon' => '01n'
+                                         }
+                                       ],
+                          'wind_speed' => '1.88',
+                          'uvi' => 0,
+                          'temp' => '270.4',
+                          'wind_deg' => 83,
+                          'pop' => 0,
+                          'humidity' => 77,
+                          'wind_gust' => '2.57',
+                          'pressure' => 1015,
+                          'clouds' => 5,
+                          'dt' => 1668826800,
+                          'visibility' => 10000
+                        },
+                        {
+                          'humidity' => 77,
+                          'visibility' => 10000,
+                          'dt' => 1668830400,
+                          'wind_gust' => '2.32',
+                          'pressure' => 1015,
+                          'clouds' => 12,
+                          'weather' => [
+                                         {
+                                           'description' => 'Ein paar Wolken',
+                                           'main' => 'Clouds',
+                                           'id' => 801,
+                                           'icon' => '02n'
+                                         }
+                                       ],
+                          'feels_like' => '267.78',
+                          'dew_point' => '266.78',
+                          'pop' => 0,
+                          'wind_deg' => 79,
+                          'temp' => '270.31',
+                          'uvi' => 0,
+                          'wind_speed' => '1.73'
+                        },
+                        {
+                          'humidity' => 76,
+                          'visibility' => 10000,
+                          'dt' => 1668834000,
+                          'clouds' => 30,
+                          'wind_gust' => '2.17',
+                          'pressure' => 1015,
+                          'weather' => [
+                                         {
+                                           'id' => 802,
+                                           'description' => "M\x{e4}\x{df}ig bew\x{f6}lkt",
+                                           'main' => 'Clouds',
+                                           'icon' => '03n'
+                                         }
+                                       ],
+                          'feels_like' => '268.16',
+                          'dew_point' => '266.72',
+                          'wind_deg' => 100,
+                          'pop' => 0,
+                          'uvi' => 0,
+                          'wind_speed' => '1.58',
+                          'temp' => '270.43'
+                        },
+                        {
+                          'temp' => '270.22',
+                          'uvi' => 0,
+                          'wind_speed' => '1.41',
+                          'pop' => 0,
+                          'wind_deg' => 91,
+                          'dew_point' => '266.64',
+                          'feels_like' => '268.22',
+                          'weather' => [
+                                         {
+                                           'id' => 802,
+                                           'main' => 'Clouds',
+                                           'description' => "M\x{e4}\x{df}ig bew\x{f6}lkt",
+                                           'icon' => '03n'
+                                         }
+                                       ],
+                          'clouds' => 41,
+                          'wind_gust' => '1.88',
+                          'pressure' => 1015,
+                          'dt' => 1668837600,
+                          'visibility' => 10000,
+                          'humidity' => 77
+                        },
+                        {
+                          'wind_speed' => '1.24',
+                          'uvi' => 0,
+                          'temp' => '270.4',
+                          'wind_deg' => 106,
+                          'pop' => 0,
+                          'feels_like' => '270.4',
+                          'dew_point' => '266.59',
+                          'weather' => [
+                                         {
+                                           'icon' => '04d',
+                                           'id' => 804,
+                                           'main' => 'Clouds',
+                                           'description' => 'Bedeckt'
+                                         }
+                                       ],
+                          'wind_gust' => '1.75',
+                          'clouds' => 100,
+                          'pressure' => 1015,
+                          'visibility' => 10000,
+                          'dt' => 1668841200,
+                          'humidity' => 76
+                        },
+                        {
+                          'visibility' => 10000,
+                          'dt' => 1668844800,
+                          'wind_gust' => '1.9',
+                          'clouds' => 100,
+                          'pressure' => 1015,
+                          'humidity' => 71,
+                          'wind_deg' => 130,
+                          'pop' => 0,
+                          'uvi' => '0.15',
+                          'wind_speed' => '1.18',
+                          'temp' => '271.29',
+                          'weather' => [
+                                         {
+                                           'icon' => '04d',
+                                           'id' => 804,
+                                           'description' => 'Bedeckt',
+                                           'main' => 'Clouds'
+                                         }
+                                       ],
+                          'feels_like' => '271.29',
+                          'dew_point' => '266.61'
+                        },
+                        {
+                          'humidity' => 65,
+                          'dt' => 1668848400,
+                          'visibility' => 10000,
+                          'clouds' => 97,
+                          'wind_gust' => '1.69',
+                          'pressure' => 1015,
+                          'weather' => [
+                                         {
+                                           'icon' => '04d',
+                                           'main' => 'Clouds',
+                                           'description' => 'Bedeckt',
+                                           'id' => 804
+                                         }
+                                       ],
+                          'dew_point' => '266.47',
+                          'feels_like' => '272.33',
+                          'pop' => 0,
+                          'wind_deg' => 134,
+                          'temp' => '272.33',
+                          'uvi' => '0.36',
+                          'wind_speed' => '1.25'
+                        },
+                        {
+                          'clouds' => 98,
+                          'wind_gust' => '1.48',
+                          'pressure' => 1015,
+                          'visibility' => 10000,
+                          'dt' => 1668852000,
+                          'humidity' => 60,
+                          'temp' => '273.08',
+                          'wind_speed' => '1.18',
+                          'uvi' => '0.57',
+                          'pop' => 0,
+                          'wind_deg' => 140,
+                          'feels_like' => '273.08',
+                          'dew_point' => '266.22',
+                          'weather' => [
+                                         {
+                                           'id' => 804,
+                                           'description' => 'Bedeckt',
+                                           'main' => 'Clouds',
+                                           'icon' => '04d'
+                                         }
+                                       ]
+                        },
+                        {
+                          'feels_like' => '273.67',
+                          'dew_point' => '265.95',
+                          'weather' => [
+                                         {
+                                           'icon' => '04d',
+                                           'main' => 'Clouds',
+                                           'description' => 'Bedeckt',
+                                           'id' => 804
+                                         }
+                                       ],
+                          'wind_speed' => '1.02',
+                          'uvi' => '0.68',
+                          'temp' => '273.67',
+                          'wind_deg' => 156,
+                          'pop' => 0,
+                          'humidity' => 56,
+                          'wind_gust' => '1.09',
+                          'clouds' => 98,
+                          'pressure' => 1015,
+                          'visibility' => 10000,
+                          'dt' => 1668855600
+                        },
+                        {
+                          'wind_deg' => 154,
+                          'pop' => 0,
+                          'wind_speed' => '0.98',
+                          'uvi' => '0.62',
+                          'temp' => '273.98',
+                          'weather' => [
+                                         {
+                                           'id' => 804,
+                                           'description' => 'Bedeckt',
+                                           'main' => 'Clouds',
+                                           'icon' => '04d'
+                                         }
+                                       ],
+                          'feels_like' => '273.98',
+                          'dew_point' => '265.74',
+                          'visibility' => 10000,
+                          'dt' => 1668859200,
+                          'clouds' => 99,
+                          'wind_gust' => '1.17',
+                          'pressure' => 1015,
+                          'humidity' => 54
+                        },
+                        {
+                          'wind_speed' => '1.15',
+                          'uvi' => '0.41',
+                          'temp' => '274.08',
+                          'wind_deg' => 149,
+                          'pop' => 0,
+                          'dew_point' => '265.58',
+                          'feels_like' => '274.08',
+                          'weather' => [
+                                         {
+                                           'icon' => '04d',
+                                           'description' => 'Bedeckt',
+                                           'main' => 'Clouds',
+                                           'id' => 804
+                                         }
+                                       ],
+                          'wind_gust' => '1.38',
+                          'clouds' => 100,
+                          'pressure' => 1014,
+                          'dt' => 1668862800,
+                          'visibility' => 10000,
+                          'humidity' => 53
+                        },
+                        {
+                          'feels_like' => '273.78',
+                          'dew_point' => '265.76',
+                          'weather' => [
+                                         {
+                                           'description' => 'Bedeckt',
+                                           'main' => 'Clouds',
+                                           'id' => 804,
+                                           'icon' => '04d'
+                                         }
+                                       ],
+                          'temp' => '273.78',
+                          'uvi' => '0.19',
+                          'wind_speed' => '1.23',
+                          'pop' => 0,
+                          'wind_deg' => 149,
+                          'humidity' => 55,
+                          'clouds' => 99,
+                          'wind_gust' => '1.71',
+                          'pressure' => 1014,
+                          'visibility' => 10000,
+                          'dt' => 1668866400
+                        },
+                        {
+                          'temp' => '272.43',
+                          'uvi' => 0,
+                          'wind_speed' => '1.43',
+                          'pop' => 0,
+                          'wind_deg' => 153,
+                          'dew_point' => '265.65',
+                          'feels_like' => '270.69',
+                          'weather' => [
+                                         {
+                                           'main' => 'Clouds',
+                                           'description' => 'Bedeckt',
+                                           'id' => 804,
+                                           'icon' => '04d'
+                                         }
+                                       ],
+                          'pressure' => 1014,
+                          'wind_gust' => '2.08',
+                          'clouds' => 86,
+                          'dt' => 1668870000,
+                          'visibility' => 10000,
+                          'humidity' => 60
+                        },
+                        {
+                          'wind_gust' => '1.95',
+                          'clouds' => 68,
+                          'pressure' => 1014,
+                          'dt' => 1668873600,
+                          'visibility' => 10000,
+                          'humidity' => 64,
+                          'temp' => '271.57',
+                          'wind_speed' => '1.39',
+                          'uvi' => 0,
+                          'pop' => 0,
+                          'wind_deg' => 159,
+                          'dew_point' => '265.63',
+                          'feels_like' => '269.78',
+                          'weather' => [
+                                         {
+                                           'icon' => '04n',
+                                           'id' => 803,
+                                           'description' => "\x{dc}berwiegend bew\x{f6}lkt",
+                                           'main' => 'Clouds'
+                                         }
+                                       ]
+                        },
+                        {
+                          'feels_like' => '269.44',
+                          'dew_point' => '265.63',
+                          'weather' => [
+                                         {
+                                           'main' => 'Clouds',
+                                           'description' => "\x{dc}berwiegend bew\x{f6}lkt",
+                                           'id' => 803,
+                                           'icon' => '04n'
+                                         }
+                                       ],
+                          'temp' => '271.2',
+                          'wind_speed' => '1.35',
+                          'uvi' => 0,
+                          'pop' => 0,
+                          'wind_deg' => 154,
+                          'humidity' => 66,
+                          'clouds' => 55,
+                          'wind_gust' => '1.89',
+                          'pressure' => 1014,
+                          'visibility' => 10000,
+                          'dt' => 1668877200
+                        }
+                      ],
+          'current' => {
+                         'wind_deg' => 103,
+                         'temp' => '276.64',
+                         'uvi' => 0,
+                         'wind_speed' => '7.14',
+                         'weather' => [
+                                        {
+                                          'icon' => '04n',
+                                          'id' => 804,
+                                          'main' => 'Clouds',
+                                          'description' => 'Bedeckt'
+                                        }
+                                      ],
+                         'feels_like' => '271.67',
+                         'dew_point' => '275.16',
+                         'sunrise' => 1668666709,
+                         'visibility' => 10000,
+                         'dt' => 1668708257,
+                         'wind_gust' => '12.2',
+                         'pressure' => 1002,
+                         'clouds' => 100,
+                         'humidity' => 90,
+                         'sunset' => 1668697964
+                       },
+          'lat' => '52.3901',
+          'alerts' => [
+                        {
+                          'tags' => [
+                                      'Extreme temperature value'
+                                    ],
+                          'end' => 1668769200,
+                          'description' => "There is a risk of frost (Level 1 of 2).
+Minimum temperature: 0 - -3 \x{b0}C",
+                          'sender_name' => 'Deutscher Wetterdienst',
+                          'start' => 1668718800,
+                          'event' => 'frost'
+                        }
+                      ]
+        };
