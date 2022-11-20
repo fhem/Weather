@@ -118,7 +118,7 @@ eval { use Readonly; 1 }
 
 Readonly my $URL => 'https://api.openweathermap.org/data/2.5/';
 ## URL . 'weather?' for current data
-## URL . 'forecast?' for forecast data
+## URL . 'onecall?' for forecast data
 
 my %codes = (
     200 => 45,
@@ -194,6 +194,7 @@ sub new {
         long      => ( split( ',', $argsRef->{location} ) )[1],
         fetchTime => 0,
         endpoint  => 'none',
+        exclude   => $argsRef->{exclude},
     };
 
     $self->{cachemaxage} = (
@@ -201,8 +202,9 @@ sub new {
         ? $apioptions->{cachemaxage}
         : 900
     );
-    $self->{cached} = _CreateForecastRef($self);
 
+    $self->{cached} = _CreateForecastRef($self);
+     
     bless $self, $class;
     return $self;
 }
@@ -315,7 +317,8 @@ sub _RetrieveDataFromOpenWeatherMap {
           . $self->{long} . '&'
           . 'APPID='
           . $self->{key} . '&' . 'lang='
-          . $self->{lang};
+          . $self->{lang} . '&' . 'exclude='
+          . $self->{exclude};
 
         ::HttpUtils_NonblockingGet($paramRef);
     }
@@ -369,7 +372,8 @@ sub _ProcessingRetrieveData {
             }
             else {
                 ### Debug
-                #                 print 'Response: ' . Dumper $data;
+                        # print '!!! DEBUG !!! - Endpoint: ' . $self->{endpoint} . "\n";
+                        # print '!!! DEBUG !!! - Response: ' . Dumper $data;
                 ###### Ab hier wird die ResponseHash Referenze für die Rückgabe zusammen gestellt
                 $self->{cached}->{current_date_time} =
                   strftimeWrapper( "%a, %e %b %Y %H:%M",
@@ -489,7 +493,7 @@ sub _ProcessingRetrieveData {
                                                 "%.1f",
                                                 (
                                                     $data->{hourly}->[$i]
-                                                      ->{main}->{temp} - 273.15
+                                                      ->{temp} - 273.15
                                                 )
                                             ) + 0.5
                                         ),
@@ -498,52 +502,12 @@ sub _ProcessingRetrieveData {
                                                 "%.1f",
                                                 (
                                                     $data->{hourly}->[$i]
-                                                      ->{main}->{temp} - 273.15
-                                                )
-                                            ) + 0.5
-                                        ),
-                                        'low_c' => int(
-                                            sprintf(
-                                                "%.1f",
-                                                (
-                                                    $data->{hourly}->[$i]
-                                                      ->{main}->{temp_min} -
-                                                      273.15
-                                                )
-                                            ) + 0.5
-                                        ),
-                                        'high_c' => int(
-                                            sprintf(
-                                                "%.1f",
-                                                (
-                                                    $data->{hourly}->[$i]
-                                                      ->{main}->{temp_max} -
-                                                      273.15
-                                                )
-                                            ) + 0.5
-                                        ),
-                                        'tempLow' => int(
-                                            sprintf(
-                                                "%.1f",
-                                                (
-                                                    $data->{hourly}->[$i]
-                                                      ->{main}->{temp_min} -
-                                                      273.15
-                                                )
-                                            ) + 0.5
-                                        ),
-                                        'tempHigh' => int(
-                                            sprintf(
-                                                "%.1f",
-                                                (
-                                                    $data->{hourly}->[$i]
-                                                      ->{main}->{temp_max} -
-                                                      273.15
+                                                      ->{temp} - 273.15
                                                 )
                                             ) + 0.5
                                         ),
                                         'humidity' =>
-                                          $data->{hourly}->[$i]->{main}
+                                          $data->{hourly}->[$i]
                                           ->{humidity},
                                         'condition' => encode_utf8(
                                             $data->{hourly}->[$i]->{weather}
@@ -551,7 +515,7 @@ sub _ProcessingRetrieveData {
                                         ),
                                         'pressure' => int(
                                             sprintf( "%.1f",
-                                                $data->{hourly}->[$i]->{main}
+                                                $data->{hourly}->[$i]
                                                   ->{pressure} ) + 0.5
                                         ),
                                         'wind' => int(
@@ -559,7 +523,7 @@ sub _ProcessingRetrieveData {
                                                 "%.1f",
                                                 (
                                                     $data->{hourly}->[$i]
-                                                      ->{wind}->{speed} * 3.6
+                                                      ->{wind_speed} * 3.6
                                                 )
                                             ) + 0.5
                                         ),
@@ -568,7 +532,7 @@ sub _ProcessingRetrieveData {
                                                 "%.1f",
                                                 (
                                                     $data->{hourly}->[$i]
-                                                      ->{wind}->{speed} * 3.6
+                                                      ->{wind_speed} * 3.6
                                                 )
                                             ) + 0.5
                                         ),
@@ -577,13 +541,13 @@ sub _ProcessingRetrieveData {
                                                 "%.1f",
                                                 (
                                                     $data->{hourly}->[$i]
-                                                      ->{wind}->{gust} * 3.6
+                                                      ->{wind_gust} * 3.6
                                                 )
                                             ) + 0.5
                                         ),
                                         'cloudCover' =>
-                                          $data->{hourly}->[$i]->{clouds}
-                                          ->{all},
+                                          $data->{hourly}->[$i]
+                                          ->{clouds},
                                         'code' => $codes{
                                             $data->{hourly}->[$i]->{weather}
                                               ->[0]->{id}
@@ -592,13 +556,9 @@ sub _ProcessingRetrieveData {
                                           $data->{hourly}->[$i]->{weather}->[0]
                                           ->{icon},
                                         'rain1h' =>
-                                          $data->{hourly}->[$i]->{rain}->{'1h'},
-                                        'rain3h' =>
-                                          $data->{hourly}->[$i]->{rain}->{'3h'},
+                                         $data->{hourly}->[$i]->{rain}->{'1h'},
                                         'snow1h' =>
-                                          $data->{hourly}->[$i]->{snow}->{'1h'},
-                                        'snow3h' =>
-                                          $data->{hourly}->[$i]->{snow}->{'3h'},
+                                         $data->{hourly}->[$i]->{snow}->{'1h'},
                                     },
                                 );
 
@@ -673,6 +633,69 @@ sub _ProcessingRetrieveData {
                                                 )
                                             ) + 0.5
                                         ),
+                                        'temperature_morn' => int(
+                                            sprintf(
+                                                "%.1f",
+                                                (
+                                                    $data->{daily}->[$i]
+                                                      ->{temp}->{morn} - 273.15
+                                                )
+                                            ) + 0.5
+                                        ),
+                                        'temperature_eve' => int(
+                                            sprintf(
+                                                "%.1f",
+                                                (
+                                                    $data->{daily}->[$i]
+                                                      ->{temp}->{eve} - 273.15
+                                                )
+                                            ) + 0.5
+                                        ),
+                                        'temperature_night' => int(
+                                            sprintf(
+                                                "%.1f",
+                                                (
+                                                    $data->{daily}->[$i]
+                                                      ->{temp}->{night} - 273.15
+                                                )
+                                            ) + 0.5
+                                        ),
+                                        'tempFeelsLike_morn' => int(
+                                            sprintf(
+                                                "%.1f",
+                                                (
+                                                    $data->{daily}->[$i]
+                                                      ->{feels_like}->{morn} - 273.15
+                                                )
+                                            ) + 0.5
+                                        ),
+                                        'tempFeelsLike_eve' => int(
+                                            sprintf(
+                                                "%.1f",
+                                                (
+                                                    $data->{daily}->[$i]
+                                                      ->{feels_like}->{eve} - 273.15
+                                                )
+                                            ) + 0.5
+                                        ),
+                                        'tempFeelsLike_night' => int(
+                                            sprintf(
+                                                "%.1f",
+                                                (
+                                                    $data->{daily}->[$i]
+                                                      ->{feels_like}->{night} - 273.15
+                                                )
+                                            ) + 0.5
+                                        ),
+                                        'tempFeelsLike_day' => int(
+                                            sprintf(
+                                                "%.1f",
+                                                (
+                                                    $data->{daily}->[$i]
+                                                      ->{feels_like}->{day} - 273.15
+                                                )
+                                            ) + 0.5
+                                        ),
                                         'temp_c' => int(
                                             sprintf(
                                                 "%.1f",
@@ -715,6 +738,14 @@ sub _ProcessingRetrieveData {
                                                 (
                                                     $data->{daily}->[$i]
                                                       ->{temp}->{max} - 273.15
+                                                )
+                                            ) + 0.5
+                                        ),
+                                        'dew_point' => int(
+                                            sprintf(
+                                                "%.1f",
+                                                (
+                                                    $data->{daily}->[$i]->{dew_point} - 273.15
                                                 )
                                             ) + 0.5
                                         ),
@@ -777,6 +808,47 @@ sub _ProcessingRetrieveData {
                                         'rain' => $data->{daily}->[$i]->{rain},
                                         'snow' => $data->{daily}->[$i]->{snow},
                                         'uvi'  => $data->{daily}->[$i]->{uvi},
+                                    },
+                                );
+
+                                $i++;
+                            }
+                        }
+
+                        if ( ref( $data->{alerts} ) eq "ARRAY"
+                            && scalar( @{ $data->{alerts} } ) > 0 )
+                        {
+                            ## löschen des alten Datensatzes
+                            delete $self->{cached}->{alerts};
+
+                            my $i = 0;
+                            for ( @{ $data->{alerts} } ) {
+                                push(
+                                    @{ $self->{cached}->{alerts} },
+                                    {
+                                        'warn_'.$i.'_End' => strftimeWrapper(
+                                            "%a, %e %b %Y %H:%M",
+                                            localtime(
+                                                ( $data->{alerts}->[$i]->{end} )
+                                                - 3600
+                                            )
+                                        ),
+                                        'warn_'.$i.'_Start' => strftimeWrapper(
+                                            "%a, %e %b %Y %H:%M",
+                                            localtime(
+                                                ( $data->{alerts}->[$i]->{start} )
+                                                - 3600
+                                            )
+                                        ),
+                                        'warn_'.$i.'_Description' => encode_utf8(
+                                            $data->{alerts}->[$i]->{description}
+                                        ),
+                                        'warn_'.$i.'_SenderName' => encode_utf8(
+                                            $data->{alerts}->[$i]->{sender_name}
+                                        ),
+                                        'warn_'.$i.'_Event' => encode_utf8(
+                                            $data->{alerts}->[$i]->{event}
+                                        ),
                                     },
                                 );
 

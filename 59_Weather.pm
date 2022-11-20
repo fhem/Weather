@@ -269,8 +269,9 @@ sub Weather_Initialize($) {
     $hash->{SetFn}   = 'Weather_Set';
     $hash->{AttrList} =
         'disable:0,1 '
-      . 'forecast:hourly,daily,every,off '
+      . 'forecast:multiple-strict,hourly,daily '
       . 'forecastLimit '
+      . 'alerts:0,1 '
       . $readingFnAttributes;
     $hash->{NotifyFn} = 'Weather_Notify';
 
@@ -328,7 +329,12 @@ sub Weather_RetrieveCallbackFn($) {
 
 sub Weather_WriteReadings($$) {
     my ( $hash, $dataRef ) = @_;
-    my $name = $hash->{NAME};
+    my $name    = $hash->{NAME};
+    my $hourly  = ( AttrVal( $name, 'forecast', '' ) =~ m{hourly}xms ? 1: 0 );
+    my $daily   = ( AttrVal( $name, 'forecast', '' ) =~ m{daily}xms ? 1 : 0 );
+    my $alerts  = ( AttrVal( $name, 'forecast', '' ) =~ m{alerts}xms ? 1 : 0 );
+
+
     readingsBeginUpdate($hash);
 
     # delete some unused readings
@@ -381,16 +387,15 @@ sub Weather_WriteReadings($$) {
     }
 
     ### forecast
-    if ( ref( $dataRef->{forecast} ) eq 'HASH'
-        and AttrVal( $name, 'forecast', 'every' ) ne 'off' )
+    if (  ref( $dataRef->{forecast} ) eq 'HASH'
+      and ($hourly or $daily) )
     {
         ## hourly
         if (
                 defined( $dataRef->{forecast}->{hourly} )
             and ref( $dataRef->{forecast}->{hourly} ) eq 'ARRAY'
             and scalar( @{ $dataRef->{forecast}->{hourly} } ) > 0
-            and (  AttrVal( $name, 'forecast', 'every' ) eq 'every'
-                or AttrVal( $name, 'forecast', 'hourly' ) eq 'hourly' )
+            and $hourly
           )
         {
             my $i = 0;
@@ -445,8 +450,7 @@ sub Weather_WriteReadings($$) {
                 defined( $dataRef->{forecast}->{daily} )
             and ref( $dataRef->{forecast}->{daily} ) eq 'ARRAY'
             and scalar( @{ $dataRef->{forecast}->{daily} } ) > 0
-            and (  AttrVal( $name, 'forecast', 'every' ) eq 'every'
-                or AttrVal( $name, 'forecast', 'daily' ) eq 'daily' )
+            and $daily
           )
         {
             my $i = 0;
@@ -496,6 +500,16 @@ sub Weather_WriteReadings($$) {
         }
     }
 
+    if (  ref( $dataRef->{alerts} ) eq 'HASH'
+      and $alerts )
+    {
+      while ( my ( $r, $v ) = each %{ $dataRef->{alerts} } ) {
+            readingsBulkUpdate( $hash, $r, $v )
+              if (  ref( $dataRef->{$r} ) ne 'HASH'
+                and ref( $dataRef->{$r} ) ne 'ARRAY' );
+        }
+    }
+
     my $val = 'T: '
       . $dataRef->{current}->{temperature} . ' °C' . ' '
       . substr( $status_items_txt_i18n{1}, 0, 1 ) . ': '
@@ -529,7 +543,7 @@ sub Weather_GetUpdate($) {
         Weather_RearmTimer( $hash, gettimeofday() + $hash->{INTERVAL} );
     }
     else {
-        #       Weather_RetrieveData($name, 0);
+        $hash->{fhem}->{api}->{exclude} = Weather_parseForcastAttr($hash);
         $hash->{fhem}->{api}->setRetrieveData;
     }
 
@@ -537,6 +551,20 @@ sub Weather_GetUpdate($) {
 }
 
 ###################################
+sub Weather_parseForcastAttr {
+    my $hash      = shift;
+    my $name      = $hash->{NAME};
+    
+    my @exclude   = qw 'alerts minutely hourly daily';
+    my @forecast  = split(',',AttrVal($name,'forcast','') . (AttrVal($name,'alerts',0) ? ',alerts' : ''));
+    my %exclude =();
+
+    @exclude{@exclude} = @exclude;
+    delete @exclude{@forecast};
+
+    return join(',',keys %exclude);
+}
+
 sub Weather_Get($@) {
     my ( $hash, @a ) = @_;
 
@@ -712,6 +740,7 @@ sub Weather_Define($$) {
             location   => $hash->{fhem}->{LOCATION},
             apioptions => $hash->{APIOPTIONS},
             language   => $hash->{LANG}
+            exclude    => Weather_parseForcastAttr($hash),
         }
     );
 
@@ -1373,7 +1402,7 @@ sub WeatherCheckOptions($@) {
   ],
   "release_status": "stable",
   "license": "GPL_2",
-  "version": "v2.1.4",
+  "version": "v2.2.5",
   "author": [
     "Marko Oldenburg <leongaultier@gmail.com>"
   ],
