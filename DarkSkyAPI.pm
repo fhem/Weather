@@ -157,6 +157,8 @@ sub new {
         lat       => ( split( ',', $argsRef->{location} ) )[0],
         long      => ( split( ',', $argsRef->{location} ) )[1],
         fetchTime => 0,
+        forecast  => $argsRef->{forecast},
+        alerts    => $argsRef->{alerts},
     };
 
     $self->{cachemaxage} = (
@@ -187,6 +189,22 @@ sub parseApiOptions($) {
     }
 
     return \%h;
+}
+
+sub setAlerts {
+    my $self        = shift;
+    my $alerts      = shift // 0;
+
+    $self->{alerts} = $alerts;
+    return;
+}
+
+sub setForecast {
+    my $self            = shift;
+    my $forecast         = shift // '';
+
+    $self->{forecast}    = $forecast;
+    return;
 }
 
 sub setFetchTime {

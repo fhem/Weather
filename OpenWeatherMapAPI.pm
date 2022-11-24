@@ -116,7 +116,8 @@ eval { use Readonly; 1 }
   or $missingModul .= 'Readonly ';    # apt install libreadonly-perl
 ## use critic
 
-Readonly my $URL => 'https://api.openweathermap.org/data/2.5/';
+# Readonly my $URL => 'https://api.openweathermap.org/data/2.5/';
+Readonly my $URL => 'https://api.openweathermap.org/data/';
 ## URL . 'weather?' for current data
 ## URL . 'onecall?' for forecast data
 
@@ -180,7 +181,7 @@ my %codes = (
 sub new {
     ### geliefert wird ein Hash
     my ( $class, $argsRef ) = @_;
-    my $apioptions = parseApiOptions( $argsRef->{apioptions} );
+    my $apioptions = _parseApiOptions( $argsRef->{apioptions} );
 
     my $self = {
         devName => $argsRef->{devName},
@@ -194,7 +195,8 @@ sub new {
         long      => ( split( ',', $argsRef->{location} ) )[1],
         fetchTime => 0,
         endpoint  => 'none',
-        exclude   => $argsRef->{exclude},
+        forecast  => $argsRef->{forecast},
+        alerts    => $argsRef->{alerts},
     };
 
     $self->{cachemaxage} = (
@@ -203,13 +205,15 @@ sub new {
         : 900
     );
 
-    $self->{cached} = _CreateForecastRef($self);
+    $self->{apiversion} = ($apioptions->{version} ? $apioptions->{version} : '2.5');
+
+    $self->{cached}     = _CreateForecastRef($self);
      
     bless $self, $class;
     return $self;
 }
 
-sub parseApiOptions {
+sub _parseApiOptions {
     my $apioptions = shift;
 
     my @params;
@@ -226,27 +230,45 @@ sub parseApiOptions {
     return \%h;
 }
 
+sub setAlerts {
+    my $self        = shift;
+    my $alerts      = shift // 0;
+
+    $self->{alerts} = $alerts;
+    return;
+}
+
+sub setForecast {
+    my $self            = shift;
+    my $forecast         = shift // '';
+
+    $self->{forecast}    = $forecast;
+    return;
+}
+
 sub setFetchTime {
     my $self = shift;
 
     $self->{fetchTime} = time();
-    return 0;
+    return;
 }
 
 sub setRetrieveData {
     my $self = shift;
 
     _RetrieveDataFromOpenWeatherMap($self);
-    return 0;
+    return;
 }
 
 sub setLocation {
-    my ( $self, $lat, $long ) = @_;
+    my $self    = shift;
+    my $lat     = shift;
+    my $long    = shift;
 
     $self->{lat}  = $lat;
     $self->{long} = $long;
 
-    return 0;
+    return;
 }
 
 sub getFetchTime {
@@ -312,18 +334,34 @@ sub _RetrieveDataFromOpenWeatherMap {
     else {
         $paramRef->{url} =
             $URL
+          . $self->{apiversion} . '/'
           . $paramRef->{endpoint} . '?' . 'lat='
           . $self->{lat} . '&' . 'lon='
           . $self->{long} . '&'
           . 'APPID='
-          . $self->{key} . '&' . 'lang='
+          . $self->{key} . '&' . 'units='
+          . 'metric' . '&' . 'lang='
           . $self->{lang} . '&' . 'exclude='
-          . $self->{exclude};
+          . _createExcludeString($self->{forecast},$self->{alerts});
 
         ::HttpUtils_NonblockingGet($paramRef);
     }
 
     return;
+}
+
+sub _createExcludeString {
+    my $forecast     = shift;
+    my $alerts      = shift;
+    
+    my @exclude     = qw/alerts minutely hourly daily/;
+    my @forecast    = split(',',$forecast);
+    my @alerts      = ( $alerts ? ',alerts' : '' );
+
+    my %in_forecast = map {$_ => 1} @forecast,@alerts;
+    my @diff        = grep {not $in_forecast{$_}} @exclude;
+
+    return join(',',@alerts);
 }
 
 sub _RetrieveDataFinished {
@@ -387,36 +425,31 @@ sub _ProcessingRetrieveData {
                         $self->{cached}->{current}       = {
                             'temperature' => int(
                                 sprintf( "%.1f",
-                                    ( $data->{main}->{temp} - 273.15 ) ) + 0.5
+                                    $data->{main}->{temp}) + 0.5
                             ),
                             'temp_c' => int(
                                 sprintf( "%.1f",
-                                    ( $data->{main}->{temp} - 273.15 ) ) + 0.5
+                                    $data->{main}->{temp}) + 0.5
                             ),
                             'low_c' => int(
                                 sprintf( "%.1f",
-                                    ( $data->{main}->{temp_min} - 273.15 ) ) +
-                                  0.5
+                                    $data->{main}->{temp_min}) + 0.5
                             ),
                             'high_c' => int(
                                 sprintf( "%.1f",
-                                    ( $data->{main}->{temp_max} - 273.15 ) ) +
-                                  0.5
+                                    $data->{main}->{temp_max}) + 0.5
                             ),
                             'tempLow' => int(
                                 sprintf( "%.1f",
-                                    ( $data->{main}->{temp_min} - 273.15 ) ) +
-                                  0.5
+                                    $data->{main}->{temp_min}) + 0.5
                             ),
                             'tempHigh' => int(
                                 sprintf( "%.1f",
-                                    ( $data->{main}->{temp_max} - 273.15 ) ) +
-                                  0.5
+                                    $data->{main}->{temp_max}) + 0.5
                             ),
                             'tempFeelsLike_c' => int(
                                 sprintf( "%.1f",
-                                    ( $data->{main}->{feels_like} - 273.15 ) )
-                                  + 0.5
+                                    $data->{main}->{feels_like}) + 0.5
                             ),
                             'humidity'  => $data->{main}->{humidity},
                             'condition' => encode_utf8(
@@ -493,7 +526,7 @@ sub _ProcessingRetrieveData {
                                                 "%.1f",
                                                 (
                                                     $data->{hourly}->[$i]
-                                                      ->{temp} - 273.15
+                                                      ->{temp}
                                                 )
                                             ) + 0.5
                                         ),
@@ -502,7 +535,7 @@ sub _ProcessingRetrieveData {
                                                 "%.1f",
                                                 (
                                                     $data->{hourly}->[$i]
-                                                      ->{temp} - 273.15
+                                                      ->{temp}
                                                 )
                                             ) + 0.5
                                         ),
@@ -627,126 +660,85 @@ sub _ProcessingRetrieveData {
                                         'temperature' => int(
                                             sprintf(
                                                 "%.1f",
-                                                (
-                                                    $data->{daily}->[$i]
-                                                      ->{temp}->{day} - 273.15
-                                                )
+                                                $data->{daily}->[$i]->{temp}->{day}
                                             ) + 0.5
                                         ),
                                         'temperature_morn' => int(
                                             sprintf(
                                                 "%.1f",
-                                                (
-                                                    $data->{daily}->[$i]
-                                                      ->{temp}->{morn} - 273.15
-                                                )
+                                                $data->{daily}->[$i]->{temp}->{morn}
                                             ) + 0.5
                                         ),
                                         'temperature_eve' => int(
                                             sprintf(
                                                 "%.1f",
-                                                (
-                                                    $data->{daily}->[$i]
-                                                      ->{temp}->{eve} - 273.15
-                                                )
+                                                $data->{daily}->[$i]->{temp}->{eve}
                                             ) + 0.5
                                         ),
                                         'temperature_night' => int(
                                             sprintf(
                                                 "%.1f",
-                                                (
-                                                    $data->{daily}->[$i]
-                                                      ->{temp}->{night} - 273.15
-                                                )
+                                                $data->{daily}->[$i]->{temp}->{night}
                                             ) + 0.5
                                         ),
                                         'tempFeelsLike_morn' => int(
                                             sprintf(
                                                 "%.1f",
-                                                (
-                                                    $data->{daily}->[$i]
-                                                      ->{feels_like}->{morn} - 273.15
-                                                )
+                                                $data->{daily}->[$i]->{feels_like}->{morn}
                                             ) + 0.5
                                         ),
                                         'tempFeelsLike_eve' => int(
                                             sprintf(
                                                 "%.1f",
-                                                (
-                                                    $data->{daily}->[$i]
-                                                      ->{feels_like}->{eve} - 273.15
-                                                )
+                                                $data->{daily}->[$i]->{feels_like}->{eve}
                                             ) + 0.5
                                         ),
                                         'tempFeelsLike_night' => int(
                                             sprintf(
                                                 "%.1f",
-                                                (
-                                                    $data->{daily}->[$i]
-                                                      ->{feels_like}->{night} - 273.15
-                                                )
+                                                $data->{daily}->[$i]->{feels_like}->{night}
                                             ) + 0.5
                                         ),
                                         'tempFeelsLike_day' => int(
                                             sprintf(
                                                 "%.1f",
-                                                (
-                                                    $data->{daily}->[$i]
-                                                      ->{feels_like}->{day} - 273.15
-                                                )
+                                                $data->{daily}->[$i]->{feels_like}->{day}
                                             ) + 0.5
                                         ),
                                         'temp_c' => int(
                                             sprintf(
                                                 "%.1f",
-                                                (
-                                                    $data->{daily}->[$i]
-                                                      ->{temp}->{day} - 273.15
-                                                )
+                                                $data->{daily}->[$i]->{temp}->{day}
                                             ) + 0.5
                                         ),
                                         'low_c' => int(
                                             sprintf(
                                                 "%.1f",
-                                                (
-                                                    $data->{daily}->[$i]
-                                                      ->{temp}->{min} - 273.15
-                                                )
+                                                $data->{daily}->[$i]->{temp}->{min}
                                             ) + 0.5
                                         ),
                                         'high_c' => int(
                                             sprintf(
                                                 "%.1f",
-                                                (
-                                                    $data->{daily}->[$i]
-                                                      ->{temp}->{max} - 273.15
-                                                )
+                                                $data->{daily}->[$i]->{temp}->{max}
                                             ) + 0.5
                                         ),
                                         'tempLow' => int(
                                             sprintf(
                                                 "%.1f",
-                                                (
-                                                    $data->{daily}->[$i]
-                                                      ->{temp}->{min} - 273.15
-                                                )
+                                                $data->{daily}->[$i]->{temp}->{min}
                                             ) + 0.5
                                         ),
                                         'tempHigh' => int(
                                             sprintf(
                                                 "%.1f",
-                                                (
-                                                    $data->{daily}->[$i]
-                                                      ->{temp}->{max} - 273.15
-                                                )
+                                                $data->{daily}->[$i]->{temp}->{max}
                                             ) + 0.5
                                         ),
                                         'dew_point' => int(
                                             sprintf(
                                                 "%.1f",
-                                                (
-                                                    $data->{daily}->[$i]->{dew_point} - 273.15
-                                                )
+                                                $data->{daily}->[$i]->{dew_point}
                                             ) + 0.5
                                         ),
                                         'humidity' =>
