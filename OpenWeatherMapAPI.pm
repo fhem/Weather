@@ -670,8 +670,7 @@ sub _ProcessingRetrieveData {
                                             )
                                         ),
                                         'moon_phase' => $data->{daily}->[$i]
-                                                      ->{moon_phase}
-                                        ),
+                                                      ->{moon_phase},
                                         'moonset' => strftime(
                                             "%a, %H:%M",
                                             localtime(
@@ -869,11 +868,10 @@ sub _ProcessingRetrieveData {
                                         ),
                                     },
                                 );
+
                                 $i++;
                             }
                         }
-
-                        $self->{cached}->{current}->{dew_point} = $data->{current}->{dew_point}
                     }
                 }
             }
