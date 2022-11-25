@@ -361,18 +361,6 @@ sub Weather_WriteReadings {
 
     readingsBeginUpdate($hash);
 
-    # delete some unused readings
-    delete( $hash->{READINGS}->{temp_f} )
-      if ( defined( $hash->{READINGS}->{temp_f} ) );
-    delete( $hash->{READINGS}->{unit_distance} )
-      if ( defined( $hash->{READINGS}->{unit_distance} ) );
-    delete( $hash->{READINGS}->{unit_speed} )
-      if ( defined( $hash->{READINGS}->{unit_speed} ) );
-    delete( $hash->{READINGS}->{unit_pressuree} )
-      if ( defined( $hash->{READINGS}->{unit_pressuree} ) );
-    delete( $hash->{READINGS}->{unit_temperature} )
-      if ( defined( $hash->{READINGS}->{unit_temperature} ) );
-
     # housekeeping information
     readingsBulkUpdate( $hash, 'lastError', '' );
     foreach my $r ( keys %{$dataRef} ) {

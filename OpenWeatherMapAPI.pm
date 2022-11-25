@@ -488,11 +488,11 @@ sub _ProcessingRetrieveData {
                                 "%a, %e %b %Y %H:%M",
                                 localtime( $data->{dt} )
                             ),
-                        };
+                            'visibility' => int( sprintf(
+                                "%.1f", $data->{visibility} ) + 0.5
+                            ),
 
-                        $self->{cached}->{current}->{'visibility'} =
-                          int( sprintf( "%.1f", $data->{visibility} ) + 0.5 )
-                          if ( exists $data->{visibility} );
+                        };
                     }
 
                     when ('onecall') {
@@ -537,6 +537,21 @@ sub _ProcessingRetrieveData {
                                                     $data->{hourly}->[$i]
                                                       ->{temp}
                                                 )
+                                            ) + 0.5
+                                        ),
+                                        'tempFeelsLike' => int(
+                                            sprintf(
+                                                "%.1f",
+                                                (
+                                                    $data->{hourly}->[$i]
+                                                      ->{feels_like}
+                                                )
+                                            ) + 0.5
+                                        ),
+                                        'dew_point' => int(
+                                            sprintf(
+                                                "%.1f",
+                                                $data->{hourly}->[$i]->{dew_point}
                                             ) + 0.5
                                         ),
                                         'humidity' =>
@@ -592,6 +607,12 @@ sub _ProcessingRetrieveData {
                                          $data->{hourly}->[$i]->{rain}->{'1h'},
                                         'snow1h' =>
                                          $data->{hourly}->[$i]->{snow}->{'1h'},
+                                         'uvi'  =>
+                                            $data->{hourly}->[$i]->{uvi},
+                                        'visibility' => int( sprintf(
+                                            "%.1f", $data->{hourly}->[$i]->{visibility} )
+                                            + 0.5
+                                        ),
                                     },
                                 );
 
@@ -647,6 +668,9 @@ sub _ProcessingRetrieveData {
                                                       ->{moonrise}
                                                 ) - 3600
                                             )
+                                        ),
+                                        'moon_phase' => $data->{daily}->[$i]
+                                                      ->{moon_phase}
                                         ),
                                         'moonset' => strftime(
                                             "%a, %H:%M",
@@ -747,6 +771,8 @@ sub _ProcessingRetrieveData {
                                             $data->{daily}->[$i]->{weather}
                                               ->[0]->{description}
                                         ),
+                                        'code'    => $codes{ $data->{daily}->[$i]->{weather}->[0]->{id} },
+                                        'iconAPI' => $data->{daily}->[$i]->{weather}->[0]->{icon},
                                         'pressure' => int(
                                             sprintf( "%.1f",
                                                 $data->{daily}->[$i]->{pressure}
@@ -843,10 +869,11 @@ sub _ProcessingRetrieveData {
                                         ),
                                     },
                                 );
-
                                 $i++;
                             }
                         }
+
+                        $self->{cached}->{current}->{dew_point} = $data->{current}->{dew_point}
                     }
                 }
             }
