@@ -31,13 +31,12 @@ package main;
 
 use strict;
 use warnings;
-use Time::HiRes qw(gettimeofday);
+use Time::HiRes  qw(gettimeofday);
 use experimental qw /switch/;
 use Readonly;
 
 use FHEM::Meta;
 use vars qw($FW_ss);
-
 
 # use Data::Dumper;    # for Debug only
 
@@ -277,19 +276,19 @@ sub Weather_DebugCodes {
 sub Weather_Initialize {
     my $hash = shift;
 
-    $hash->{DefFn}        = \&Weather_Define;
-    $hash->{UndefFn}      = \&Weather_Undef;
-    $hash->{GetFn}        = \&Weather_Get;
-    $hash->{SetFn}        = \&Weather_Set;
-    $hash->{AttrFn}       = \&Weather_Attr;
-    $hash->{AttrList}     =
+    $hash->{DefFn}   = \&Weather_Define;
+    $hash->{UndefFn} = \&Weather_Undef;
+    $hash->{GetFn}   = \&Weather_Get;
+    $hash->{SetFn}   = \&Weather_Set;
+    $hash->{AttrFn}  = \&Weather_Attr;
+    $hash->{AttrList} =
         'disable:0,1 '
       . 'forecast:multiple-strict,hourly,daily '
       . 'forecastLimit '
       . 'alerts:0,1 '
       . $readingFnAttributes;
-    $hash->{NotifyFn}     = \&Weather_Notify;
-    $hash->{parseParams}  = 1;
+    $hash->{NotifyFn}    = \&Weather_Notify;
+    $hash->{parseParams} = 1;
 
     return FHEM::Meta::InitMod( __FILE__, $hash );
 }
@@ -332,7 +331,7 @@ sub Weather_ReturnWithError {
 
 sub Weather_RetrieveCallbackFn {
     my $name = shift;
-    
+
     return
       unless ( IsDevice($name) );
 
@@ -350,14 +349,13 @@ sub Weather_RetrieveCallbackFn {
 }
 
 sub Weather_WriteReadings {
-    my $hash    = shift; 
+    my $hash    = shift;
     my $dataRef = shift;
 
-    my $name    = $hash->{NAME};
-    my $hourly  = ( AttrVal( $name, 'forecast', '' ) =~ m{hourly}xms ? 1: 0 );
-    my $daily   = ( AttrVal( $name, 'forecast', '' ) =~ m{daily}xms ? 1 : 0 );
-    my $alerts  = ( AttrVal( $name, 'forecast', '' ) =~ m{alerts}xms ? 1 : 0 );
-
+    my $name   = $hash->{NAME};
+    my $hourly = ( AttrVal( $name, 'forecast', '' ) =~ m{hourly}xms ? 1 : 0 );
+    my $daily  = ( AttrVal( $name, 'forecast', '' ) =~ m{daily}xms  ? 1 : 0 );
+    my $alerts = ( AttrVal( $name, 'forecast', '' ) =~ m{alerts}xms ? 1 : 0 );
 
     readingsBeginUpdate($hash);
 
@@ -400,17 +398,15 @@ sub Weather_WriteReadings {
 
     ### forecast
     if ( ref( $dataRef->{forecast} ) eq 'HASH'
-      && ($hourly || $daily) )
+        && ( $hourly || $daily ) )
     {
         ## hourly
-        if (
-               defined( $dataRef->{forecast}->{hourly} )
+        if (   defined( $dataRef->{forecast}->{hourly} )
             && ref( $dataRef->{forecast}->{hourly} ) eq 'ARRAY'
             && scalar( @{ $dataRef->{forecast}->{hourly} } ) > 0
-            && $hourly
-          )
+            && $hourly )
         {
-            my $i = 0;
+            my $i     = 0;
             my $limit = AttrVal( $name, 'forecastLimit', -1 );
             foreach my $fc ( @{ $dataRef->{forecast}->{hourly} } ) {
                 $i++;
@@ -429,7 +425,7 @@ sub Weather_WriteReadings {
 
                 if (
                     defined(
-                       $dataRef->{forecast}->{hourly}[ $i - 1 ]{wind_direction}
+                        $dataRef->{forecast}->{hourly}[ $i - 1 ]{wind_direction}
                     )
                     && $dataRef->{forecast}->{hourly}[ $i - 1 ]{wind_direction}
                     && defined(
@@ -458,14 +454,12 @@ sub Weather_WriteReadings {
         }
 
         ## daily
-        if (
-               defined( $dataRef->{forecast}->{daily} )
+        if (   defined( $dataRef->{forecast}->{daily} )
             && ref( $dataRef->{forecast}->{daily} ) eq 'ARRAY'
             && scalar( @{ $dataRef->{forecast}->{daily} } ) > 0
-            && $daily
-          )
+            && $daily )
         {
-            my $i = 0;
+            my $i     = 0;
             my $limit = AttrVal( $name, 'forecastLimit', -1 );
             foreach my $fc ( @{ $dataRef->{forecast}->{daily} } ) {
                 $i++;
@@ -484,7 +478,7 @@ sub Weather_WriteReadings {
 
                 if (
                     defined(
-                       $dataRef->{forecast}->{daily}[ $i - 1 ]{wind_direction}
+                        $dataRef->{forecast}->{daily}[ $i - 1 ]{wind_direction}
                     )
                     && $dataRef->{forecast}->{daily}[ $i - 1 ]{wind_direction}
                     && defined(
@@ -513,9 +507,9 @@ sub Weather_WriteReadings {
     }
 
     if ( ref( $dataRef->{alerts} ) eq 'HASH'
-      && $alerts )
+        && $alerts )
     {
-      while ( my ( $r, $v ) = each %{ $dataRef->{alerts} } ) {
+        while ( my ( $r, $v ) = each %{ $dataRef->{alerts} } ) {
             readingsBulkUpdate( $hash, $r, $v )
               if ( ref( $dataRef->{$r} ) ne 'HASH'
                 && ref( $dataRef->{$r} ) ne 'ARRAY' );
@@ -568,7 +562,7 @@ sub Weather_Get {
     my $hash = shift // return;
     my $aRef = shift // return;
 
-    my $name = shift @$aRef // return;
+    my $name    = shift @$aRef // return;
     my $reading = shift @$aRef // return;
     my $value;
 
@@ -597,37 +591,36 @@ sub Weather_Set {
       // return qq{"set $name" needs at least one argument};
 
     # usage check
-    if ( scalar(@{$aRef}) == 0
-      && $cmd eq 'update' )
+    if ( scalar( @{$aRef} ) == 0
+        && $cmd eq 'update' )
     {
         Weather_DisarmTimer($hash);
         Weather_GetUpdate($hash);
 
         return;
     }
-    elsif ( scalar(@{$aRef}) == 1
-        &&  $cmd eq "newLocation" )
+    elsif ( scalar( @{$aRef} ) == 1
+        && $cmd eq "newLocation" )
     {
         if (   $hash->{API} eq 'DarkSkyAPI'
             || $hash->{API} eq 'OpenWeatherMapAPI'
-            || $hash->{API} eq 'wundergroundAPI'
-          )
+            || $hash->{API} eq 'wundergroundAPI' )
         {
-            my ($lat,$long);
-            ($lat,$long) = split(',',$aRef->[0])
-              if ( defined($aRef->[0]) && $aRef->[0] );
-            ($lat,$long) = split(',',$hash->{fhem}->{LOCATION})
+            my ( $lat, $long );
+            ( $lat, $long ) = split( ',', $aRef->[0] )
+              if ( defined( $aRef->[0] ) && $aRef->[0] );
+            ( $lat, $long ) = split( ',', $hash->{fhem}->{LOCATION} )
               unless ( defined($lat)
                 && defined($long)
-                && $lat =~ m{(-?\d+(\.\d+)?)}xms
+                && $lat  =~ m{(-?\d+(\.\d+)?)}xms
                 && $long =~ m{(-?\d+(\.\d+)?)}xms );
 
-            $hash->{fhem}->{api}->setLocation($lat,$long);
+            $hash->{fhem}->{api}->setLocation( $lat, $long );
             Weather_DisarmTimer($hash);
             Weather_GetUpdate($hash);
             return;
         }
-        else { return 'this API is not ' . $aRef->[0] .' supported' }
+        else { return 'this API is not ' . $aRef->[0] . ' supported' }
     }
     else {
         return "Unknown argument $cmd, choose one of update:noArg newLocation";
@@ -636,12 +629,12 @@ sub Weather_Set {
 
 ###################################
 sub Weather_RearmTimer {
-    my $hash  = shift;
-    my $t     = shift;
+    my $hash = shift;
+    my $t    = shift;
 
     Log3( $hash, 4, "Weather $hash->{NAME}: Rearm new Timer" );
     InternalTimer( $t, "Weather_GetUpdate", $hash, 0 );
-    
+
     return;
 }
 
@@ -654,11 +647,11 @@ sub Weather_DisarmTimer {
 }
 
 sub Weather_Notify {
-    my $hash  = shift;
-    my $dev   = shift;
-    
-    my $name  = $hash->{NAME};
-    my $type  = $hash->{TYPE};
+    my $hash = shift;
+    my $dev  = shift;
+
+    my $name = $hash->{NAME};
+    my $type = $hash->{TYPE};
 
     return if ( $dev->{NAME} ne "global" );
     return if ( !grep { /^INITIALIZED|REREADCFG$/ } @{ $dev->{CHANGED} } );
@@ -685,10 +678,9 @@ sub Weather_Notify {
 
 #####################################
 sub Weather_Define {
-    my $hash  = shift // return;
-    my $aRef  = shift // return;
-    my $hRef  = shift // undef;
-
+    my $hash = shift // return;
+    my $aRef = shift // return;
+    my $hRef = shift // undef;
 
     return $@ unless ( FHEM::Meta::SetInternals($hash) );
     use version 0.60; our $VERSION = FHEM::Meta::Get( $hash, 'version' );
@@ -700,11 +692,11 @@ sub Weather_Define {
     return $usage unless ( scalar @{$aRef} == 2 );
     my $name = $aRef->[0];
 
-    my $location  = $hRef->{location} // undef;
-    my $apikey    = $hRef->{apikey} // undef;
-    my $lang      = $hRef->{lang} // undef;
-    my $interval  = $hRef->{interval} // 3600;
-    my $API       = $hRef->{API} // "DarkSkyAPI,cachemaxage:600";
+    my $location = $hRef->{location} // undef;
+    my $apikey   = $hRef->{apikey}   // undef;
+    my $lang     = $hRef->{lang}     // undef;
+    my $interval = $hRef->{interval} // 3600;
+    my $API      = $hRef->{API}      // "DarkSkyAPI,cachemaxage:600";
 
     # evaluate API options
     my ( $api, $apioptions ) = split( ',', $API, 2 );
@@ -726,15 +718,15 @@ sub Weather_Define {
         ? $lang
         : lc( AttrVal( 'global', 'language', 'de' ) )
     );
-    $hash->{API}                                   = $api;
-    $hash->{MODEL}                                 = $api;
-    $hash->{APIKEY}                                = $apikey;
-    $hash->{APIOPTIONS}                            = $apioptions;
-    $hash->{VERSION}                               = version->parse($VERSION)->normal;
-    $hash->{fhem}->{allowCache}                    = 1;
+    $hash->{API}                = $api;
+    $hash->{MODEL}              = $api;
+    $hash->{APIKEY}             = $apikey;
+    $hash->{APIOPTIONS}         = $apioptions;
+    $hash->{VERSION}            = version->parse($VERSION)->normal;
+    $hash->{fhem}->{allowCache} = 1;
 
-    readingsSingleUpdate($hash,'current_date_time',TimeNow(),0);
-    readingsSingleUpdate($hash,'current_date_time','none',0);
+    readingsSingleUpdate( $hash, 'current_date_time', TimeNow(), 0 );
+    readingsSingleUpdate( $hash, 'current_date_time', 'none',    0 );
 
     readingsSingleUpdate( $hash, 'state', 'Initialized', 1 );
     Weather_LanguageInitialize( $hash->{LANG} );
@@ -747,8 +739,8 @@ sub Weather_Define {
             location   => $hash->{fhem}->{LOCATION},
             apioptions => $hash->{APIOPTIONS},
             language   => $hash->{LANG},
-            forecast   => AttrVal($name,'forecast',''),
-            alerts     => AttrVal($name,'alerts',0)
+            forecast   => AttrVal( $name, 'forecast', '' ),
+            alerts     => AttrVal( $name, 'alerts',   0 )
         }
     );
 
@@ -760,8 +752,8 @@ sub Weather_Define {
 
 #####################################
 sub Weather_Undef {
-    my $hash  = shift;
-    my $arg   = shift;
+    my $hash = shift;
+    my $arg  = shift;
 
     RemoveInternalTimer($hash);
     return;
@@ -774,7 +766,7 @@ sub Weather_Attr {
     given ($attrName) {
         when ('forecast') {
             if ( $cmd eq 'set' ) {
-                $hash->{fhem}->{api}->setForecast($attrVal)
+                $hash->{fhem}->{api}->setForecast($attrVal);
             }
 
             $hash->{fhem}->{api}->setForecast();
@@ -802,11 +794,11 @@ Readonly my $ICONSCALE => 0.5;
 #####################################
 
 sub WeatherIconIMGTag {
-    my $icon    = shift;
+    my $icon = shift;
 
-    my $width   = int( $ICONSCALE * $ICONWIDTH );
-    my $url     = FW_IconURL("weather/$icon");
-    my $style   = " width=$width";
+    my $width = int( $ICONSCALE * $ICONWIDTH );
+    my $url   = FW_IconURL("weather/$icon");
+    my $style = " width=$width";
 
     return "<img src=\"$url\"$style alt=\"$icon\">";
 }
@@ -827,8 +819,8 @@ sub WeatherAsHtmlV {
     my $fc;
     if (
         defined($f)
-        && ( $f eq 'h'
-          || $f eq 'd' )
+        && (   $f eq 'h'
+            || $f eq 'd' )
       )
     {
         $fc = ( $f eq 'd' ? 'fc' : 'hfc' );
@@ -911,8 +903,8 @@ sub WeatherAsHtmlH {
     my $fc;
     if (
         defined($f)
-        && ( $f eq 'h'
-          || $f eq 'd' )
+        && (   $f eq 'h'
+            || $f eq 'd' )
       )
     {
         $fc = ( $f eq 'd' ? 'fc' : 'hfc' );
@@ -1014,7 +1006,7 @@ sub WeatherCheckOptions {
     if ( defined($op1) && $op1 && $op1 =~ m{[0-9]}xms ) { $items = $op1; }
     if ( defined($op2) && $op2 && $op2 =~ m{[dh]}xms )  { $f     = $op2; }
 
-    $f =~ tr/dh/./cd if ( defined $f && $f );
+    $f     =~ tr/dh/./cd  if ( defined $f      && $f );
     $items =~ tr/0-9/./cd if ( defined($items) && $items );
 
     $items = 6 if ( !$items );
