@@ -329,6 +329,18 @@ sub Weather_ReturnWithError {
     return;
 }
 
+sub Weather_DeleteReadings {
+    my $hash = shift;
+    my $name = $hash->{NAME};
+
+    my $delReadingRegEx;
+
+    CommandDeleteReading( undef, $name . ' .?(ASC)_.*' );
+    CommandDeleteReading( undef, $name . ' ' . $delReadingRegEx );
+
+    return;
+}
+
 sub Weather_RetrieveCallbackFn {
     my $name = shift;
 

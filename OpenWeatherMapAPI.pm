@@ -492,11 +492,94 @@ sub _ProcessingRetrieveData {
                             'visibility' => int(
                                 sprintf( "%.1f", $data->{visibility} ) + 0.5
                             ),
-
+                            'dew_point' => int(
+                                sprintf(
+                                    "%.1f", $data->{current}->{dew_point}
+                                ) + 0.5
+                            ),
                         };
                     }
 
                     when ('onecall') {
+                        if ( !exists( $self->{cached}->{current} ) ) {
+                            $self->{cached}->{license}{text} = 'none';
+                            $self->{cached}->{current} = {
+                                'temperature' => int(
+                                    sprintf( "%.1f", $data->{current}->{temp} )
+                                      + 0.5
+                                ),
+                                'temp_c' => int(
+                                    sprintf( "%.1f", $data->{current}->{temp} )
+                                      + 0.5
+                                ),
+                                'tempFeelsLike_c' => int(
+                                    sprintf( "%.1f",
+                                        $data->{current}->{feels_like} ) + 0.5
+                                ),
+
+                                'humidity'  => $data->{current}->{humidity},
+                                'condition' => encode_utf8(
+                                    $data->{current}->{weather}->[0]
+                                      ->{description}
+                                ),
+                                'pressure' => int(
+                                    sprintf( "%.1f",
+                                        $data->{current}->{pressure} ) + 0.5
+                                ),
+                                'wind' => int(
+                                    sprintf(
+                                        "%.1f",
+                                        (
+                                            $data->{current}->{wind_speed} * 3.6
+                                        )
+                                    ) + 0.5
+                                ),
+                                'wind_speed' => int(
+                                    sprintf(
+                                        "%.1f",
+                                        (
+                                            $data->{current}->{wind_speed} * 3.6
+                                        )
+                                    ) + 0.5
+                                ),
+                                'wind_gust' => int(
+                                    sprintf( "%.1f",
+                                        ( $data->{current}->{wind_gust} * 3.6 )
+                                    ) + 0.5
+                                ),
+                                'wind_direction' =>
+                                  $data->{current}->{wind_deg},
+                                'rain_1h'    => $data->{rain}->{'1h'},
+                                'cloudCover' => $data->{current}->{clouds},
+                                'code'       => $codes{
+                                    $data->{current}->{weather}->[0]->{id}
+                                },
+                                'iconAPI' =>
+                                  $data->{current}->{weather}->[0]->{icon},
+                                'condition' => encode_utf8(
+                                    $data->{current}->{weather}->[0]
+                                      ->{description}
+                                ),
+                                'sunsetTime' => strftimeWrapper(
+                                    "%a, %e %b %Y %H:%M",
+                                    localtime( $data->{current}->{sunset} )
+                                ),
+                                'sunriseTime' => strftimeWrapper(
+                                    "%a, %e %b %Y %H:%M",
+                                    localtime( $data->{current}->{sunrise} )
+                                ),
+                                'pubDate' => strftimeWrapper(
+                                    "%a, %e %b %Y %H:%M",
+                                    localtime( $data->{current}->{dt} )
+                                ),
+                                'visibility' => int(
+                                    sprintf( "%.1f",
+                                        $data->{current}->{visibility} ) + 0.5
+                                ),
+                                'uvi' => $data->{current}->{uvi},
+                            };
+                        }
+
                         if ( ref( $data->{hourly} ) eq "ARRAY"
                             && scalar( @{ $data->{hourly} } ) > 0 )
                         {
@@ -592,6 +675,8 @@ sub _ProcessingRetrieveData {
                                                 )
                                             ) + 0.5
                                         ),
+                                        'wind_direction' =>
+                                          $data->{hourly}->[$i]->{wind_deg},
                                         'cloudCover' =>
                                           $data->{hourly}->[$i]->{clouds},
                                         'code' => $codes{
@@ -809,9 +894,6 @@ sub _ProcessingRetrieveData {
                                             $data->{daily}->[$i]->{weather}
                                               ->[0]->{id}
                                         },
-                                        'iconAPI' =>
-                                          $data->{daily}->[$i]->{weather}->[0]
-                                          ->{icon},
                                         'rain' => $data->{daily}->[$i]->{rain},
                                         'snow' => $data->{daily}->[$i]->{snow},
                                         'uvi'  => $data->{daily}->[$i]->{uvi},
@@ -967,7 +1049,7 @@ sub strftimeWrapper {
       "abstract": "Wetter API für OpenWeatherMap"
     }
   },
-  "version": "v1.2.0",
+  "version": "v3.0.1",
   "author": [
     "Marko Oldenburg <fhemdevelopment@cooltux.net>"
   ],
