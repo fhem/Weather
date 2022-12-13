@@ -492,17 +492,11 @@ sub _ProcessingRetrieveData {
                             'visibility' => int(
                                 sprintf( "%.1f", $data->{visibility} ) + 0.5
                             ),
-                            'dew_point' => int(
-                                sprintf(
-                                    "%.1f", $data->{current}->{dew_point}
-                                ) + 0.5
-                            ),
                         };
                     }
 
                     when ('onecall') {
                         if ( !exists( $self->{cached}->{current} ) ) {
-                            $self->{cached}->{license}{text} = 'none';
                             $self->{cached}->{current} = {
                                 'temperature' => int(
                                     sprintf( "%.1f", $data->{current}->{temp} )
@@ -516,7 +510,10 @@ sub _ProcessingRetrieveData {
                                     sprintf( "%.1f",
                                         $data->{current}->{feels_like} ) + 0.5
                                 ),
-
+                                'dew_point' => int(
+                                    sprintf( "%.1f",
+                                        $data->{current}->{dew_point} ) + 0.5
+                                ),
                                 'humidity'  => $data->{current}->{humidity},
                                 'condition' => encode_utf8(
                                     $data->{current}->{weather}->[0]
