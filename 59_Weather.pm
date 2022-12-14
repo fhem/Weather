@@ -340,12 +340,12 @@ sub Weather_DeleteReadings {
     $forecastLimit = $forecastLimitNoForecast
       if ( !$forecastConfig->{daily} );
     CommandDeleteReading( undef,
-        $name . ' ' . 'fc[' . $forecastLimit . '-9][0-9]?_.*' );
+        $name . ' ' . 'fc([' . $forecastLimit . '-9]|[0-9]{2})_.*' );
 
     $forecastLimit = $forecastLimitNoForecast
       if ( !$forecastConfig->{hourly} );
     CommandDeleteReading( undef,
-        $name . ' ' . 'hfc[' . $forecastLimit . '-9][0-9]?_.*' );
+        $name . ' ' . 'hfc([' . $forecastLimit . '-9]|[0-9]{2})_.*' );
 
     return;
 }
