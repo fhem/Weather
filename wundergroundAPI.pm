@@ -1,5 +1,4 @@
 # $Id$
-
 package wundergroundAPI;
 use strict;
 use warnings;
