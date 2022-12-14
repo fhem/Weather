@@ -23,14 +23,11 @@ eval {
     require JSON::MaybeXS;
     import JSON::MaybeXS qw( decode_json encode_json );
     1;
-};
-if ($@) {
-    $@ = undef;
+} or do {
 
     # try to use JSON wrapper
     #   for chance of better performance
     eval {
-
         # JSON preference order
         local $ENV{PERL_JSON_BACKEND} =
           'Cpanel::JSON::XS,JSON::XS,JSON::PP,JSON::backportPP'
@@ -39,10 +36,7 @@ if ($@) {
         require JSON;
         import JSON qw( decode_json encode_json );
         1;
-    };
-
-    if ($@) {
-        $@ = undef;
+    } or do {
 
         # In rare cases, Cpanel::JSON::XS may
         #   be installed but JSON|JSON::MaybeXS not ...
@@ -50,10 +44,7 @@ if ($@) {
             require Cpanel::JSON::XS;
             import Cpanel::JSON::XS qw(decode_json encode_json);
             1;
-        };
-
-        if ($@) {
-            $@ = undef;
+        } or do {
 
             # In rare cases, JSON::XS may
             #   be installed but JSON not ...
@@ -61,10 +52,7 @@ if ($@) {
                 require JSON::XS;
                 import JSON::XS qw(decode_json encode_json);
                 1;
-            };
-
-            if ($@) {
-                $@ = undef;
+            } or do {
 
                 # Fallback to built-in JSON which SHOULD
                 #   be available since 5.014 ...
@@ -72,20 +60,17 @@ if ($@) {
                     require JSON::PP;
                     import JSON::PP qw(decode_json encode_json);
                     1;
-                };
-
-                if ($@) {
-                    $@ = undef;
+                } or do {
 
                     # Fallback to JSON::backportPP in really rare cases
                     require JSON::backportPP;
                     import JSON::backportPP qw(decode_json encode_json);
                     1;
-                }
-            }
-        }
-    }
-}
+                };
+            };
+        };
+    };
+};
 
 use Data::Dumper;    # for Debug only
 ## API URL
@@ -109,6 +94,8 @@ sub new {
         lat       => ( split( ',', $argsRef->{location} ) )[0],
         long      => ( split( ',', $argsRef->{location} ) )[1],
         fetchTime => 0,
+        forecast  => $argsRef->{forecast},
+        alerts    => $argsRef->{alerts},
     };
 
     $self->{cachemaxage} = (
@@ -173,12 +160,28 @@ sub setRetrieveData {
 }
 
 sub setLocation {
-    my ($self,$lat,$long) = @_;
+    my ( $self, $lat, $long ) = @_;
 
-    $self->{lat}            = $lat;
-    $self->{long}           = $long;
+    $self->{lat}  = $lat;
+    $self->{long} = $long;
 
     return 0;
+}
+
+sub setAlerts {
+    my $self   = shift;
+    my $alerts = shift // 0;
+
+    $self->{alerts} = $alerts;
+    return;
+}
+
+sub setForecast {
+    my $self     = shift;
+    my $forecast = shift // '';
+
+    $self->{forecast} = $forecast;
+    return;
 }
 
 sub getFetchTime {
@@ -197,15 +200,14 @@ sub _RetrieveDataFromWU($) {
     my $self = shift;
 
     # retrieve data from cache
-    if (  ( time() - $self->{fetchTime} ) < $self->{cachemaxage}
+    if (    ( time() - $self->{fetchTime} ) < $self->{cachemaxage}
         and $self->{cached}->{lat} == $self->{lat}
-        and $self->{cached}->{long} == $self->{long}
-      )
+        and $self->{cached}->{long} == $self->{long} )
     {
         return _CallWeatherCallbackFn($self);
     }
 
-    $self->{cached}->{lat}  = $self->{lat}
+    $self->{cached}->{lat} = $self->{lat}
       unless ( $self->{cached}->{lat} == $self->{lat} );
     $self->{cached}->{long} = $self->{long}
       unless ( $self->{cached}->{long} == $self->{long} );
@@ -239,6 +241,7 @@ sub _RetrieveDataFromWU($) {
         my $options = 'geocode=' . $self->{lat} . ',' . $self->{long};
         $options .= '&format=json';
         $options .= '&units=' . $self->{units};
+        $options .= '&numericPrecision=decimal';
         $options .= '&language='
           . (
             $self->{lang} eq 'en'
@@ -293,7 +296,7 @@ sub _RetrieveDataFinished($$$) {
     # we got PWS and forecast data
     if ( defined( $paramRef->{forecast} ) ) {
         if ( !$data || $data eq '' ) {
-            $err = 'No Data Found for specific PWS' unless ($err);
+            $err      = 'No Data Found for specific PWS' unless ($err);
             $response = $paramRef->{forecast};
         }
         elsif ( $paramRef->{forecast} =~ m/^\{(.*)\}$/ ) {
@@ -303,12 +306,12 @@ sub _RetrieveDataFinished($$$) {
                 $response = '{' . $fc . ',' . $1 . '}';
             }
             else {
-                $err = 'PWS data is not in JSON format' unless ($err);
+                $err      = 'PWS data is not in JSON format' unless ($err);
                 $response = $data;
             }
         }
         else {
-            $err = 'Forecast data is not in JSON format' unless ($err);
+            $err      = 'Forecast data is not in JSON format' unless ($err);
             $response = $data;
         }
     }
@@ -324,7 +327,7 @@ sub _RetrieveDataFinished($$$) {
     }
 
     if ( !$err ) {
-        $self->{cached}{status} = 'ok';
+        $self->{cached}{status}   = 'ok';
         $self->{cached}{validity} = 'up-to-date', $self->{fetchTime} = time();
         _ProcessingRetrieveData( $self, $response );
     }
@@ -647,7 +650,7 @@ sub _ProcessingRetrieveData($$) {
                                     'narrative'  => $data->{narrative}[$i],
                                     'precipChance' => $data->{precipChance}[$i],
                                     'precipType'   => $data->{precipType}[$i],
-                                    'precipProbability' => $data->{qpf}[$i],
+                                    'precipProbability'     => $data->{qpf}[$i],
                                     'precipProbabilitySnow' =>
                                       $data->{qpfSnow}[$i],
                                     'qualifierPhrase' =>
@@ -656,7 +659,7 @@ sub _ProcessingRetrieveData($$) {
                                     'snowRange'   => $data->{snowRange}[$i],
                                     'temp_c'      => $data->{temperature}[$i],
                                     'temperature' => $data->{temperature}[$i],
-                                    'heatIndex' =>
+                                    'heatIndex'   =>
                                       $data->{temperatureHeatIndex}[$i],
                                     'wind_chill' =>
                                       $data->{temperatureWindChill}[$i],
@@ -665,7 +668,7 @@ sub _ProcessingRetrieveData($$) {
                                     'thunderIndex' => $data->{thunderIndex}[$i],
                                     'uvDescription' =>
                                       $data->{uvDescription}[$i],
-                                    'uvIndex' => $data->{uvIndex}[$i],
+                                    'uvIndex'        => $data->{uvIndex}[$i],
                                     'wind_direction' =>
                                       $data->{windDirection}[$i],
                                     'wind_directionCardinal' =>
