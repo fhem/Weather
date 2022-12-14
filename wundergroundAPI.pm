@@ -392,9 +392,8 @@ sub _ProcessingRetrieveData($$) {
                         'heatIndex' => $data->{$unit}{heatIndex},
                         'precipRate'  => $data->{$unit}{precipRate},
                         'precipTotal' => $data->{$unit}{precipTotal},
-                        'pressure'    => int(
-                            sprintf( "%.1f", $data->{$unit}{pressure} ) + 0.5
-                        ),
+                        'pressure'    =>
+                          sprintf( "%.1f", $data->{$unit}{pressure} ),
                         'temperature' =>
                           sprintf( "%.1f", $data->{$unit}{temp} ),
                         'temp_c'     => sprintf( "%.1f", $data->{$unit}{temp} ),
