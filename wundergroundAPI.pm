@@ -397,10 +397,8 @@ sub _ProcessingRetrieveData($$) {
                         'temperature' =>
                           sprintf( "%.1f", $data->{$unit}{temp} ),
                         'temp_c'     => sprintf( "%.1f", $data->{$unit}{temp} ),
-                        'wind_chill' => int(
-                            sprintf( "%.1f", ( $data->{$unit}{windChill} ) ) +
-                              0.5
-                        ),
+                        'wind_chill' =>
+                          sprintf( "%.1f", ( $data->{$unit}{windChill} ) ),
                         'windGust' => int(
                             sprintf( "%.1f", ( $data->{$unit}{windGust} ) ) +
                               0.5
