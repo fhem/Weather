@@ -388,18 +388,16 @@ sub _ProcessingRetrieveData($$) {
                     );
 
                     $self->{cached}{current} = {
-                        'dewPoint' =>
-                          int( sprintf( "%.1f", $data->{$unit}{dewpt} ) + 0.5 ),
-                        'heatIndex'   => $data->{$unit}{heatIndex},
+                        'dewPoint'  => sprintf( "%.1f", $data->{$unit}{dewpt} ),
+                        'heatIndex' => $data->{$unit}{heatIndex},
                         'precipRate'  => $data->{$unit}{precipRate},
                         'precipTotal' => $data->{$unit}{precipTotal},
                         'pressure'    => int(
                             sprintf( "%.1f", $data->{$unit}{pressure} ) + 0.5
                         ),
                         'temperature' =>
-                          int( sprintf( "%.1f", $data->{$unit}{temp} ) + 0.5 ),
-                        'temp_c' =>
-                          int( sprintf( "%.1f", $data->{$unit}{temp} ) + 0.5 ),
+                          sprintf( "%.1f", $data->{$unit}{temp} ),
+                        'temp_c'     => sprintf( "%.1f", $data->{$unit}{temp} ),
                         'wind_chill' => int(
                             sprintf( "%.1f", ( $data->{$unit}{windChill} ) ) +
                               0.5
@@ -507,33 +505,27 @@ sub _ProcessingRetrieveData($$) {
                                         )
                                     )
                                 ),
-                                'low_c' => int(
-                                    sprintf( "%.1f",
-                                        $data->{temperatureMin}[$i] ) + 0.5
+                                'low_c' => sprintf(
+                                    "%.1f", $data->{temperatureMin}[$i]
                                 ),
-                                'high_c' => int(
-                                    sprintf(
-                                        "%.1f",
-                                        (
-                                              $data->{temperatureMax}[$i]
-                                            ? $data->{temperatureMax}[$i]
-                                            : 0
-                                        )
-                                    ) + 0.5
+                                'high_c' => sprintf(
+                                    "%.1f",
+                                    (
+                                          $data->{temperatureMax}[$i]
+                                        ? $data->{temperatureMax}[$i]
+                                        : 0
+                                    )
                                 ),
-                                'tempLow' => int(
-                                    sprintf( "%.1f",
-                                        $data->{temperatureMin}[$i] ) + 0.5
+                                'tempLow' => sprintf(
+                                    "%.1f", $data->{temperatureMin}[$i]
                                 ),
-                                'tempHigh' => int(
-                                    sprintf(
-                                        "%.1f",
-                                        (
-                                              $data->{temperatureMax}[$i]
-                                            ? $data->{temperatureMax}[$i]
-                                            : 0
-                                        )
-                                    ) + 0.5
+                                'tempHigh' => sprintf(
+                                    "%.1f",
+                                    (
+                                          $data->{temperatureMax}[$i]
+                                        ? $data->{temperatureMax}[$i]
+                                        : 0
+                                    )
                                 ),
                             }
                         );
