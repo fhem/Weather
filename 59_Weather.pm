@@ -334,18 +334,18 @@ sub Weather_DeleteReadings {
 
     my $name                    = $hash->{NAME};
     my $forecastConfig          = Weather_ForcastConfig($hash);
-    my $forecastLimit           = AttrVal( $name, 'forecastLimit', 5 );
+    my $forecastLimit           = AttrVal( $name, 'forecastLimit', 5 ) + 1;
     my $forecastLimitNoForecast = 1;
 
     $forecastLimit = $forecastLimitNoForecast
       if ( !$forecastConfig->{daily} );
     CommandDeleteReading( undef,
-        $name . ' ' . 'fc[' . $forecastLimit . '-99]_.*' );
+        $name . ' ' . 'fc[' . $forecastLimit . '-9][0-9]?_.*' );
 
     $forecastLimit = $forecastLimitNoForecast
       if ( !$forecastConfig->{hourly} );
     CommandDeleteReading( undef,
-        $name . ' ' . 'hfc[' . $forecastLimit . '-99]_.*' );
+        $name . ' ' . 'hfc[' . $forecastLimit . '-9][0-9]?_.*' );
 
     return;
 }
