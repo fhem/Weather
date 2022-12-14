@@ -195,8 +195,8 @@ sub new {
         long      => ( split( ',', $argsRef->{location} ) )[1],
         fetchTime => 0,
         endpoint  => 'none',
-        forecast  => $argsRef->{forecast},
-        alerts    => $argsRef->{alerts},
+        forecast  => '',
+        alerts    => 0,
     };
 
     $self->{cachemaxage} = (
@@ -345,7 +345,7 @@ sub _RetrieveDataFromOpenWeatherMap {
           . 'metric' . '&' . 'lang='
           . $self->{lang} . '&'
           . 'exclude='
-          . _createExcludeString( $self->{forecast}, $self->{alerts} );
+          . _CreateExcludeString( $self->{forecast}, $self->{alerts} );
 
         ::HttpUtils_NonblockingGet($paramRef);
     }
@@ -353,7 +353,7 @@ sub _RetrieveDataFromOpenWeatherMap {
     return;
 }
 
-sub _createExcludeString {
+sub _CreateExcludeString {
     my $forecast = shift;
     my $alerts   = shift;
 
@@ -364,7 +364,7 @@ sub _createExcludeString {
     my %in_forecast = map  { $_ => 1 } @forecast, @alerts;
     my @diff        = grep { not $in_forecast{$_} } @exclude;
 
-    return join( ',', @alerts );
+    return join( ',', @diff );
 }
 
 sub _RetrieveDataFinished {

@@ -331,12 +331,21 @@ sub Weather_ReturnWithError {
 
 sub Weather_DeleteReadings {
     my $hash = shift;
-    my $name = $hash->{NAME};
 
-    my $delReadingRegEx;
+    my $name                    = $hash->{NAME};
+    my $forecastConfig          = Weather_ForcastConfig($hash);
+    my $forecastLimit           = AttrVal( $name, 'forecastLimit', 5 );
+    my $forecastLimitNoForecast = 1;
 
-    CommandDeleteReading( undef, $name . ' .?(ASC)_.*' );
-    CommandDeleteReading( undef, $name . ' ' . $delReadingRegEx );
+    $forecastLimit = $forecastLimitNoForecast
+      if ( !$forecastConfig->{daily} );
+    CommandDeleteReading( undef,
+        $name . ' ' . 'fc[' . $forecastLimit . '-99]_.*' );
+
+    $forecastLimit = $forecastLimitNoForecast
+      if ( !$forecastConfig->{hourly} );
+    CommandDeleteReading( undef,
+        $name . ' ' . 'hfc[' . $forecastLimit . '-99]_.*' );
 
     return;
 }
@@ -360,14 +369,28 @@ sub Weather_RetrieveCallbackFn {
     return;
 }
 
+sub Weather_ForcastConfig {
+    my $hash = shift;
+
+    my $name = $hash->{NAME};
+    my %forecastConfig;
+
+    $forecastConfig{hourly} =
+      ( AttrVal( $name, 'forecast', '' ) =~ m{hourly}xms ? 1 : 0 );
+    $forecastConfig{daily} =
+      ( AttrVal( $name, 'forecast', '' ) =~ m{daily}xms ? 1 : 0 );
+    $forecastConfig{alerts} =
+      ( AttrVal( $name, 'forecast', '' ) =~ m{alerts}xms ? 1 : 0 );
+
+    return \%forecastConfig;
+}
+
 sub Weather_WriteReadings {
     my $hash    = shift;
     my $dataRef = shift;
 
-    my $name   = $hash->{NAME};
-    my $hourly = ( AttrVal( $name, 'forecast', '' ) =~ m{hourly}xms ? 1 : 0 );
-    my $daily  = ( AttrVal( $name, 'forecast', '' ) =~ m{daily}xms  ? 1 : 0 );
-    my $alerts = ( AttrVal( $name, 'forecast', '' ) =~ m{alerts}xms ? 1 : 0 );
+    my $forecastConfig = Weather_ForcastConfig($hash);
+    my $name           = $hash->{NAME};
 
     readingsBeginUpdate($hash);
 
@@ -410,16 +433,16 @@ sub Weather_WriteReadings {
 
     ### forecast
     if ( ref( $dataRef->{forecast} ) eq 'HASH'
-        && ( $hourly || $daily ) )
+        && ( $forecastConfig->{hourly} || $forecastConfig->{daily} ) )
     {
         ## hourly
         if (   defined( $dataRef->{forecast}->{hourly} )
             && ref( $dataRef->{forecast}->{hourly} ) eq 'ARRAY'
             && scalar( @{ $dataRef->{forecast}->{hourly} } ) > 0
-            && $hourly )
+            && $forecastConfig->{hourly} )
         {
             my $i     = 0;
-            my $limit = AttrVal( $name, 'forecastLimit', -1 );
+            my $limit = AttrVal( $name, 'forecastLimit', 5 );
             foreach my $fc ( @{ $dataRef->{forecast}->{hourly} } ) {
                 $i++;
                 my $f = "hfc" . $i . "_";
@@ -469,10 +492,10 @@ sub Weather_WriteReadings {
         if (   defined( $dataRef->{forecast}->{daily} )
             && ref( $dataRef->{forecast}->{daily} ) eq 'ARRAY'
             && scalar( @{ $dataRef->{forecast}->{daily} } ) > 0
-            && $daily )
+            && $forecastConfig->{daily} )
         {
             my $i     = 0;
-            my $limit = AttrVal( $name, 'forecastLimit', -1 );
+            my $limit = AttrVal( $name, 'forecastLimit', 5 );
             foreach my $fc ( @{ $dataRef->{forecast}->{daily} } ) {
                 $i++;
                 my $f = "fc" . $i . "_";
@@ -519,7 +542,7 @@ sub Weather_WriteReadings {
     }
 
     if ( ref( $dataRef->{alerts} ) eq 'HASH'
-        && $alerts )
+        && $forecastConfig->{alerts} )
     {
         while ( my ( $r, $v ) = each %{ $dataRef->{alerts} } ) {
             readingsBulkUpdate( $hash, $r, $v )
@@ -751,8 +774,6 @@ sub Weather_Define {
             location   => $hash->{fhem}->{LOCATION},
             apioptions => $hash->{APIOPTIONS},
             language   => $hash->{LANG},
-            forecast   => AttrVal( $name, 'forecast', '' ),
-            alerts     => AttrVal( $name, 'alerts',   0 )
         }
     );
 
@@ -780,16 +801,26 @@ sub Weather_Attr {
             if ( $cmd eq 'set' ) {
                 $hash->{fhem}->{api}->setForecast($attrVal);
             }
+            elsif ( $cmd eq 'del' ) {
+                $hash->{fhem}->{api}->setForecast();
+            }
 
-            $hash->{fhem}->{api}->setForecast();
+            InternalTimer( gettimeofday() + 1, \&Weather_DeleteReadings,
+                $hash );
+        }
+
+        when ('forecastLimit') {
+            InternalTimer( gettimeofday() + 1, \&Weather_DeleteReadings,
+                $hash );
         }
 
         when ('alerts') {
             if ( $cmd eq 'set' ) {
                 $hash->{fhem}->{api}->setAlerts($attrVal);
             }
-
-            $hash->{fhem}->{api}->setAlerts();
+            elsif ( $cmd eq 'del' ) {
+                $hash->{fhem}->{api}->setAlerts();
+            }
         }
     }
 
@@ -1119,7 +1150,9 @@ sub WeatherCheckOptions {
         <table>
         <tr><td>API</td><td><code>OpenWeatherMapAPI</code></td></tr>
         <tr><td>apioptions</td><td><code>cachemaxage:&lt;cachemaxage&gt;</code><br>duration
-          in seconds to retrieve the forecast from the cache instead from the API</td></tr>
+          in seconds to retrieve the forecast from the cache instead from the API</td>
+          <td><code>version:&lt;version&gt;</code> API version which should be used.
+          2.5 by default, 3.0 is still possible but only with an additional subscription</td></tr>
         <tr><td>location</td><td><code>&lt;latitude,longitude&gt;</code><br>
           geographic coordinates in degrees of the location for which the
           weather is forecast; if missing, the values of the attributes
@@ -1229,8 +1262,9 @@ sub WeatherCheckOptions {
     <li>disable: disables the retrieval of weather data - the timer runs according to schedule,
     though no data is requested from the API.</li>
     <li><a href="#readingFnAttributes">readingFnAttributes</a></li>
-    <li>forecast - every/hourly/daily/off, show of forecast data. All, only hour forecast, only day forecast, none.</li>
+    <li>forecast - hourly/daily, display of forecast data.</li>
     <li>forecastLimit - Number of forecast data records which should be written as a reading.</li>
+    <li>alerts - 0/1 should alert messages be written similar to Unwetterwarnung</li>
   </ul>
   <br>
 </ul>
@@ -1314,7 +1348,9 @@ sub WeatherCheckOptions {
     <tr><td>API</td><td><code>OpenWeatherMapAPI</code></td></tr>
     <tr><td>apioptions</td><td><code>cachemaxage:&lt;cachemaxage&gt;</code> Zeitdauer in
       Sekunden, innerhalb derer die Wettervorhersage nicht neu abgerufen
-      sondern aus dem Cache zur&uuml;ck geliefert wird.</td></tr>
+      sondern aus dem Cache zur&uuml;ck geliefert wird.</td>
+      <td><code>version:&lt;version&gt;</code> API Version welche verwendet werden soll.
+      Per Default 2.5, m&ouml;glich ist noch 3.0 aber nur mit Zusatzsubscription</td></tr>
     <tr><td>location</td><td><code>&lt;latitude,longitude&gt;</code> Geographische Breite
       und L&auml;nge des Ortes in Grad, f&uuml;r den das Wetter vorhergesagt wird.
       Bei fehlender Angabe werden die Werte aus den gleichnamigen Attributen
@@ -1426,8 +1462,10 @@ sub WeatherCheckOptions {
     gem&auml;&szlig Plan doch es werden keine Daten vom
     API angefordert.</li>
     <li><a href="#readingFnAttributes">readingFnAttributes</a></li>
-    <li>forecast - every/hourly/daily/off, Anzeige von forecast Daten. Alle, nur Stundenforecast, nur Tageforecast, keine.</li>
+    <li>forecast - hourly/daily, Anzeige von forecast Daten.</li>
     <li>forecastLimit - Anzahl der Forecast-Datens&auml;tze welche als Reading geschrieben werden sollen.</li>
+    <li>alerts - 0/1 Sollen Alert Meldungen &auml;nlich Unwetterwarnung geschrieben werden.</li>
+
   </ul>
   <br>
 </ul>
