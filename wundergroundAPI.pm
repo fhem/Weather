@@ -1,5 +1,4 @@
 # $Id$
-
 package wundergroundAPI;
 use strict;
 use warnings;
@@ -23,14 +22,11 @@ eval {
     require JSON::MaybeXS;
     import JSON::MaybeXS qw( decode_json encode_json );
     1;
-};
-if ($@) {
-    $@ = undef;
+} or do {
 
     # try to use JSON wrapper
     #   for chance of better performance
     eval {
-
         # JSON preference order
         local $ENV{PERL_JSON_BACKEND} =
           'Cpanel::JSON::XS,JSON::XS,JSON::PP,JSON::backportPP'
@@ -39,10 +35,7 @@ if ($@) {
         require JSON;
         import JSON qw( decode_json encode_json );
         1;
-    };
-
-    if ($@) {
-        $@ = undef;
+    } or do {
 
         # In rare cases, Cpanel::JSON::XS may
         #   be installed but JSON|JSON::MaybeXS not ...
@@ -50,10 +43,7 @@ if ($@) {
             require Cpanel::JSON::XS;
             import Cpanel::JSON::XS qw(decode_json encode_json);
             1;
-        };
-
-        if ($@) {
-            $@ = undef;
+        } or do {
 
             # In rare cases, JSON::XS may
             #   be installed but JSON not ...
@@ -61,10 +51,7 @@ if ($@) {
                 require JSON::XS;
                 import JSON::XS qw(decode_json encode_json);
                 1;
-            };
-
-            if ($@) {
-                $@ = undef;
+            } or do {
 
                 # Fallback to built-in JSON which SHOULD
                 #   be available since 5.014 ...
@@ -72,22 +59,19 @@ if ($@) {
                     require JSON::PP;
                     import JSON::PP qw(decode_json encode_json);
                     1;
-                };
-
-                if ($@) {
-                    $@ = undef;
+                } or do {
 
                     # Fallback to JSON::backportPP in really rare cases
                     require JSON::backportPP;
                     import JSON::backportPP qw(decode_json encode_json);
                     1;
-                }
-            }
-        }
-    }
-}
+                };
+            };
+        };
+    };
+};
 
-use Data::Dumper;    # for Debug only
+# use Data::Dumper;    # for Debug only
 ## API URL
 use constant DEMODATA =>
 '{"daily":{"dayOfWeek":["Freitag","Samstag","Sonntag","Montag","Dienstag","Mittwoch"],"expirationTimeUtc":[1555688120,1555688120,1555688120,1555688120,1555688120,1555688120],"moonPhase":["Vollmond","abnehmender Halbmond","abnehmender Halbmond","abnehmender Halbmond","abnehmender Halbmond","abnehmender Halbmond"],"moonPhaseCode":["F","WNG","WNG","WNG","WNG","WNG"],"moonPhaseDay":[15,16,17,18,19,20],"moonriseTimeLocal":["2019-04-19T20:09:54+0200","2019-04-20T21:30:54+0200","2019-04-21T22:48:07+0200","","2019-04-23T00:00:38+0200","2019-04-24T01:05:27+0200"],"moonriseTimeUtc":[1555697394,1555788654,1555879687,null,1555970438,1556060727],"moonsetTimeLocal":["2019-04-19T06:31:01+0200","2019-04-20T06:54:19+0200","2019-04-21T07:20:19+0200","2019-04-22T07:50:19+0200","2019-04-23T08:25:54+0200","2019-04-24T09:09:28+0200"],"moonsetTimeUtc":[1555648261,1555736059,1555824019,1555912219,1556000754,1556089768],"narrative":["Meistens klar. Tiefsttemperatur 5C.","Meistens klar. Höchsttemperaturen 19 bis 21C und Tiefsttemperaturen 4 bis 6C.","Meistens klar. Höchsttemperaturen 20 bis 22C und Tiefsttemperaturen 6 bis 8C.","Meistens klar. Höchsttemperaturen 20 bis 22C und Tiefsttemperaturen 9 bis 11C.","Teilweise bedeckt und windig. Höchsttemperaturen 21 bis 23C und Tiefsttemperaturen 11 bis 13C.","Teilweise bedeckt. Höchsttemperaturen 22 bis 24C und Tiefsttemperaturen 12 bis 14C."],"qpf":[0.0,0.0,0.0,0.0,0.0,0.0],"qpfSnow":[0.0,0.0,0.0,0.0,0.0,0.0],"sunriseTimeLocal":["2019-04-19T06:00:46+0200","2019-04-20T05:58:38+0200","2019-04-21T05:56:31+0200","2019-04-22T05:54:25+0200","2019-04-23T05:52:20+0200","2019-04-24T05:50:15+0200"],"sunriseTimeUtc":[1555646446,1555732718,1555818991,1555905265,1555991540,1556077815],"sunsetTimeLocal":["2019-04-19T20:11:02+0200","2019-04-20T20:12:46+0200","2019-04-21T20:14:29+0200","2019-04-22T20:16:13+0200","2019-04-23T20:17:56+0200","2019-04-24T20:19:40+0200"],"sunsetTimeUtc":[1555697462,1555783966,1555870469,1555956973,1556043476,1556129980],"temperatureMax":[null,20,21,21,22,23],"temperatureMin":[5,5,7,10,12,13],"validTimeLocal":["2019-04-19T07:00:00+0200","2019-04-20T07:00:00+0200","2019-04-21T07:00:00+0200","2019-04-22T07:00:00+0200","2019-04-23T07:00:00+0200","2019-04-24T07:00:00+0200"],"validTimeUtc":[1555650000,1555736400,1555822800,1555909200,1555995600,1556082000],"daypart":[{"cloudCover":[null,0,25,8,0,0,7,26,55,46,62,44],"dayOrNight":[null,"N","D","N","D","N","D","N","D","N","D","N"],"daypartName":[null,"Heute Abend","Morgen","Morgen Abend","Sonntag","Sonntagnacht","Montag","Montagnacht","Dienstag","Dienstagnacht","Mittwoch","Mittwochnacht"],"iconCode":[null,31,34,33,32,31,34,33,24,29,30,29],"iconCodeExtend":[null,3100,3400,3300,3200,3100,3400,3300,3010,2900,3000,2900],"narrative":[null,"Meistens klar. Tiefsttemperatur 5C. Wind aus NO mit 2 bis 4 m/s.","Meistens klar. Höchsttemperatur 20C. Wind aus NNO mit 2 bis 4 m/s.","Meistens klar. Tiefsttemperatur 5C. Wind aus NO mit 2 bis 4 m/s.","Meistens klar. Höchsttemperatur 21C. Wind aus O und wechselhaft.","Meistens klar. Tiefsttemperatur 7C. Wind aus ONO und wechselhaft.","Meistens klar. Höchsttemperatur 21C. Wind aus O mit 4 bis 9 m/s.","Meistens klar. Tiefsttemperatur 10C. Wind aus O mit 4 bis 9 m/s.","Teilweise bedeckt und windig. Höchsttemperatur 22C. Wind aus OSO mit 9 bis 13 m/s.","Teilweise bedeckt. Tiefsttemperatur 12C. Wind aus SO mit 4 bis 9 m/s.","Teilweise bedeckt. Höchsttemperatur 23C. Wind aus SO mit 4 bis 9 m/s.","Teilweise bedeckt. Tiefsttemperatur 13C. Wind aus SO mit 2 bis 4 m/s."],"precipChance":[null,0,0,0,0,0,20,20,0,0,0,10],"precipType":[null,"rain","rain","rain","rain","rain","rain","rain","rain","rain","rain","rain"],"qpf":[null,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0],"qpfSnow":[null,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0],"qualifierCode":[null,null,null,null,null,null,null,null,null,null,null,null],"qualifierPhrase":[null,null,null,null,null,null,null,null,null,null,null,null],"relativeHumidity":[null,50,44,55,41,55,42,48,45,55,53,64],"snowRange":[null,"","","","","","","","","","",""],"temperature":[null,5,20,5,21,7,21,10,22,12,23,13],"temperatureHeatIndex":[null,21,20,18,20,18,20,18,22,20,23,22],"temperatureWindChill":[null,5,5,5,6,6,7,8,8,10,10,13],"thunderCategory":[null,null,null,null,null,null,null,null,null,null,null,null],"thunderIndex":[null,0,0,0,0,0,0,0,0,0,0,0],"uvDescription":[null,"Niedrig","Mittel","Niedrig","Mittel","Niedrig","Mittel","Niedrig","Mittel","Niedrig","Mittel","Niedrig"],"uvIndex":[null,0,4,0,4,0,4,0,4,0,4,0],"windDirection":[null,45,18,41,85,74,95,98,114,124,139,131],"windDirectionCardinal":[null,"NO","NNO","NO","O","ONO","O","O","OSO","SO","SO","SO"],"windPhrase":[null,"Wind aus NO mit 2 bis 4 m/s.","Wind aus NNO mit 2 bis 4 m/s.","Wind aus NO mit 2 bis 4 m/s.","Wind aus O und wechselhaft.","Wind aus ONO und wechselhaft.","Wind aus O mit 4 bis 9 m/s.","Wind aus O mit 4 bis 9 m/s.","Wind aus OSO mit 9 bis 13 m/s.","Wind aus SO mit 4 bis 9 m/s.","Wind aus SO mit 4 bis 9 m/s.","Wind aus SO mit 2 bis 4 m/s."],"windSpeed":[null,4,3,3,2,2,6,6,9,7,6,4],"wxPhraseLong":[null,"Klar","Meist sonnig","Meist klar","Sonnig","Klar","Meist sonnig","Meist klar","Teilweise bedeckt/Wind","Wolkig","Wolkig","Wolkig"],"wxPhraseShort":[null,"","","","","","","","","","",""]}]},"observations":[{"stationID":"IMUNICH344","obsTimeUtc":"2019-04-19T15:24:22Z","obsTimeLocal":"2019-04-19 17:24:22","neighborhood":"Am Hartmannshofer Baechl 34","softwareType":"weewx-3.8.2","country":"DE","solarRadiation":null,"lon":11.49312592,"realtimeFrequency":null,"epoch":1555687462,"lat":48.18364716,"uv":null,"winddir":null,"humidity":27,"qcStatus":1,"metric_si":{"temp":23,"heatIndex":22,"dewpt":3,"windChill":23,"windSpeed":0,"windGust":1,"pressure":1025.84,"precipRate":0.0,"precipTotal":0.0,"elev":502}}]}';
@@ -109,8 +93,6 @@ sub new {
         lat       => ( split( ',', $argsRef->{location} ) )[0],
         long      => ( split( ',', $argsRef->{location} ) )[1],
         fetchTime => 0,
-        forecast  => $argsRef->{forecast},
-        alerts    => $argsRef->{alerts},
     };
 
     $self->{cachemaxage} = (
@@ -175,27 +157,23 @@ sub setRetrieveData {
 }
 
 sub setLocation {
-    my ($self,$lat,$long) = @_;
+    my ( $self, $lat, $long ) = @_;
 
-    $self->{lat}            = $lat;
-    $self->{long}           = $long;
+    $self->{lat}  = $lat;
+    $self->{long} = $long;
 
     return 0;
 }
 
 sub setAlerts {
-    my $self        = shift;
-    my $alerts      = shift // 0;
+    my $self = shift;
 
-    $self->{alerts} = $alerts;
     return;
 }
 
 sub setForecast {
-    my $self            = shift;
-    my $forecast         = shift // '';
+    my $self = shift;
 
-    $self->{forecast}    = $forecast;
     return;
 }
 
@@ -215,15 +193,14 @@ sub _RetrieveDataFromWU($) {
     my $self = shift;
 
     # retrieve data from cache
-    if (  ( time() - $self->{fetchTime} ) < $self->{cachemaxage}
+    if (    ( time() - $self->{fetchTime} ) < $self->{cachemaxage}
         and $self->{cached}->{lat} == $self->{lat}
-        and $self->{cached}->{long} == $self->{long}
-      )
+        and $self->{cached}->{long} == $self->{long} )
     {
         return _CallWeatherCallbackFn($self);
     }
 
-    $self->{cached}->{lat}  = $self->{lat}
+    $self->{cached}->{lat} = $self->{lat}
       unless ( $self->{cached}->{lat} == $self->{lat} );
     $self->{cached}->{long} = $self->{long}
       unless ( $self->{cached}->{long} == $self->{long} );
@@ -296,6 +273,7 @@ sub _RetrieveDataFromPWS($$$) {
     my $options = 'stationId=' . $self->{stationId};
     $options .= '&format=json';
     $options .= '&units=' . $self->{units};
+    $options .= '&numericPrecision=decimal';
     $options .= '&apiKey=' . $self->{key};
 
     $paramRefPWS->{url} = URL . 'v2/pws/observations/current?' . $options;
@@ -311,7 +289,7 @@ sub _RetrieveDataFinished($$$) {
     # we got PWS and forecast data
     if ( defined( $paramRef->{forecast} ) ) {
         if ( !$data || $data eq '' ) {
-            $err = 'No Data Found for specific PWS' unless ($err);
+            $err      = 'No Data Found for specific PWS' unless ($err);
             $response = $paramRef->{forecast};
         }
         elsif ( $paramRef->{forecast} =~ m/^\{(.*)\}$/ ) {
@@ -321,12 +299,12 @@ sub _RetrieveDataFinished($$$) {
                 $response = '{' . $fc . ',' . $1 . '}';
             }
             else {
-                $err = 'PWS data is not in JSON format' unless ($err);
+                $err      = 'PWS data is not in JSON format' unless ($err);
                 $response = $data;
             }
         }
         else {
-            $err = 'Forecast data is not in JSON format' unless ($err);
+            $err      = 'Forecast data is not in JSON format' unless ($err);
             $response = $data;
         }
     }
@@ -342,7 +320,7 @@ sub _RetrieveDataFinished($$$) {
     }
 
     if ( !$err ) {
-        $self->{cached}{status} = 'ok';
+        $self->{cached}{status}   = 'ok';
         $self->{cached}{validity} = 'up-to-date', $self->{fetchTime} = time();
         _ProcessingRetrieveData( $self, $response );
     }
@@ -410,22 +388,17 @@ sub _ProcessingRetrieveData($$) {
                     );
 
                     $self->{cached}{current} = {
-                        'dewPoint' =>
-                          int( sprintf( "%.1f", $data->{$unit}{dewpt} ) + 0.5 ),
-                        'heatIndex'   => $data->{$unit}{heatIndex},
+                        'dewPoint'  => sprintf( "%.1f", $data->{$unit}{dewpt} ),
+                        'heatIndex' => $data->{$unit}{heatIndex},
                         'precipRate'  => $data->{$unit}{precipRate},
                         'precipTotal' => $data->{$unit}{precipTotal},
-                        'pressure'    => int(
-                            sprintf( "%.1f", $data->{$unit}{pressure} ) + 0.5
-                        ),
+                        'pressure'    =>
+                          sprintf( "%.1f", $data->{$unit}{pressure} ),
                         'temperature' =>
-                          int( sprintf( "%.1f", $data->{$unit}{temp} ) + 0.5 ),
-                        'temp_c' =>
-                          int( sprintf( "%.1f", $data->{$unit}{temp} ) + 0.5 ),
-                        'wind_chill' => int(
-                            sprintf( "%.1f", ( $data->{$unit}{windChill} ) ) +
-                              0.5
-                        ),
+                          sprintf( "%.1f", $data->{$unit}{temp} ),
+                        'temp_c'     => sprintf( "%.1f", $data->{$unit}{temp} ),
+                        'wind_chill' =>
+                          sprintf( "%.1f", ( $data->{$unit}{windChill} ) ),
                         'windGust' => int(
                             sprintf( "%.1f", ( $data->{$unit}{windGust} ) ) +
                               0.5
@@ -529,33 +502,27 @@ sub _ProcessingRetrieveData($$) {
                                         )
                                     )
                                 ),
-                                'low_c' => int(
-                                    sprintf( "%.1f",
-                                        $data->{temperatureMin}[$i] ) + 0.5
+                                'low_c' => sprintf(
+                                    "%.1f", $data->{temperatureMin}[$i]
                                 ),
-                                'high_c' => int(
-                                    sprintf(
-                                        "%.1f",
-                                        (
-                                              $data->{temperatureMax}[$i]
-                                            ? $data->{temperatureMax}[$i]
-                                            : 0
-                                        )
-                                    ) + 0.5
+                                'high_c' => sprintf(
+                                    "%.1f",
+                                    (
+                                          $data->{temperatureMax}[$i]
+                                        ? $data->{temperatureMax}[$i]
+                                        : 0
+                                    )
                                 ),
-                                'tempLow' => int(
-                                    sprintf( "%.1f",
-                                        $data->{temperatureMin}[$i] ) + 0.5
+                                'tempLow' => sprintf(
+                                    "%.1f", $data->{temperatureMin}[$i]
                                 ),
-                                'tempHigh' => int(
-                                    sprintf(
-                                        "%.1f",
-                                        (
-                                              $data->{temperatureMax}[$i]
-                                            ? $data->{temperatureMax}[$i]
-                                            : 0
-                                        )
-                                    ) + 0.5
+                                'tempHigh' => sprintf(
+                                    "%.1f",
+                                    (
+                                          $data->{temperatureMax}[$i]
+                                        ? $data->{temperatureMax}[$i]
+                                        : 0
+                                    )
                                 ),
                             }
                         );
@@ -665,7 +632,7 @@ sub _ProcessingRetrieveData($$) {
                                     'narrative'  => $data->{narrative}[$i],
                                     'precipChance' => $data->{precipChance}[$i],
                                     'precipType'   => $data->{precipType}[$i],
-                                    'precipProbability' => $data->{qpf}[$i],
+                                    'precipProbability'     => $data->{qpf}[$i],
                                     'precipProbabilitySnow' =>
                                       $data->{qpfSnow}[$i],
                                     'qualifierPhrase' =>
@@ -674,7 +641,7 @@ sub _ProcessingRetrieveData($$) {
                                     'snowRange'   => $data->{snowRange}[$i],
                                     'temp_c'      => $data->{temperature}[$i],
                                     'temperature' => $data->{temperature}[$i],
-                                    'heatIndex' =>
+                                    'heatIndex'   =>
                                       $data->{temperatureHeatIndex}[$i],
                                     'wind_chill' =>
                                       $data->{temperatureWindChill}[$i],
@@ -683,7 +650,7 @@ sub _ProcessingRetrieveData($$) {
                                     'thunderIndex' => $data->{thunderIndex}[$i],
                                     'uvDescription' =>
                                       $data->{uvDescription}[$i],
-                                    'uvIndex' => $data->{uvIndex}[$i],
+                                    'uvIndex'        => $data->{uvIndex}[$i],
                                     'wind_direction' =>
                                       $data->{windDirection}[$i],
                                     'wind_directionCardinal' =>
