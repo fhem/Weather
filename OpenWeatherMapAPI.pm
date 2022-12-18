@@ -421,161 +421,76 @@ sub _ProcessingRetrieveData {
                     localtime( $self->{fetchTime} ) );
 
                 given ( $self->{endpoint} ) {
-                    when ('weather') {
-                        $self->{cached}->{country} = $data->{sys}->{country};
-                        $self->{cached}->{city} = encode_utf8( $data->{name} );
-                        $self->{cached}->{license}{text} = 'none';
-                        $self->{cached}->{current}       = {
+                    when ('onecall') {
+                        $self->{cached}->{current} = {
                             'temperature' => int(
-                                sprintf( "%.1f", $data->{main}->{temp} ) + 0.5
+                                sprintf( "%.1f", $data->{current}->{temp} ) +
+                                  0.5
                             ),
                             'temp_c' => int(
-                                sprintf( "%.1f", $data->{main}->{temp} ) + 0.5
-                            ),
-                            'low_c' => int(
-                                sprintf( "%.1f", $data->{main}->{temp_min} ) +
-                                  0.5
-                            ),
-                            'high_c' => int(
-                                sprintf( "%.1f", $data->{main}->{temp_max} ) +
-                                  0.5
-                            ),
-                            'tempLow' => int(
-                                sprintf( "%.1f", $data->{main}->{temp_min} ) +
-                                  0.5
-                            ),
-                            'tempHigh' => int(
-                                sprintf( "%.1f", $data->{main}->{temp_max} ) +
+                                sprintf( "%.1f", $data->{current}->{temp} ) +
                                   0.5
                             ),
                             'tempFeelsLike_c' => int(
-                                sprintf( "%.1f", $data->{main}->{feels_like} )
-                                  + 0.5
+                                sprintf( "%.1f",
+                                    $data->{current}->{feels_like} ) + 0.5
                             ),
-                            'humidity'  => $data->{main}->{humidity},
+                            'dew_point' => int(
+                                sprintf(
+                                    "%.1f", $data->{current}->{dew_point}
+                                ) + 0.5
+                            ),
+                            'humidity'  => $data->{current}->{humidity},
                             'condition' => encode_utf8(
-                                $data->{weather}->[0]->{description}
+                                $data->{current}->{weather}->[0]->{description}
                             ),
                             'pressure' => int(
-                                sprintf( "%.1f", $data->{main}->{pressure} ) +
-                                  0.5
+                                sprintf( "%.1f", $data->{current}->{pressure} )
+                                  + 0.5
                             ),
                             'wind' => int(
                                 sprintf( "%.1f",
-                                    ( $data->{wind}->{speed} * 3.6 ) ) + 0.5
+                                    ( $data->{current}->{wind_speed} * 3.6 ) )
+                                  + 0.5
                             ),
                             'wind_speed' => int(
                                 sprintf( "%.1f",
-                                    ( $data->{wind}->{speed} * 3.6 ) ) + 0.5
+                                    ( $data->{current}->{wind_speed} * 3.6 ) )
+                                  + 0.5
                             ),
                             'wind_gust' => int(
                                 sprintf( "%.1f",
-                                    ( $data->{wind}->{gust} * 3.6 ) ) + 0.5
+                                    ( $data->{current}->{wind_gust} * 3.6 ) ) +
+                                  0.5
                             ),
-                            'wind_direction' => $data->{wind}->{deg},
+                            'wind_direction' => $data->{current}->{wind_deg},
                             'rain_1h'        => $data->{rain}->{'1h'},
-                            'cloudCover'     => $data->{clouds}->{all},
-                            'code'    => $codes{ $data->{weather}->[0]->{id} },
-                            'iconAPI' => $data->{weather}->[0]->{icon},
+                            'cloudCover'     => $data->{current}->{clouds},
+                            'code'           =>
+                              $codes{ $data->{current}->{weather}->[0]->{id} },
+                            'iconAPI' =>
+                              $data->{current}->{weather}->[0]->{icon},
+                            'condition' => encode_utf8(
+                                $data->{current}->{weather}->[0]->{description}
+                            ),
                             'sunsetTime' => strftimeWrapper(
                                 "%a, %e %b %Y %H:%M",
-                                localtime( $data->{sys}->{sunset} )
+                                localtime( $data->{current}->{sunset} )
                             ),
                             'sunriseTime' => strftimeWrapper(
                                 "%a, %e %b %Y %H:%M",
-                                localtime( $data->{sys}->{sunrise} )
+                                localtime( $data->{current}->{sunrise} )
                             ),
                             'pubDate' => strftimeWrapper(
                                 "%a, %e %b %Y %H:%M",
-                                localtime( $data->{dt} )
+                                localtime( $data->{current}->{dt} )
                             ),
                             'visibility' => int(
-                                sprintf( "%.1f", $data->{visibility} ) + 0.5
+                                sprintf( "%.1f",
+                                    $data->{current}->{visibility} ) + 0.5
                             ),
+                            'uvi' => $data->{current}->{uvi},
                         };
-                    }
-
-                    when ('onecall') {
-                        if ( !exists( $self->{cached}->{current} ) ) {
-                            $self->{cached}->{current} = {
-                                'temperature' => int(
-                                    sprintf( "%.1f", $data->{current}->{temp} )
-                                      + 0.5
-                                ),
-                                'temp_c' => int(
-                                    sprintf( "%.1f", $data->{current}->{temp} )
-                                      + 0.5
-                                ),
-                                'tempFeelsLike_c' => int(
-                                    sprintf( "%.1f",
-                                        $data->{current}->{feels_like} ) + 0.5
-                                ),
-                                'dew_point' => int(
-                                    sprintf( "%.1f",
-                                        $data->{current}->{dew_point} ) + 0.5
-                                ),
-                                'humidity'  => $data->{current}->{humidity},
-                                'condition' => encode_utf8(
-                                    $data->{current}->{weather}->[0]
-                                      ->{description}
-                                ),
-                                'pressure' => int(
-                                    sprintf( "%.1f",
-                                        $data->{current}->{pressure} ) + 0.5
-                                ),
-                                'wind' => int(
-                                    sprintf(
-                                        "%.1f",
-                                        (
-                                            $data->{current}->{wind_speed} * 3.6
-                                        )
-                                    ) + 0.5
-                                ),
-                                'wind_speed' => int(
-                                    sprintf(
-                                        "%.1f",
-                                        (
-                                            $data->{current}->{wind_speed} * 3.6
-                                        )
-                                    ) + 0.5
-                                ),
-                                'wind_gust' => int(
-                                    sprintf( "%.1f",
-                                        ( $data->{current}->{wind_gust} * 3.6 )
-                                    ) + 0.5
-                                ),
-                                'wind_direction' =>
-                                  $data->{current}->{wind_deg},
-                                'rain_1h'    => $data->{rain}->{'1h'},
-                                'cloudCover' => $data->{current}->{clouds},
-                                'code'       => $codes{
-                                    $data->{current}->{weather}->[0]->{id}
-                                },
-                                'iconAPI' =>
-                                  $data->{current}->{weather}->[0]->{icon},
-                                'condition' => encode_utf8(
-                                    $data->{current}->{weather}->[0]
-                                      ->{description}
-                                ),
-                                'sunsetTime' => strftimeWrapper(
-                                    "%a, %e %b %Y %H:%M",
-                                    localtime( $data->{current}->{sunset} )
-                                ),
-                                'sunriseTime' => strftimeWrapper(
-                                    "%a, %e %b %Y %H:%M",
-                                    localtime( $data->{current}->{sunrise} )
-                                ),
-                                'pubDate' => strftimeWrapper(
-                                    "%a, %e %b %Y %H:%M",
-                                    localtime( $data->{current}->{dt} )
-                                ),
-                                'visibility' => int(
-                                    sprintf( "%.1f",
-                                        $data->{current}->{visibility} ) + 0.5
-                                ),
-                                'uvi' => $data->{current}->{uvi},
-                            };
-                        }
 
                         if ( ref( $data->{hourly} ) eq "ARRAY"
                             && scalar( @{ $data->{hourly} } ) > 0 )
