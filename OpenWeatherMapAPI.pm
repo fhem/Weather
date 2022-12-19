@@ -7,6 +7,7 @@
 #  All rights reserved
 #
 #   Special thanks goes to:
+#       - Harry (harryman) for many tests and patch that implements onecall API
 #
 #
 #  This script is free software; you can redistribute it and/or modify
@@ -304,9 +305,7 @@ sub _RetrieveDataFromOpenWeatherMap {
     my $paramRef = {
         timeout  => 15,
         self     => $self,
-        endpoint => $self->{endpoint} eq 'none' ? 'weather'
-        : $self->{endpoint} eq 'weather' ? 'onecall'
-        : 'weather',
+        endpoint => $self->{endpoint} eq 'none' ? 'onecall' : 'none',
         callback => \&_RetrieveDataFinished,
     };
 
@@ -424,21 +423,19 @@ sub _ProcessingRetrieveData {
                     when ('onecall') {
                         $self->{cached}->{current} = {
                             'temperature' => int(
-                                sprintf( "%.1f", $data->{current}->{temp} ) +
-                                  0.5
+                                sprintf( "%.0f", $data->{current}->{temp} )
                             ),
                             'temp_c' => int(
-                                sprintf( "%.1f", $data->{current}->{temp} ) +
-                                  0.5
+                                sprintf( "%.0f", $data->{current}->{temp} )
                             ),
                             'tempFeelsLike_c' => int(
-                                sprintf( "%.1f",
-                                    $data->{current}->{feels_like} ) + 0.5
+                                sprintf( "%.0f",
+                                    $data->{current}->{feels_like} )
                             ),
                             'dew_point' => int(
                                 sprintf(
-                                    "%.1f", $data->{current}->{dew_point}
-                                ) + 0.5
+                                    "%.0f", $data->{current}->{dew_point}
+                                )
                             ),
                             'humidity'  => $data->{current}->{humidity},
                             'condition' => encode_utf8(
@@ -518,36 +515,22 @@ sub _ProcessingRetrieveData {
                                             )
                                         ),
                                         'temperature' => int(
-                                            sprintf(
-                                                "%.1f",
-                                                (
-                                                    $data->{hourly}->[$i]
-                                                      ->{temp}
-                                                )
-                                            ) + 0.5
+                                            sprintf( "%.0f",
+                                                $data->{hourly}->[$i]->{temp} )
                                         ),
                                         'temp_c' => int(
-                                            sprintf(
-                                                "%.1f",
-                                                (
-                                                    $data->{hourly}->[$i]
-                                                      ->{temp}
-                                                )
-                                            ) + 0.5
+                                            sprintf( "%.0f",
+                                                $data->{hourly}->[$i]->{temp} )
                                         ),
                                         'tempFeelsLike' => int(
-                                            sprintf(
-                                                "%.1f",
-                                                (
-                                                    $data->{hourly}->[$i]
-                                                      ->{feels_like}
-                                                )
-                                            ) + 0.5
+                                            sprintf( "%.0f",
+                                                $data->{hourly}->[$i]
+                                                  ->{feels_like} )
                                         ),
                                         'dew_point' => int(
-                                            sprintf( "%.1f",
+                                            sprintf( "%.0f",
                                                 $data->{hourly}->[$i]
-                                                  ->{dew_point} ) + 0.5
+                                                  ->{dew_point} )
                                         ),
                                         'humidity' =>
                                           $data->{hourly}->[$i]->{humidity},
@@ -676,75 +659,74 @@ sub _ProcessingRetrieveData {
                                             )
                                         ),
                                         'temperature' => int(
-                                            sprintf( "%.1f",
+                                            sprintf( "%.0f",
                                                 $data->{daily}->[$i]->{temp}
-                                                  ->{day} ) + 0.5
+                                                  ->{day} )
                                         ),
                                         'temperature_morn' => int(
-                                            sprintf( "%.1f",
+                                            sprintf( "%.0f",
                                                 $data->{daily}->[$i]->{temp}
-                                                  ->{morn} ) + 0.5
+                                                  ->{morn} )
                                         ),
                                         'temperature_eve' => int(
-                                            sprintf( "%.1f",
+                                            sprintf( "%.0f",
                                                 $data->{daily}->[$i]->{temp}
-                                                  ->{eve} ) + 0.5
+                                                  ->{eve} )
                                         ),
                                         'temperature_night' => int(
-                                            sprintf( "%.1f",
+                                            sprintf( "%.0f",
                                                 $data->{daily}->[$i]->{temp}
-                                                  ->{night} ) + 0.5
+                                                  ->{night} )
                                         ),
                                         'tempFeelsLike_morn' => int(
-                                            sprintf( "%.1f",
+                                            sprintf( "%.0f",
                                                 $data->{daily}->[$i]
-                                                  ->{feels_like}->{morn} ) + 0.5
+                                                  ->{feels_like}->{morn} )
                                         ),
                                         'tempFeelsLike_eve' => int(
-                                            sprintf( "%.1f",
+                                            sprintf( "%.0f",
                                                 $data->{daily}->[$i]
-                                                  ->{feels_like}->{eve} ) + 0.5
+                                                  ->{feels_like}->{eve} )
                                         ),
                                         'tempFeelsLike_night' => int(
-                                            sprintf( "%.1f",
+                                            sprintf( "%.0f",
                                                 $data->{daily}->[$i]
-                                                  ->{feels_like}->{night} ) +
-                                              0.5
+                                                  ->{feels_like}->{night} )
                                         ),
                                         'tempFeelsLike_day' => int(
-                                            sprintf( "%.1f",
+                                            sprintf( "%.0f",
                                                 $data->{daily}->[$i]
-                                                  ->{feels_like}->{day} ) + 0.5
+                                                  ->{feels_like}->{day} )
                                         ),
                                         'temp_c' => int(
-                                            sprintf( "%.1f",
+                                            sprintf( "%.0f",
                                                 $data->{daily}->[$i]->{temp}
-                                                  ->{day} ) + 0.5
+                                                  ->{day} )
                                         ),
                                         'low_c' => int(
-                                            sprintf( "%.1f",
+                                            sprintf( "%.0f",
                                                 $data->{daily}->[$i]->{temp}
-                                                  ->{min} ) + 0.5
+                                                  ->{min} )
                                         ),
                                         'high_c' => int(
-                                            sprintf( "%.1f",
+                                            sprintf( "%.0f",
                                                 $data->{daily}->[$i]->{temp}
-                                                  ->{max} ) + 0.5
+                                                  ->{max} )
                                         ),
                                         'tempLow' => int(
-                                            sprintf( "%.1f",
+                                            sprintf( "%.0f",
                                                 $data->{daily}->[$i]->{temp}
-                                                  ->{min} ) + 0.5
+                                                  ->{min} )
                                         ),
                                         'tempHigh' => int(
-                                            sprintf( "%.1f",
+                                            sprintf( "%.0f",
                                                 $data->{daily}->[$i]->{temp}
-                                                  ->{max} ) + 0.5
+                                                  ->{max} )
                                         ),
                                         'dew_point' => int(
-                                            sprintf( "%.1f",
+                                            sprintf( "%.0f",
                                                 $data->{daily}->[$i]
-                                                  ->{dew_point} ) + 0.5
+                                                  ->{dew_point} )
                                         ),
                                         'humidity' =>
                                           $data->{daily}->[$i]->{humidity},
@@ -827,42 +809,32 @@ sub _ProcessingRetrieveData {
                                 push(
                                     @{ $self->{cached}->{alerts} },
                                     {
-                                        'warn_'
-                                          . $i
-                                          . '_End' => strftimeWrapper(
+                                        'End' => strftimeWrapper(
                                             "%a, %e %b %Y %H:%M",
                                             localtime(
                                                 (
                                                     $data->{alerts}->[$i]->{end}
-                                                ) - 3600
+                                                )
                                             )
-                                          ),
-                                        'warn_'
-                                          . $i
-                                          . '_Start' => strftimeWrapper(
+                                        ),
+                                        'Start' => strftimeWrapper(
                                             "%a, %e %b %Y %H:%M",
                                             localtime(
                                                 (
                                                     $data->{alerts}->[$i]
                                                       ->{start}
-                                                ) - 3600
+                                                )
                                             )
-                                          ),
-                                        'warn_'
-                                          . $i
-                                          . '_Description' => encode_utf8(
+                                        ),
+                                        'Description' => encode_utf8(
                                             $data->{alerts}->[$i]->{description}
-                                          ),
-                                        'warn_'
-                                          . $i
-                                          . '_SenderName' => encode_utf8(
+                                        ),
+                                        'SenderName' => encode_utf8(
                                             $data->{alerts}->[$i]->{sender_name}
-                                          ),
-                                        'warn_'
-                                          . $i
-                                          . '_Event' => encode_utf8(
+                                        ),
+                                        'Event' => encode_utf8(
                                             $data->{alerts}->[$i]->{event}
-                                          ),
+                                        ),
                                     },
                                 );
 

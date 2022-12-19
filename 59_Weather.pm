@@ -377,10 +377,11 @@ sub Weather_ForcastConfig {
 
     $forecastConfig{hourly} =
       ( AttrVal( $name, 'forecast', '' ) =~ m{hourly}xms ? 1 : 0 );
+
     $forecastConfig{daily} =
       ( AttrVal( $name, 'forecast', '' ) =~ m{daily}xms ? 1 : 0 );
-    $forecastConfig{alerts} =
-      ( AttrVal( $name, 'forecast', '' ) =~ m{alerts}xms ? 1 : 0 );
+
+    $forecastConfig{alerts} = AttrVal( $name, 'alerts', 0 );
 
     return \%forecastConfig;
 }
@@ -541,16 +542,27 @@ sub Weather_WriteReadings {
         }
     }
 
-    if ( ref( $dataRef->{alerts} ) eq 'HASH'
+    ### alerts
+    if (   defined( $dataRef->{alerts} )
+        && ref( $dataRef->{alerts} ) eq 'ARRAY'
+        && scalar( @{ $dataRef->{alerts} } ) > 0
         && $forecastConfig->{alerts} )
     {
-        while ( my ( $r, $v ) = each %{ $dataRef->{alerts} } ) {
-            readingsBulkUpdate( $hash, $r, $v )
-              if ( ref( $dataRef->{$r} ) ne 'HASH'
-                && ref( $dataRef->{$r} ) ne 'ARRAY' );
+        my $i = 0;
+        foreach my $warn ( @{ $dataRef->{alerts} } ) {
+            $i++;
+            my $w = "warn_" . $i . "_";
+
+            while ( my ( $r, $v ) = each %{$warn} ) {
+                readingsBulkUpdate( $hash, $w . $r, $v )
+                  if ( ref( $dataRef->{$r} ) ne 'HASH'
+                    && ref( $dataRef->{$r} ) ne 'ARRAY' );
+            }
+
         }
     }
 
+    ### state
     my $val = 'T: '
       . $dataRef->{current}->{temperature} . ' °C' . ' '
       . substr( $status_items_txt_i18n{1}, 0, 1 ) . ': '
