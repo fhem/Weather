@@ -329,7 +329,7 @@ sub Weather_ReturnWithError {
     return;
 }
 
-sub Weather_DeleteReadings {
+sub Weather_DeleteForecastReadings {
     my $hash = shift;
 
     my $name                    = $hash->{NAME};
@@ -346,6 +346,23 @@ sub Weather_DeleteReadings {
       if ( !$forecastConfig->{hourly} );
     CommandDeleteReading( undef,
         $name . ' ' . 'hfc([' . $forecastLimit . '-9]|[0-9]{2})_.*' );
+
+    return;
+}
+
+sub Weather_DeleteAlertsReadings {
+    my $hash        = shift;
+    my $alertsLimit = shift // 0;
+
+    my $name                = $hash->{NAME};
+    my $alertsConfig        = Weather_ForcastConfig($hash);
+    my $alertsLimitNoAlerts = 0;
+
+    $alertsLimit = $alertsLimitNoAlerts
+      if ( !$alertsConfig->{alerts} );
+
+    CommandDeleteReading( undef,
+        $name . ' ' . 'warn_([' . $alertsLimit . '-9]|[0-9]{2})_.*' );
 
     return;
 }
@@ -550,7 +567,6 @@ sub Weather_WriteReadings {
     {
         my $i = 0;
         foreach my $warn ( @{ $dataRef->{alerts} } ) {
-            $i++;
             my $w = "warn_" . $i . "_";
 
             while ( my ( $r, $v ) = each %{$warn} ) {
@@ -559,7 +575,18 @@ sub Weather_WriteReadings {
                     && ref( $dataRef->{$r} ) ne 'ARRAY' );
             }
 
+            $i++;
         }
+
+        Weather_DeleteAlertsReadings( $hash,
+            scalar( @{ $dataRef->{alerts} } ) );
+        readingsBulkUpdate( $hash, 'warnCount',
+            scalar( @{ $dataRef->{alerts} } ) );
+    }
+    else {
+        Weather_DeleteAlertsReadings($hash);
+        readingsBulkUpdate( $hash, 'warnCount',
+            scalar( @{ $dataRef->{alerts} } ) );
     }
 
     ### state
@@ -817,13 +844,13 @@ sub Weather_Attr {
                 $hash->{fhem}->{api}->setForecast();
             }
 
-            InternalTimer( gettimeofday() + 1, \&Weather_DeleteReadings,
-                $hash );
+            InternalTimer( gettimeofday() + 0.5,
+                \&Weather_DeleteForecastReadings, $hash );
         }
 
         when ('forecastLimit') {
-            InternalTimer( gettimeofday() + 1, \&Weather_DeleteReadings,
-                $hash );
+            InternalTimer( gettimeofday() + 0.5,
+                \&Weather_DeleteForecastReadings, $hash );
         }
 
         when ('alerts') {
@@ -833,6 +860,9 @@ sub Weather_Attr {
             elsif ( $cmd eq 'del' ) {
                 $hash->{fhem}->{api}->setAlerts();
             }
+
+            InternalTimer( gettimeofday() + 0.5,
+                \&Weather_DeleteAlertsReadings, $hash );
         }
     }
 

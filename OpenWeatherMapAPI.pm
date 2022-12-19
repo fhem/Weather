@@ -157,6 +157,7 @@ my %codes = (
     602 => 13,
     611 => 46,
     612 => 46,
+    613 => 46,
     615 => 5,
     616 => 5,
     620 => 14,
@@ -358,7 +359,7 @@ sub _CreateExcludeString {
 
     my @exclude  = qw/alerts minutely hourly daily/;
     my @forecast = split( ',', $forecast );
-    my @alerts   = ( $alerts ? ',alerts' : '' );
+    my @alerts   = ( $alerts ? 'alerts' : '' );
 
     my %in_forecast = map  { $_ => 1 } @forecast, @alerts;
     my @diff        = grep { not $in_forecast{$_} } @exclude;
@@ -486,7 +487,9 @@ sub _ProcessingRetrieveData {
                                 sprintf( "%.1f",
                                     $data->{current}->{visibility} ) + 0.5
                             ),
-                            'uvi' => $data->{current}->{uvi},
+                            'uvi'             => $data->{current}->{uvi},
+                            'timezone'        => $data->{timezone},
+                            'timezone_offset' => $data->{timezone_offset},
                         };
 
                         if ( ref( $data->{hourly} ) eq "ARRAY"
@@ -503,15 +506,13 @@ sub _ProcessingRetrieveData {
                                         'pubDate' => strftimeWrapper(
                                             "%a, %e %b %Y %H:%M",
                                             localtime(
-                                                ( $data->{hourly}->[$i]->{dt} )
-                                                - 3600
+                                                $data->{hourly}->[$i]->{dt}
                                             )
                                         ),
                                         'day_of_week' => strftime(
                                             "%a, %H:%M",
                                             localtime(
-                                                ( $data->{hourly}->[$i]->{dt} )
-                                                - 3600
+                                                $data->{hourly}->[$i]->{dt}
                                             )
                                         ),
                                         'temperature' => int(
@@ -609,42 +610,31 @@ sub _ProcessingRetrieveData {
                                         'pubDate' => strftimeWrapper(
                                             "%a, %e %b %Y %H:%M",
                                             localtime(
-                                                ( $data->{daily}->[$i]->{dt} )
-                                                - 3600
+                                                $data->{daily}->[$i]->{dt}
                                             )
                                         ),
                                         'day_of_week' => strftime(
                                             "%a, %H:%M",
                                             localtime(
-                                                ( $data->{daily}->[$i]->{dt} )
-                                                - 3600
+                                                $data->{daily}->[$i]->{dt}
                                             )
                                         ),
                                         'sunrise' => strftime(
                                             "%H:%M",
                                             localtime(
-                                                (
-                                                    $data->{daily}->[$i]
-                                                      ->{sunrise}
-                                                ) - 3600
+                                                $data->{daily}->[$i]->{sunrise}
                                             )
                                         ),
                                         'sunset' => strftime(
                                             "%a, %H:%M",
                                             localtime(
-                                                (
-                                                    $data->{daily}->[$i]
-                                                      ->{sunset}
-                                                ) - 3600
+                                                $data->{daily}->[$i]->{sunset}
                                             )
                                         ),
                                         'moonrise' => strftime(
                                             "%a, %H:%M",
                                             localtime(
-                                                (
-                                                    $data->{daily}->[$i]
-                                                      ->{moonrise}
-                                                ) - 3600
+                                                $data->{daily}->[$i]->{moonrise}
                                             )
                                         ),
                                         'moon_phase' =>
@@ -652,10 +642,7 @@ sub _ProcessingRetrieveData {
                                         'moonset' => strftime(
                                             "%a, %H:%M",
                                             localtime(
-                                                (
-                                                    $data->{daily}->[$i]
-                                                      ->{moonset}
-                                                ) - 3600
+                                                $data->{daily}->[$i]->{moonset}
                                             )
                                         ),
                                         'temperature' => int(
