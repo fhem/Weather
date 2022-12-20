@@ -728,16 +728,21 @@ sub Weather_Notify {
     my $type = $hash->{TYPE};
 
     return if ( $dev->{NAME} ne "global" );
-    return if ( !grep { /^INITIALIZED|REREADCFG$/ } @{ $dev->{CHANGED} } );
 
-    # return if($attr{$name} && $attr{$name}->{disable});
+    # set forcast and alerts values to api object
+    if ( grep { /^MODIFIED.$name$/x } @{ $dev->{CHANGED} } ) {
+        $hash->{fhem}->{api}->setForecast( AttrVal( $name, 'forecast', '' ) );
+        $hash->{fhem}->{api}->setAlerts( AttrVal( $name, 'alerts', 0 ) );
+
+        Weather_GetUpdate($hash);
+    }
+
+    return if ( !grep { /^INITIALIZED|REREADCFG$/x } @{ $dev->{CHANGED} } );
 
     # update weather after initialization or change of configuration
     # wait 10 to 29 seconds to avoid congestion due to concurrent activities
     Weather_DisarmTimer($hash);
     my $delay = 10 + int( rand(20) );
-
-    #$delay= 3; # delay removed until further notice
 
     Log3 $hash, 5,
 "Weather $name: FHEM initialization or rereadcfg triggered update, delay $delay seconds.";
@@ -815,9 +820,6 @@ sub Weather_Define {
             language   => $hash->{LANG},
         }
     );
-
-    Weather_GetUpdate($hash)
-      if ($init_done);
 
     return;
 }
