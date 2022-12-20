@@ -615,7 +615,7 @@ sub Weather_GetUpdate {
 
     my $name = $hash->{NAME};
 
-    if ( $attr{$name} && $attr{$name}->{disable} ) {
+    if ( IsDisabled($name) ) {
         Log3 $hash, 5,
           "Weather $name: retrieval of weather data is disabled by attribute.";
         readingsBeginUpdate($hash);
