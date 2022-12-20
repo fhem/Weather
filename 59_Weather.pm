@@ -737,7 +737,12 @@ sub Weather_Notify {
         Weather_GetUpdate($hash);
     }
 
-    return if ( !grep { /^INITIALIZED|REREADCFG$/x } @{ $dev->{CHANGED} } );
+    return
+      if (
+        !grep {
+/^INITIALIZED|REREADCFG|DELETEATTR.$name.disable|ATTR.$name.disable.[0-1]$/x
+        } @{ $dev->{CHANGED} }
+      );
 
     # update weather after initialization or change of configuration
     # wait 10 to 29 seconds to avoid congestion due to concurrent activities
