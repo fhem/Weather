@@ -422,6 +422,15 @@ sub _ProcessingRetrieveData {
 
                 given ( $self->{endpoint} ) {
                     when ('onecall') {
+                        ## löschen des alten current Datensatzes
+                        delete $self->{cached}->{current};
+
+                        ## löschen des alten forecast Datensatzes
+                        delete $self->{cached}->{forecast};
+
+                        ## löschen des alten Alerts Datensatzes
+                        delete $self->{cached}->{alerts};
+
                         $self->{cached}->{current} = {
                             'temperature' => int(
                                 sprintf( "%.0f", $data->{current}->{temp} )
@@ -495,9 +504,6 @@ sub _ProcessingRetrieveData {
                         if ( ref( $data->{hourly} ) eq "ARRAY"
                             && scalar( @{ $data->{hourly} } ) > 0 )
                         {
-                            ## löschen des alten Datensatzes
-                            delete $self->{cached}->{forecast};
-
                             my $i = 0;
                             for ( @{ $data->{hourly} } ) {
                                 push(
@@ -788,9 +794,6 @@ sub _ProcessingRetrieveData {
                         if ( ref( $data->{alerts} ) eq "ARRAY"
                             && scalar( @{ $data->{alerts} } ) > 0 )
                         {
-                            ## löschen des alten Datensatzes
-                            delete $self->{cached}->{alerts};
-
                             my $i = 0;
                             for ( @{ $data->{alerts} } ) {
                                 push(
