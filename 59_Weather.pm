@@ -2,7 +2,7 @@
 ##############################################################################
 #
 #     59_Weather.pm
-#     Copyright by Dr. Boris Neubert
+#     (c) 2009-2023 Copyright by Dr. Boris Neubert
 #     e-mail: omega at online dot de
 #
 #       Contributors:
@@ -1098,7 +1098,8 @@ sub Weather_CheckOptions {
     $f     =~ tr/dh/./cd  if ( defined $f      && $f );
     $items =~ tr/0-9/./cd if ( defined($items) && $items );
 
-    $items = 6 if ( !$items );
+    $items = AttrVal( $d, 'forecastLimit', 6 )
+      if ( !$items );
 
     my $forecastConfig = Weather_ForcastConfig($hash);
     $f = (
@@ -1532,15 +1533,15 @@ sub Weather_CheckOptions {
   ],
   "release_status": "stable",
   "license": "GPL_2",
-  "version": "v2.2.5",
+  "version": "v2.2.6",
   "author": [
-    "Marko Oldenburg <leongaultier@gmail.com>"
+    "Marko Oldenburg <fhemdevelopment@cooltux.net>"
   ],
   "x_fhem_maintainer": [
     "CoolTux"
   ],
   "x_fhem_maintainer_github": [
-    "LeonGaultier"
+    "CoolTuxNet"
   ],
   "prereqs": {
     "runtime": {

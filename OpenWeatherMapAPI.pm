@@ -1,9 +1,9 @@
 # $Id:  $
 ###############################################################################
 #
-# Developed with VSCodium and richterger perl plugin.
+# Developed with VSCodium and richterger perl plugin
 #
-#  (c) 2019-2022 Copyright: Marko Oldenburg (fhemdevelopment at cooltux dot net)
+#  (c) 2019-2023 Copyright: Marko Oldenburg (fhemdevelopment at cooltux dot net)
 #  All rights reserved
 #
 #   Special thanks goes to:
@@ -182,7 +182,9 @@ my %codes = (
 
 sub new {
     ### geliefert wird ein Hash
-    my ( $class, $argsRef ) = @_;
+    my $class   = shift;
+    my $argsRef = shift;
+
     my $apioptions = _parseApiOptions( $argsRef->{apioptions} );
 
     my $self = {
@@ -923,7 +925,7 @@ sub strftimeWrapper {
       "abstract": "Wetter API für OpenWeatherMap"
     }
   },
-  "version": "v3.0.1",
+  "version": "v3.0.2",
   "author": [
     "Marko Oldenburg <fhemdevelopment@cooltux.net>"
   ],
@@ -931,7 +933,7 @@ sub strftimeWrapper {
     "CoolTux"
   ],
   "x_fhem_maintainer_github": [
-    "LeonGaultier"
+    "CoolTuxNet"
   ],
   "prereqs": {
     "runtime": {

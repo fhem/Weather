@@ -747,7 +747,7 @@ sub strftimeWrapper(@) {
       "abstract": "Wetter API für Weather Underground"
     }
   },
-  "version": "v1.0.1",
+  "version": "v1.0.2",
   "author": [
     "Julian Pawlowski <julian.pawlowski@gmail.com>"
   ],
