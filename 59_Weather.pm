@@ -895,7 +895,7 @@ sub WeatherAsHtmlV {
     my $op1 = shift;
     my $op2 = shift;
 
-    my ( $f, $items ) = WeatherCheckOptions( $d, $op1, $op2 );
+    my ( $f, $items ) = Weather_CheckOptions( $d, $op1, $op2 );
 
     my $h     = $defs{$d};
     my $width = int( $ICONSCALE * $ICONWIDTH );
@@ -966,7 +966,7 @@ sub WeatherAsHtml {
     my $op1 = shift;
     my $op2 = shift;
 
-    my ( $f, $items ) = WeatherCheckOptions( $d, $op1, $op2 );
+    my ( $f, $items ) = Weather_CheckOptions( $d, $op1, $op2 );
 
     return WeatherAsHtmlV( $d, $f, $items );
 }
@@ -976,7 +976,7 @@ sub WeatherAsHtmlH {
     my $op1 = shift;
     my $op2 = shift;
 
-    my ( $f, $items ) = WeatherCheckOptions( $d, $op1, $op2 );
+    my ( $f, $items ) = Weather_CheckOptions( $d, $op1, $op2 );
 
     my $h     = $defs{$d};
     my $width = int( $ICONSCALE * $ICONWIDTH );
@@ -1068,7 +1068,7 @@ sub WeatherAsHtmlD {
     my $op1 = shift;
     my $op2 = shift;
 
-    my ( $f, $items ) = WeatherCheckOptions( $d, $op1, $op2 );
+    my ( $f, $items ) = Weather_CheckOptions( $d, $op1, $op2 );
 
     if ($FW_ss) {
         WeatherAsHtmlV( $d, $f, $items );
@@ -1080,11 +1080,15 @@ sub WeatherAsHtmlD {
     return;
 }
 
-sub WeatherCheckOptions {
+sub Weather_CheckOptions {
     my $d   = shift;
     my $op1 = shift;
     my $op2 = shift;
 
+    return "$d is not a Weather instance<br>"
+      if ( !$defs{$d} || $defs{$d}->{TYPE} ne "Weather" );
+
+    my $hash  = $defs{$d};
     my $items = $op2;
     my $f     = $op1;
 
@@ -1096,16 +1100,12 @@ sub WeatherCheckOptions {
 
     $items = 6 if ( !$items );
 
-    return "$d is not a Weather instance<br>"
-      if ( !$defs{$d} || $defs{$d}->{TYPE} ne "Weather" );
-
-    if ( AttrVal( $d, 'forecast', 'none' ) ne 'none' ) {
-        $f = (
-            AttrVal( $d, 'forecast', 'none' ) eq 'daily'
-            ? 'd'
-            : ( AttrVal( $d, 'forecast', 'none' ) eq 'every' ? $f : 'h' )
-        );
-    }
+    my $forecastConfig = Weather_ForcastConfig($hash);
+    $f = (
+        $forecastConfig->{daily}
+        ? 'd'
+        : ( $forecastConfig->{daily} && $forecastConfig->{hourly} ? $f : 'h' )
+    ) if !( defined($f) and $f );
 
     $f = 'h' if ( !$f || length($f) > 1 );
 
