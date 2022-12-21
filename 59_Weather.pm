@@ -1105,7 +1105,7 @@ sub Weather_CheckOptions {
     $f     =~ tr/dh/./cd  if ( defined $f      && $f );
     $items =~ tr/0-9/./cd if ( defined($items) && $items );
 
-    $items = AttrVal( $d, 'forecastLimit', 6 )
+    $items = AttrVal( $d, 'forecastLimit', 5 )
       if ( !$items );
 
     my $forecastConfig = Weather_ForcastConfig($hash);
@@ -1117,7 +1117,7 @@ sub Weather_CheckOptions {
 
     $f = 'h' if ( !$f || length($f) > 1 );
 
-    return ( $f, $items );
+    return ( $f, $items + 1 );
 }
 
 #####################################
