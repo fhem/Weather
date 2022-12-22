@@ -31,24 +31,24 @@
 ### Beispielaufruf
 # https://api.openweathermap.org/data/2.5/weather?lat=[lat]&lon=[long]&APPID=[API]   Current
 # https://api.openweathermap.org/data/2.5/forecast?lat=[lat]&lon=[long]&APPID=[API]   Forecast
-# https://api.openweathermap.org/data/2.5/onecall?lat=[lat]&lon=[long]&APPID=[API]   Forecast
+# https://api.openweathermap.org/data/3.0/onecall?lat=[lat]&lon=[long]&APPID=[API]   Current,Forecast
 # https://openweathermap.org/weather-conditions     Icons und Conditions ID's
 
-package OpenWeatherMapAPI;
+package FHEM::APIs::Weather::OpenWeatherMapAPI;
 use strict;
 use warnings;
 use FHEM::Meta;
 
-FHEM::Meta::Load(__PACKAGE__);
-use version 0.50; our $VERSION = $::packages{OpenWeatherMapAPI}{META}{version};
-
-package OpenWeatherMapAPI::Weather;
-use strict;
-use warnings;
-
 use POSIX;
 use HttpUtils;
 use experimental qw /switch/;
+
+my %META;
+my $ret = FHEM::Meta::getMetadata( __FILE__, \%META );
+return "$@" if ($@);
+return $ret if ($ret);
+$::packages{OpenWeatherMapAPI}{META} = \%META;
+use version 0.77; our $VERSION = $::packages{OpenWeatherMapAPI}{META}{version};
 
 # use Data::Dumper;
 
@@ -120,7 +120,7 @@ eval { use Readonly; 1 }
 # Readonly my $URL => 'https://api.openweathermap.org/data/2.5/';
 Readonly my $URL => 'https://api.openweathermap.org/data/';
 ## URL . 'weather?' for current data
-## URL . 'onecall?' for forecast data
+## URL . 'onecall?' for current,forecast data
 
 my %codes = (
     200 => 45,
@@ -881,8 +881,7 @@ sub _CreateForecastRef {
             long          => $self->{long},
             apiMaintainer =>
 'Marko Oldenburg (<a href=https://forum.fhem.de/index.php?action=profile;u=13684>CoolTux</a>)',
-            apiVersion =>
-              version->parse( OpenWeatherMapAPI->VERSION() )->normal,
+            apiVersion => version->parse( __PACKAGE__->VERSION() )->normal,
         }
     );
 
