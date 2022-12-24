@@ -586,7 +586,9 @@ sub Weather_WriteReadings {
     else {
         Weather_DeleteAlertsReadings($hash);
         readingsBulkUpdate( $hash, 'warnCount',
-            scalar( @{ $dataRef->{alerts} } ) );
+            scalar( @{ $dataRef->{alerts} } ) )
+          if ( defined( $dataRef->{alerts} )
+            && ref( $dataRef->{alerts} ) eq 'ARRAY' );
     }
 
     ### state
