@@ -991,7 +991,7 @@ sub _strftimeWrapper {
       "abstract": "Wetter API für OpenWeatherMap"
     }
   },
-  "version": "v3.0.2",
+  "version": "v3.0.10",
   "author": [
     "Marko Oldenburg <fhemdevelopment@cooltux.net>"
   ],
