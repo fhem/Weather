@@ -585,8 +585,6 @@ sub _FillSelfHashWithWeatherResponseForWeatherCurrent {
           int( sprintf( "%.1f", ( $data->{wind}->{speed} * 3.6 ) ) + 0.5 ),
         'wind_speed' =>
           int( sprintf( "%.1f", ( $data->{wind}->{speed} * 3.6 ) ) + 0.5 ),
-        'wind_gust' =>
-          int( sprintf( "%.1f", ( $data->{wind}->{gust} * 3.6 ) ) + 0.5 ),
         'wind_direction' => $data->{wind}->{deg},
         'cloudCover'     => $data->{clouds}->{all},
         'code'           => $codes{ $data->{weather}->[0]->{id} },
@@ -606,6 +604,9 @@ sub _FillSelfHashWithWeatherResponseForWeatherCurrent {
     $self->{cached}->{current}->{'visibility'} =
       int( sprintf( "%.1f", $data->{visibility} ) + 0.5 )
       if ( exists $data->{visibility} );
+    $self->{cached}->{current}->{'wind_gust'} =
+      int( sprintf( "%.1f", ( $data->{wind}->{gust} * 3.6 ) ) + 0.5 )
+      if ( exists $data->{wind}->{gust} );
 
     return $self;
 }
