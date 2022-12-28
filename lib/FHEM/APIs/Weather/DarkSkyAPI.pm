@@ -773,7 +773,7 @@ sub _strftimeWrapper {
       "abstract": "Wetter API für Weather DarkSky"
     }
   },
-  "version": "v1.2.0",
+  "version": "v1.2.1",
   "author": [
     "Marko Oldenburg <fhemdevelopment@cooltux.net>"
   ],
