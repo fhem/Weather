@@ -637,16 +637,13 @@ sub _FillSelfHashWithWeatherResponseForForecastHourly {
                     sprintf( "%.0f", $data->{list}->[$i]->{main}->{temp_min} )
                 ),
                 'high_c' => int(
-                    sprintf( "%.0f",
-                        $data->{list}->[$i]->{main}->{temp_max} - 273.15 )
+                    sprintf( "%.0f", $data->{list}->[$i]->{main}->{temp_max} )
                 ),
                 'tempLow' => int(
-                    sprintf( "%.0f",
-                        $data->{list}->[$i]->{main}->{temp_min} - 273.15 )
+                    sprintf( "%.0f", $data->{list}->[$i]->{main}->{temp_min} )
                 ),
                 'tempHigh' => int(
-                    sprintf( "%.0f",
-                        $data->{list}->[$i]->{main}->{temp_max} - 273.15 )
+                    sprintf( "%.0f", $data->{list}->[$i]->{main}->{temp_max} )
                 ),
                 'humidity'  => $data->{list}->[$i]->{main}->{humidity},
                 'condition' => encode_utf8(
@@ -758,7 +755,7 @@ sub _FillSelfHashWithWeatherResponseForOnecallDaily {
                     "%a, %H:%M", localtime( $data->{daily}->[$i]->{dt} )
                 ),
                 'sunrise' => strftime(
-                    "%H:%M", localtime( $data->{daily}->[$i]->{sunrise} )
+                    "%a, %H:%M", localtime( $data->{daily}->[$i]->{sunrise} )
                 ),
                 'sunset' => strftime(
                     "%a, %H:%M", localtime( $data->{daily}->[$i]->{sunset} )
@@ -992,7 +989,7 @@ sub _strftimeWrapper {
       "abstract": "Wetter API für OpenWeatherMap"
     }
   },
-  "version": "v3.0.10",
+  "version": "v3.0.11",
   "author": [
     "Marko Oldenburg <fhemdevelopment@cooltux.net>"
   ],
