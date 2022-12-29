@@ -7,6 +7,7 @@ use FHEM::Meta;
 use POSIX;
 use HttpUtils;
 use experimental qw /switch/;
+use Encode;
 
 my $META = {};
 my $ret  = FHEM::Meta::getMetadata( __FILE__, $META );
@@ -75,8 +76,10 @@ eval {
 
 my $missingModul = '';
 
-# use Data::Dumper;    # for Debug only
-## API URL
+## no critic (Conditional "use" statement. Use "require" to conditionally include a module (Modules::ProhibitConditionalUseStatements))
+eval { use Encode qw /encode_utf8/; 1 }
+  or $missingModul .= 'Encode ';
+
 eval { use Readonly; 1 }
   or $missingModul .= 'Readonly ';    # apt install libreadonly-perl
 ## use critic
@@ -370,7 +373,7 @@ sub _ProcessingRetrieveData {
         and defined($response)
         and $response )
     {
-        if ( $response =~ m/^\{.*\}$/ ) {
+        if ( $response =~ m/^\{.*\}$/x ) {
             my $data = eval { decode_json( encode_utf8($response) ) };
             if ($@) {
                 _ErrorHandling( $self,
@@ -486,13 +489,13 @@ sub _ProcessingRetrieveData {
 
                     while ( $i < $days ) {
                         $data->{moonriseTimeLocal}[$i] =~
-                          s/^(....-..-..T..:..).*/$1/;
+                          s/^(....-..-..T..:..).*/$1/x;
                         $data->{moonsetTimeLocal}[$i] =~
-                          s/^(....-..-..T..:..).*/$1/;
+                          s/^(....-..-..T..:..).*/$1/x;
                         $data->{sunriseTimeLocal}[$i] =~
-                          s/^(....-..-..T..:..).*/$1/;
+                          s/^(....-..-..T..:..).*/$1/x;
                         $data->{sunsetTimeLocal}[$i] =~
-                          s/^(....-..-..T..:..).*/$1/;
+                          s/^(....-..-..T..:..).*/$1/x;
 
                         push(
                             @{ $self->{cached}{forecast}{daily} },
