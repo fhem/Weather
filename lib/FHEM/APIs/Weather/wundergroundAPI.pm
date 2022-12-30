@@ -724,7 +724,7 @@ sub _ProcessingRetrieveData {
     }
 
     ## Aufruf der callbackFn
-    _CallWeatherCallbackFn($self);
+    return _CallWeatherCallbackFn($self);
 }
 
 sub _CallWeatherCallbackFn {
