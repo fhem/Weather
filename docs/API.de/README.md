@@ -8,9 +8,11 @@ Da sich die API selbst noch in Entwicklung befindet, sollte vor jedem neuen API-
 
 Das Modul muss zwingend Objektorientiert geschrieben werden. Man sollte sich also schon einmal damit befasst haben um zu verstehen, wie so ein objektorientiertes Modul funktioniert.
 
-Der Packagename muß im Format `<SERIVCE_NAME>API::Weather` angegeben werden, also z.B.
+Alle API Moduldateien für 59_Weather.pm werden unter `lib/FHEM/APIs/Weather/` abgelegt
 
-    package FoobarAPI::Weather
+Der Packagename muß im Format `FHEM::APIs::Weather<SERIVCE_NAME>API` angegeben werden, also z.B.
+
+    package FHEM::APIs::Weather::FoobarAPI
     
 für den Wetter-Service Foobar.
 
@@ -70,9 +72,9 @@ Wird `LOCATION` und `LANGUAGE` beim Define des Devices nicht angeben, wird von `
 
 Es müssen zwingend zwei Objektmethoden vorhanden sein. `Weather` wird dann über den Konstruktor eine neue Instanz als Instanzvariable anlegen. Über diese Instanzvariablen werden dann die zwei Methodenaufrufe durchgeführt.
 
-`$obj→setRetrieveData` wird in `Weather` in der GetUpdate-Funktion aufgerufen.
+`$obj->setRetrieveData` wird in `Weather` in der GetUpdate-Funktion aufgerufen.
 
-`$obj→getWeather` wird in der `CallbackFn-Funktion aufgerufen um die Daten aus dem API-Modul zu erhalten. Vorher muss aus dem API-Modul heraus die `CallbackFn` aufgerufen und der Name der `Weather`-Instanz übergeben werden: `Weather_CallbackFn(devName);`
+`$obj->getWeather` wird in der `CallbackFn-Funktion aufgerufen um die Daten aus dem API-Modul zu erhalten. Vorher muss aus dem API-Modul heraus die `CallbackFn` aufgerufen und der Name der `Weather`-Instanz übergeben werden: `Weather_CallbackFn(devName);`
 
 Für beide Methodenaufrufe **muss** eine entsprechende Methode existieren. Das ist Pflicht.
 

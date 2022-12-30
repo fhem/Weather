@@ -586,7 +586,9 @@ sub Weather_WriteReadings {
     else {
         Weather_DeleteAlertsReadings($hash);
         readingsBulkUpdate( $hash, 'warnCount',
-            scalar( @{ $dataRef->{alerts} } ) );
+            scalar( @{ $dataRef->{alerts} } ) )
+          if ( defined( $dataRef->{alerts} )
+            && ref( $dataRef->{alerts} ) eq 'ARRAY' );
     }
 
     ### state
@@ -785,7 +787,7 @@ sub Weather_Define {
     # evaluate API options
     my ( $api, $apioptions ) = split( ',', $API, 2 );
     $apioptions = "" unless ( defined($apioptions) );
-    eval { require $api . '.pm'; };
+    eval { require 'FHEM/APIs/Weather/' . $api . '.pm'; };
     return "$name: cannot load API $api: $@" if ($@);
 
     $hash->{NOTIFYDEV}          = "global";
@@ -815,7 +817,7 @@ sub Weather_Define {
     readingsSingleUpdate( $hash, 'state', 'Initialized', 1 );
     Weather_LanguageInitialize( $hash->{LANG} );
 
-    my $apistring = $api . '::Weather';
+    my $apistring = 'FHEM::APIs::Weather::' . $api;
     $hash->{fhem}->{api} = $apistring->new(
         {
             devName    => $hash->{NAME},
@@ -1540,7 +1542,7 @@ sub Weather_CheckOptions {
   ],
   "release_status": "stable",
   "license": "GPL_2",
-  "version": "v2.2.6",
+  "version": "v2.2.11",
   "author": [
     "Marko Oldenburg <fhemdevelopment@cooltux.net>"
   ],
