@@ -366,14 +366,13 @@ sub _RetrieveDataFinished {
 sub _ProcessingRetrieveData {
     return 0 unless ( __PACKAGE__ eq caller(0) );
 
-    my $self     = shift;
-    my $response = shift;
+    my ( $self, $response ) = @_;
 
     if (    $self->{cached}{status} eq 'ok'
         and defined($response)
         and $response )
     {
-        if ( $response =~ m/^\{.*\}$/x ) {
+        if ( $response =~ m/^\{.*\}$/ ) {
             my $data = eval { decode_json( encode_utf8($response) ) };
             if ($@) {
                 _ErrorHandling( $self,
@@ -393,7 +392,7 @@ sub _ProcessingRetrieveData {
                 # print Dumper $data;    ## für Debugging
 
                 $self->{cached}{current_date_time} =
-                  _strftimeWrapper( "%a, %e %b %Y %H:%M",
+                  strftimeWrapper( "%a, %e %b %Y %H:%M",
                     localtime( $self->{fetchTime} ) );
 
                 # $self->{cached}{timezone} = $data->{timezone};
@@ -423,17 +422,22 @@ sub _ProcessingRetrieveData {
                     );
 
                     $self->{cached}{current} = {
-                        'dewPoint'  => sprintf( "%.1f", $data->{$unit}{dewpt} ),
-                        'heatIndex' => $data->{$unit}{heatIndex},
+                        'dewPoint' =>
+                          int( sprintf( "%.1f", $data->{$unit}{dewpt} ) + 0.5 ),
+                        'heatIndex'   => $data->{$unit}{heatIndex},
                         'precipRate'  => $data->{$unit}{precipRate},
                         'precipTotal' => $data->{$unit}{precipTotal},
-                        'pressure'    =>
-                          sprintf( "%.1f", $data->{$unit}{pressure} ),
+                        'pressure'    => int(
+                            sprintf( "%.1f", $data->{$unit}{pressure} ) + 0.5
+                        ),
                         'temperature' =>
-                          sprintf( "%.1f", $data->{$unit}{temp} ),
-                        'temp_c'     => sprintf( "%.1f", $data->{$unit}{temp} ),
-                        'wind_chill' =>
-                          sprintf( "%.1f", ( $data->{$unit}{windChill} ) ),
+                          int( sprintf( "%.1f", $data->{$unit}{temp} ) + 0.5 ),
+                        'temp_c' =>
+                          int( sprintf( "%.1f", $data->{$unit}{temp} ) + 0.5 ),
+                        'wind_chill' => int(
+                            sprintf( "%.1f", ( $data->{$unit}{windChill} ) ) +
+                              0.5
+                        ),
                         'windGust' => int(
                             sprintf( "%.1f", ( $data->{$unit}{windGust} ) ) +
                               0.5
@@ -450,7 +454,7 @@ sub _ProcessingRetrieveData {
                         'solarRadiation' => $data->{solarRadiation},
                         'uvIndex'        => $data->{uv},
                         'humidity'       => $data->{humidity},
-                        'pubDate'        => _strftimeWrapper(
+                        'pubDate'        => strftimeWrapper(
                             "%a, %e %b %Y %H:%M",
                             localtime(
                                 main::time_str2num( $data->{obsTimeLocal} )
@@ -479,23 +483,21 @@ sub _ProcessingRetrieveData {
                 {
                     ### löschen des alten Datensatzes
                     delete $self->{cached}{forecast};
-                    my $data;
-                    $data =
+
+                    my $data =
                       exists( $data->{daily} ) ? $data->{daily} : $data;
                     my $days = scalar @{ $data->{temperatureMin} };
 
-                    my $i;
-                    $i = 0;
-
+                    my $i = 0;
                     while ( $i < $days ) {
                         $data->{moonriseTimeLocal}[$i] =~
-                          s/^(....-..-..T..:..).*/$1/x;
+                          s/^(....-..-..T..:..).*/$1/;
                         $data->{moonsetTimeLocal}[$i] =~
-                          s/^(....-..-..T..:..).*/$1/x;
+                          s/^(....-..-..T..:..).*/$1/;
                         $data->{sunriseTimeLocal}[$i] =~
-                          s/^(....-..-..T..:..).*/$1/x;
+                          s/^(....-..-..T..:..).*/$1/;
                         $data->{sunsetTimeLocal}[$i] =~
-                          s/^(....-..-..T..:..).*/$1/x;
+                          s/^(....-..-..T..:..).*/$1/;
 
                         push(
                             @{ $self->{cached}{forecast}{daily} },
@@ -504,7 +506,7 @@ sub _ProcessingRetrieveData {
                                 'moonPhase'     => $data->{moonPhase}[$i],
                                 'moonPhaseCode' => $data->{moonPhaseCode}[$i],
                                 'moonPhaseDay'  => $data->{moonPhaseDay}[$i],
-                                'moonriseTime'  => _strftimeWrapper(
+                                'moonriseTime'  => strftimeWrapper(
                                     "%a, %e %b %Y %H:%M",
                                     localtime(
                                         main::time_str2num(
@@ -512,7 +514,7 @@ sub _ProcessingRetrieveData {
                                         )
                                     )
                                 ),
-                                'moonsetTime' => _strftimeWrapper(
+                                'moonsetTime' => strftimeWrapper(
                                     "%a, %e %b %Y %H:%M",
                                     localtime(
                                         main::time_str2num(
@@ -523,7 +525,7 @@ sub _ProcessingRetrieveData {
                                 'narrative'         => $data->{narrative}[$i],
                                 'precipProbability' => $data->{qpf}[$i],
                                 'precipProbabilitySnow' => $data->{qpfSnow}[$i],
-                                'sunriseTime'           => _strftimeWrapper(
+                                'sunriseTime'           => strftimeWrapper(
                                     "%a, %e %b %Y %H:%M",
                                     localtime(
                                         main::time_str2num(
@@ -531,7 +533,7 @@ sub _ProcessingRetrieveData {
                                         )
                                     )
                                 ),
-                                'sunsetTime' => _strftimeWrapper(
+                                'sunsetTime' => strftimeWrapper(
                                     "%a, %e %b %Y %H:%M",
                                     localtime(
                                         main::time_str2num(
@@ -539,27 +541,33 @@ sub _ProcessingRetrieveData {
                                         )
                                     )
                                 ),
-                                'low_c' => sprintf(
-                                    "%.1f", $data->{temperatureMin}[$i]
+                                'low_c' => int(
+                                    sprintf( "%.1f",
+                                        $data->{temperatureMin}[$i] ) + 0.5
                                 ),
-                                'high_c' => sprintf(
-                                    "%.1f",
-                                    (
-                                          $data->{temperatureMax}[$i]
-                                        ? $data->{temperatureMax}[$i]
-                                        : 0
-                                    )
+                                'high_c' => int(
+                                    sprintf(
+                                        "%.1f",
+                                        (
+                                              $data->{temperatureMax}[$i]
+                                            ? $data->{temperatureMax}[$i]
+                                            : 0
+                                        )
+                                    ) + 0.5
                                 ),
-                                'tempLow' => sprintf(
-                                    "%.1f", $data->{temperatureMin}[$i]
+                                'tempLow' => int(
+                                    sprintf( "%.1f",
+                                        $data->{temperatureMin}[$i] ) + 0.5
                                 ),
-                                'tempHigh' => sprintf(
-                                    "%.1f",
-                                    (
-                                          $data->{temperatureMax}[$i]
-                                        ? $data->{temperatureMax}[$i]
-                                        : 0
-                                    )
+                                'tempHigh' => int(
+                                    sprintf(
+                                        "%.1f",
+                                        (
+                                              $data->{temperatureMax}[$i]
+                                            ? $data->{temperatureMax}[$i]
+                                            : 0
+                                        )
+                                    ) + 0.5
                                 ),
                             }
                         );
@@ -574,10 +582,10 @@ sub _ProcessingRetrieveData {
                         and ref( $data->{daypart}[0]{daypartName} ) eq "ARRAY"
                         and scalar @{ $data->{daypart}[0]{daypartName} } > 0 )
                     {
-                        $data = $data->{daypart}[0];
+                        my $data     = $data->{daypart}[0];
                         my $dayparts = scalar @{ $data->{daypartName} };
 
-                        $i = 0;
+                        my $i   = 0;
                         my $day = 0;
                         while ( $i < $dayparts ) {
 
@@ -715,7 +723,7 @@ sub _ProcessingRetrieveData {
     }
 
     ## Aufruf der callbackFn
-    return _CallWeatherCallbackFn($self);
+    _CallWeatherCallbackFn($self);
 }
 
 sub _CallWeatherCallbackFn {
