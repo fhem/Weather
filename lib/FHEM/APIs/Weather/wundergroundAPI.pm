@@ -393,7 +393,7 @@ sub _ProcessingRetrieveData {
                 # print Dumper $data;    ## für Debugging
 
                 $self->{cached}{current_date_time} =
-                  strftimeWrapper( "%a, %e %b %Y %H:%M",
+                  _strftimeWrapper( "%a, %e %b %Y %H:%M",
                     localtime( $self->{fetchTime} ) );
 
                 # $self->{cached}{timezone} = $data->{timezone};
@@ -455,7 +455,7 @@ sub _ProcessingRetrieveData {
                         'solarRadiation' => $data->{solarRadiation},
                         'uvIndex'        => $data->{uv},
                         'humidity'       => $data->{humidity},
-                        'pubDate'        => strftimeWrapper(
+                        'pubDate'        => _strftimeWrapper(
                             "%a, %e %b %Y %H:%M",
                             localtime(
                                 main::time_str2num( $data->{obsTimeLocal} )
@@ -507,7 +507,7 @@ sub _ProcessingRetrieveData {
                                 'moonPhase'     => $data->{moonPhase}[$i],
                                 'moonPhaseCode' => $data->{moonPhaseCode}[$i],
                                 'moonPhaseDay'  => $data->{moonPhaseDay}[$i],
-                                'moonriseTime'  => strftimeWrapper(
+                                'moonriseTime'  => _strftimeWrapper(
                                     "%a, %e %b %Y %H:%M",
                                     localtime(
                                         main::time_str2num(
@@ -515,7 +515,7 @@ sub _ProcessingRetrieveData {
                                         )
                                     )
                                 ),
-                                'moonsetTime' => strftimeWrapper(
+                                'moonsetTime' => _strftimeWrapper(
                                     "%a, %e %b %Y %H:%M",
                                     localtime(
                                         main::time_str2num(
@@ -526,7 +526,7 @@ sub _ProcessingRetrieveData {
                                 'narrative'         => $data->{narrative}[$i],
                                 'precipProbability' => $data->{qpf}[$i],
                                 'precipProbabilitySnow' => $data->{qpfSnow}[$i],
-                                'sunriseTime'           => strftimeWrapper(
+                                'sunriseTime'           => _strftimeWrapper(
                                     "%a, %e %b %Y %H:%M",
                                     localtime(
                                         main::time_str2num(
@@ -534,7 +534,7 @@ sub _ProcessingRetrieveData {
                                         )
                                     )
                                 ),
-                                'sunsetTime' => strftimeWrapper(
+                                'sunsetTime' => _strftimeWrapper(
                                     "%a, %e %b %Y %H:%M",
                                     localtime(
                                         main::time_str2num(
