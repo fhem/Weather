@@ -366,7 +366,8 @@ sub _RetrieveDataFinished {
 sub _ProcessingRetrieveData {
     return 0 unless ( __PACKAGE__ eq caller(0) );
 
-    my ( $self, $response ) = @_;
+    my $self     = shift;
+    my $response = shift;
 
     if (    $self->{cached}{status} eq 'ok'
         and defined($response)
