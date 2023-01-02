@@ -492,13 +492,13 @@ sub _ProcessingRetrieveData {
                     my $i = 0;
                     while ( $i < $days ) {
                         $data->{moonriseTimeLocal}[$i] =~
-                          s/^(....-..-..T..:..).*/$1/;
+                          s/^(....-..-..T..:..:..).*/$1/x;
                         $data->{moonsetTimeLocal}[$i] =~
-                          s/^(....-..-..T..:..).*/$1/;
+                          s/^(....-..-..T..:..:..).*/$1/x;
                         $data->{sunriseTimeLocal}[$i] =~
-                          s/^(....-..-..T..:..).*/$1/;
+                          s/^(....-..-..T..:..:..).*/$1/x;
                         $data->{sunsetTimeLocal}[$i] =~
-                          s/^(....-..-..T..:..).*/$1/;
+                          s/^(....-..-..T..:..:..).*/$1/x;
 
                         push(
                             @{ $self->{cached}{forecast}{daily} },
@@ -507,7 +507,10 @@ sub _ProcessingRetrieveData {
                                 'moonPhase'     => $data->{moonPhase}[$i],
                                 'moonPhaseCode' => $data->{moonPhaseCode}[$i],
                                 'moonPhaseDay'  => $data->{moonPhaseDay}[$i],
-                                'moonriseTime'  => _strftimeWrapper(
+                                'narrative'     => $data->{narrative}[$i],
+                                'precipProbability'     => $data->{qpf}[$i],
+                                'precipProbabilitySnow' => $data->{qpfSnow}[$i],
+                                'moonriseTime'          => _strftimeWrapper(
                                     "%a, %e %b %Y %H:%M",
                                     localtime(
                                         main::time_str2num(
@@ -523,10 +526,7 @@ sub _ProcessingRetrieveData {
                                         )
                                     )
                                 ),
-                                'narrative'         => $data->{narrative}[$i],
-                                'precipProbability' => $data->{qpf}[$i],
-                                'precipProbabilitySnow' => $data->{qpfSnow}[$i],
-                                'sunriseTime'           => _strftimeWrapper(
+                                'sunriseTime' => _strftimeWrapper(
                                     "%a, %e %b %Y %H:%M",
                                     localtime(
                                         main::time_str2num(
