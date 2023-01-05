@@ -671,10 +671,26 @@ sub _FillSelfHashWithWeatherResponseForForecastHourly {
                 'cloudCover' => $data->{list}->[$i]->{clouds}->{all},
                 'code' => $codes{ $data->{list}->[$i]->{weather}->[0]->{id} },
                 'iconAPI' => $data->{list}->[$i]->{weather}->[0]->{icon},
-                'rain1h'  => $data->{list}->[$i]->{rain}->{'1h'},
-                'rain3h'  => $data->{list}->[$i]->{rain}->{'3h'},
-                'snow1h'  => $data->{list}->[$i]->{snow}->{'1h'},
-                'snow3h'  => $data->{list}->[$i]->{snow}->{'3h'},
+                'rain1h'  => (
+                      $data->{list}->[$i]->{rain}->{'1h'}
+                    ? $data->{list}->[$i]->{rain}->{'1h'}
+                    : 0
+                ),
+                'rain3h' => (
+                      $data->{list}->[$i]->{rain}->{'3h'}
+                    ? $data->{list}->[$i]->{rain}->{'3h'}
+                    : 0
+                ),
+                'snow1h' => (
+                      $data->{list}->[$i]->{snow}->{'1h'}
+                    ? $data->{list}->[$i]->{snow}->{'1h'}
+                    : 0
+                ),
+                'snow3h' => (
+                      $data->{list}->[$i]->{snow}->{'3h'}
+                    ? $data->{list}->[$i]->{snow}->{'1h'}
+                    : 0
+                ),
             }
         );
 
@@ -711,11 +727,11 @@ sub _FillSelfHashWithWeatherResponseForOnecallCurrent {
             sprintf( "%.1f", ( $data->{current}->{wind_gust} * 3.6 ) ) + 0.5
         ),
         'wind_direction' => $data->{current}->{wind_deg},
-        'rain_1h'        => $data->{rain}->{'1h'},
-        'cloudCover'     => $data->{current}->{clouds},
-        'code'           => $codes{ $data->{current}->{weather}->[0]->{id} },
-        'iconAPI'        => $data->{current}->{weather}->[0]->{icon},
-        'condition'      =>
+        'rain_1h'    => ( $data->{rain}->{'1h'} ? $data->{rain}->{'1h'} : 0 ),
+        'cloudCover' => $data->{current}->{clouds},
+        'code'       => $codes{ $data->{current}->{weather}->[0]->{id} },
+        'iconAPI'    => $data->{current}->{weather}->[0]->{icon},
+        'condition'  =>
           encode_utf8( $data->{current}->{weather}->[0]->{description} ),
         'sunsetTime' => _strftimeWrapper(
             "%a, %e %b %Y %H:%M",
@@ -836,9 +852,15 @@ sub _FillSelfHashWithWeatherResponseForOnecallDaily {
                 ),
                 'cloudCover' => $data->{daily}->[$i]->{clouds},
                 'code' => $codes{ $data->{daily}->[$i]->{weather}->[0]->{id} },
-                'rain' => $data->{daily}->[$i]->{rain},
-                'snow' => $data->{daily}->[$i]->{snow},
-                'uvi'  => $data->{daily}->[$i]->{uvi},
+                'rain' => (
+                    $data->{daily}->[$i]->{rain} ? $data->{daily}->[$i]->{rain}
+                    : 0
+                ),
+                'snow' => (
+                    $data->{daily}->[$i]->{snow} ? $data->{daily}->[$i]->{snow}
+                    : 0
+                ),
+                'uvi' => $data->{daily}->[$i]->{uvi},
             },
         );
 
@@ -896,9 +918,17 @@ sub _FillSelfHashWithWeatherResponseForOnecallHourly {
                 'wind_direction' => $data->{hourly}->[$i]->{wind_deg},
                 'cloudCover'     => $data->{hourly}->[$i]->{clouds},
                 'code' => $codes{ $data->{hourly}->[$i]->{weather}->[0]->{id} },
-                'iconAPI'    => $data->{hourly}->[$i]->{weather}->[0]->{icon},
-                'rain1h'     => $data->{hourly}->[$i]->{rain}->{'1h'},
-                'snow1h'     => $data->{hourly}->[$i]->{snow}->{'1h'},
+                'iconAPI' => $data->{hourly}->[$i]->{weather}->[0]->{icon},
+                'rain1h'  => (
+                      $data->{hourly}->[$i]->{rain}->{'1h'}
+                    ? $data->{hourly}->[$i]->{rain}->{'1h'}
+                    : 0
+                ),
+                'snow1h' => (
+                      $data->{hourly}->[$i]->{snow}->{'1h'}
+                    ? $data->{hourly}->[$i]->{snow}->{'1h'}
+                    : 0
+                ),
                 'uvi'        => $data->{hourly}->[$i]->{uvi},
                 'visibility' => int(
                     sprintf( "%.1f", $data->{hourly}->[$i]->{visibility} ) + 0.5
