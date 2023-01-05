@@ -723,8 +723,10 @@ sub _FillSelfHashWithWeatherResponseForOnecallCurrent {
         'wind_speed' => int(
             sprintf( "%.1f", ( $data->{current}->{wind_speed} * 3.6 ) ) + 0.5
         ),
-        'wind_gust' => int(
-            sprintf( "%.1f", ( $data->{current}->{wind_gust} * 3.6 ) ) + 0.5
+        'wind_gust' => (
+            $data->{current}->{wind_gust} ? int(
+                sprintf( "%.1f", ( $data->{current}->{wind_gust} * 3.6 ) ) + 0.5
+            ) : 0
         ),
         'wind_direction' => $data->{current}->{wind_deg},
         'rain_1h'    => ( $data->{rain}->{'1h'} ? $data->{rain}->{'1h'} : 0 ),
