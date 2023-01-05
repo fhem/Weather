@@ -1204,7 +1204,10 @@ sub Weather_CheckOptions {
         <tr><td>apioptions</td><td><code>cachemaxage:&lt;cachemaxage&gt;</code><br>duration
           in seconds to retrieve the forecast from the cache instead from the API</td>
           <td><code>version:&lt;version&gt;</code> API version which should be used.
-          2.5 by default, 3.0 is still possible but only with an additional subscription</td></tr>
+          2.5 by default, 3.0 is still possible but only with an additional subscription</td>
+          <td><code>endpoint:onecall</code> only to test whether the API key which not
+          officially for onecall is not supported yet onecall via API version 2.5. IMPORTANT!!!
+          apioption version must not be set to 3.0</td></tr>
         <tr><td>location</td><td><code>&lt;latitude,longitude&gt;</code><br>
           geographic coordinates in degrees of the location for which the
           weather is forecast; if missing, the values of the attributes
@@ -1398,11 +1401,16 @@ sub Weather_CheckOptions {
 
     <table>
     <tr><td>API</td><td><code>OpenWeatherMapAPI</code></td></tr>
-    <tr><td>apioptions</td><td><code>cachemaxage:&lt;cachemaxage&gt;</code> Zeitdauer in
+    <tr>
+      <td>apioptions</td><td><code>cachemaxage:&lt;cachemaxage&gt;</code> Zeitdauer in
       Sekunden, innerhalb derer die Wettervorhersage nicht neu abgerufen
       sondern aus dem Cache zur&uuml;ck geliefert wird.</td>
       <td><code>version:&lt;version&gt;</code> API Version welche verwendet werden soll.
-      Per Default 2.5, m&ouml;glich ist noch 3.0 aber nur mit Zusatzsubscription</td></tr>
+      Per Default 2.5, m&ouml;glich ist noch 3.0 aber nur mit Zusatzsubscription</td>
+      <td><code>endpoint:onecall</code> nur zum testen ob der API Key welcher nicht
+      offiziell für onecall ist nicht doch onecall über die API Version 2.5 unterst&uuml;tzt. WICHTIG!!!
+      apioption version darf nicht auf 3.0 gesetzt werden</td>
+    </tr>
     <tr><td>location</td><td><code>&lt;latitude,longitude&gt;</code> Geographische Breite
       und L&auml;nge des Ortes in Grad, f&uuml;r den das Wetter vorhergesagt wird.
       Bei fehlender Angabe werden die Werte aus den gleichnamigen Attributen
@@ -1542,7 +1550,7 @@ sub Weather_CheckOptions {
   ],
   "release_status": "stable",
   "license": "GPL_2",
-  "version": "v2.2.11",
+  "version": "v2.2.15",
   "author": [
     "Marko Oldenburg <fhemdevelopment@cooltux.net>"
   ],
