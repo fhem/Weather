@@ -213,6 +213,8 @@ sub new {
 
     $self->{apiversion} =
       ( $apioptions->{version} ? $apioptions->{version} : '2.5' );
+    $self->{endpointType} =
+      ( $apioptions->{endpoint} ? $apioptions->{endpoint} : 'forecast' );
 
     $self->{cached} = _CreateForecastRef($self);
 
@@ -316,7 +318,8 @@ sub _RetrieveDataFromOpenWeatherMap {
         timeout  => 15,
         self     => $self,
         endpoint => $self->{endpoint} eq 'none'
-        ? ( $self->{apiversion} == 3.0 ? 'onecall' : 'weather' )
+        ? ( $self->{apiversion} == 3.0
+              || $self->{endpointType} eq 'onecall' ? 'onecall' : 'weather' )
         : 'forecast',
         callback => \&_RetrieveDataFinished,
     };
@@ -989,7 +992,7 @@ sub _strftimeWrapper {
       "abstract": "Wetter API für OpenWeatherMap"
     }
   },
-  "version": "v3.0.12",
+  "version": "v3.0.15",
   "author": [
     "Marko Oldenburg <fhemdevelopment@cooltux.net>"
   ],
