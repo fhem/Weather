@@ -1132,7 +1132,7 @@ sub Weather_CheckOptions {
 =item summary_DE stellt Wetterbericht und -vorhersage bereit
 =begin html
 
-<a name="Weather"></a>
+<a id="Weather"></a>
 <h3>Weather</h3>
 <ul>
   Note: you need the JSON perl module. Use <code>apt-get install
@@ -1148,8 +1148,8 @@ sub Weather_CheckOptions {
   Such a virtual Weather device periodically gathers current and forecast
   weather conditions from the chosen weather API.<br><br>
 
-  <a name="Weatherdefine"></a>
-  <b>Define</b><br><br>
+  <a id="Weather-define"></a>
+  <h4>Define</h4><br><br>
     <ul>
       <code>define &lt;name&gt; Weather [API=&lt;API&gt;[,&lt;apioptions&gt;]] [apikey=&lt;apikey&gt;]
        [location=&lt;location&gt;] [interval=&lt;interval&gt;] [lang=&lt;lang&gt;]</code><br><br>
@@ -1184,7 +1184,7 @@ sub Weather_CheckOptions {
 
     API-specific documentation follows.<p>
 
-        <b>Dark Sky</b><p>
+        <h4>Dark Sky</h4><p>
 
         <table>
         <tr><td>API</td><td><code>DarkSkyAPI</code></td></tr>
@@ -1197,7 +1197,7 @@ sub Weather_CheckOptions {
         </table>
         <p><p>
 
-        <b>OpenWeatherMap</b><p>
+        <h4>OpenWeatherMap</h4><p>
 
         <table>
         <tr><td>API</td><td><code>OpenWeatherMapAPI</code></td></tr>
@@ -1215,7 +1215,7 @@ sub Weather_CheckOptions {
         </table>
         <p><p>
         
-        <b>Wunderground</b><p>
+        <h4>Wunderground</h4><p>
 
         <table>
         <tr><td>API</td><td><code>wundergroundAPI</code></td></tr>
@@ -1247,17 +1247,19 @@ sub Weather_CheckOptions {
   </ul>
   <br>
 
-  <a name="Weatherset"></a>
-  <b>Set </b>
+  <a id="Weather-set"></a>
+  <h4>Set</h4>
   <ul>
+    <a id="Weather-set-update"></a>
     <li>
-      <code>set &lt;name&gt; update</code><br><br>
+      <i>set &lt;name&gt; update</i><br><br>
 
       Forces the retrieval of the weather data. The next automatic retrieval is scheduled to occur
       <code>interval</code> seconds later.
     </li>
+    <a id="Weather-set-newLocation"></a>
     <li>
-      <code>set &lt;name&gt; newLocation latitude,longitude</code><br><br>
+      <i>set &lt;name&gt; newLocation latitude,longitude</i><br><br>
       
       set a new temporary location.
       the value pair Latitude Longitude is separated by a comma.
@@ -1266,39 +1268,65 @@ sub Weather_CheckOptions {
   </ul>
   <br>
 
-  <a name="Weatherget"></a>
-  <b>Get</b>
+  <a id="Weather-get"></a>
+  <h4>Get</h4>
   <ul>
     <code>get &lt;name&gt; &lt;reading&gt;</code><br><br>
 
     Valid readings and their meaning (? can be one of 1, 2, 3, 4, 5 and stands
     for today, tomorrow, etc.):<br>
     <table>
+    <a id="Weather-get-.license"></a>
     <tr><td>.license</td><td>license of the API provider, if available</td></tr>
+    <a id="Weather-get-city"></a>
     <tr><td>city</td><td>name of town returned for location</td></tr>
+    <a id="Weather-get-code"></a>
     <tr><td>code</td><td>current condition code</td></tr>
+    <a id="Weather-get-condition"></a>
     <tr><td>condition</td><td>current condition</td></tr>
+    <a id="Weather-get-current_date_time"></a>
     <tr><td>current_date_time</td><td>last update of forecast on server</td></tr>
+     <a id="Weather-get-fc?_code"></a>
     <tr><td>fc?_code</td><td>forecast condition code</td></tr>
+    <a id="Weather-get-fc?_condition"></a>
     <tr><td>fc?_condition</td><td>forecast condition</td></tr>
+    <a id="Weather-get-fc?_day_of_week"></a>
     <tr><td>fc?_day_of_week</td><td>day of week for day +?</td></tr>
+    <a id="Weather-get-fc?_high_c"></a>
     <tr><td>fc?_high_c</td><td>forecasted daily high in degrees centigrade</td></tr>
+    <a id="Weather-get-fc?_icon"></a>
     <tr><td>fc?_icon</td><td>forecast icon</td></tr>
+    <a id="Weather-get-fc?_low_c"></a>
     <tr><td>fc?_low_c</td><td>forecasted daily low in degrees centigrade</td></tr>
+    <a id="Weather-get-humidity"></a>
     <tr><td>humidity</td><td>current humidity in %</td></tr>
+    <a id="Weather-get-icon"></a>
     <tr><td>icon</td><td>relative path for current icon</td></tr>
+    <a id="Weather-get-pressure"></a>
     <tr><td>pressure</td><td>air pressure in hPa</td></tr>
+    <a id="Weather-get-pressure_trend"></a>
     <tr><td>pressure_trend</td><td>air pressure trend (0= steady, 1= rising, 2= falling)</td></tr>
+    <a id="Weather-get-pressure_trend_txt"></a>
     <tr><td>pressure_trend_txt</td><td>textual representation of air pressure trend</td></tr>
+    <a id="Weather-get-pressure_trend_sym"></a>
     <tr><td>pressure_trend_sym</td><td>symbolic representation of air pressure trend</td></tr>
+    <a id="Weather-get-temperature"></a>
     <tr><td>temperature</td><td>current temperature in degrees centigrade</td></tr>
+    <a id="Weather-get-temp_c"></a>
     <tr><td>temp_c</td><td>current temperature in degrees centigrade</td></tr>
+    <a id="Weather-get-temp_f"></a>
     <tr><td>temp_f</td><td>current temperature in degrees Fahrenheit</td></tr>
+    <a id="Weather-get-visibility"></a>
     <tr><td>visibility</td><td>visibility in km</td></tr>
+    <a id="Weather-get-wind"></a>
     <tr><td>wind</td><td>wind speed in km/h</td></tr>
+    <a id="Weather-get-wind_chill"></a>
     <tr><td>wind_chill</td><td>wind chill in degrees centigrade</td></tr>
+    <a id="Weather-get-wind_condition"></a>
     <tr><td>wind_condition</td><td>wind direction and speed</td></tr>
+    <a id="Weather-get-wind_direction"></a>
     <tr><td>wind_direction</td><td>direction wind comes from in degrees (0 = north wind)</td></tr>
+    <a id="Weather-get-wind_speed"></a>
     <tr><td>wind_speed</td><td>same as wind</td></tr>
     </table>
     <br>
@@ -1311,15 +1339,19 @@ sub Weather_CheckOptions {
   </ul>
   <br>
 
-  <a name="Weatherattr"></a>
-  <b>Attributes</b>
+  <a id="Weather-attr"></a>
+  <h4>Attributes</h4>
   <ul>
-    <li>disable: disables the retrieval of weather data - the timer runs according to schedule,
+    <a id="Weather-attr-disable"></a>
+    <li><i>disable</i> - disables the retrieval of weather data - the timer runs according to schedule,
     though no data is requested from the API.</li>
     <li><a href="#readingFnAttributes">readingFnAttributes</a></li>
-    <li>forecast - hourly/daily, display of forecast data.</li>
-    <li>forecastLimit - Number of forecast data records which should be written as a reading.</li>
-    <li>alerts - 0/1 should alert messages be written similar to Unwetterwarnung</li>
+    <a id="Weather-attr-forecast"></a>
+    <li><i>forecast</i> - hourly/daily, display of forecast data.</li>
+    <a id="Weather-attr-forecastLimit"></a>
+    <li><i>forecastLimit</i> - Number of forecast data records which should be written as a reading.</li>
+    <a id="Weather-attr-alerts"></a>
+    <li><i>alerts</i> - 0/1 should alert messages be written similar to Unwetterwarnung</li>
   </ul>
   <br>
 </ul>
@@ -1328,7 +1360,7 @@ sub Weather_CheckOptions {
 =end html
 =begin html_DE
 
-<a name="Weather"></a>
+<a id="Weather"></a>
 <h3>Weather</h3>
 <ul>
     Hinweis: es wird das Perl-Modul JSON ben&ouml;tigt. Mit <code>apt-get install
@@ -1345,9 +1377,8 @@ sub Weather_CheckOptions {
     Eine solche virtuelle Wetterstation sammelt periodisch aktuelle Wetterdaten
     und Wettervorhersagen aus dem verwendeten API.<br><br>
 
-
-  <a name="Weatherdefine"></a>
-  <b>Define</b><br><br>
+  <a id="Weather-define"></a>
+  <h4>Define</h4><br><br>
   <ul>
     <code>define &lt;name&gt; Weather [API=&lt;API&gt;[,&lt;apioptions&gt;]] [apikey=&lt;apikey&gt;]
      [location=&lt;location&gt;] [interval=&lt;interval&gt;] [lang=&lt;lang&gt;]</code><br><br>
@@ -1383,7 +1414,7 @@ sub Weather_CheckOptions {
 
     Es folgt die API-spezifische Dokumentation.<p>
 
-    <b>Dark Sky</b><p>
+    <h4>Dark Sky</h4><p>
 
     <table>
     <tr><td>API</td><td><code>DarkSkyAPI</code></td></tr>
@@ -1397,7 +1428,7 @@ sub Weather_CheckOptions {
     </table>
     <p><p>
 
-    <b>OpenWeatherMap</b><p>
+    <h4>OpenWeatherMap</h4><p>
 
     <table>
     <tr><td>API</td><td><code>OpenWeatherMapAPI</code></td></tr>
@@ -1418,7 +1449,7 @@ sub Weather_CheckOptions {
     </table>
     <p><p>
     
-    <b>Wunderground</b><p>
+    <h4>Wunderground</h4><p>
 
     <table>
     <tr><td>API</td><td><code>wundergroundAPI</code></td></tr>
@@ -1455,55 +1486,76 @@ sub Weather_CheckOptions {
   </ul>
   <br>
 
-  <a name="Weatherset"></a>
-  <b>Set </b>
+  <a id="Weather-set"></a>
+    <h4>Set</h4>
   <ul>
-    <li>
-      <code>set &lt;name&gt; update</code><br><br>
-
-      Erzwingt eine Abfrage der Wetterdaten. Die darauffolgende Abfrage
-      wird gem&auml;&szlig; dem eingestellten
-      Intervall <code>interval</code> Sekunden sp&auml;ter durchgef&uuml;hrt.
+    <a id="Weather-set-update"></a>
+    <li><i>set &lt;name&gt; update</i><br><br>
+        Erzwingt eine Abfrage der Wetterdaten. Die darauffolgende Abfrage
+        wird gem&auml;&szlig; dem eingestellten
+        Intervall <code>interval</code> Sekunden sp&auml;ter durchgef&uuml;hrt.
     </li>
+    <a id="Weather-set-newLocation"></a>
     <li>
-      <code>set &lt;name&gt; newLocation latitude,longitude</code><br><br>
-      
+      <i>set &lt;name&gt; newLocation latitude,longitude</i><br><br>
       Gibt die M&ouml;glichkeit eine neue tempor&auml;re Location zu setzen.
       Das Wertepaar Latitude Longitude wird durch ein Komma getrennt &uuml;bergeben.
       Wird kein Wert mitgegebn (leere &Uuml;bergabe) wird automatisch die per Definition erkannte Location genommen<br><br>
     </li>
   </ul>
   <br>
-
-  <a name="Weatherget"></a>
-  <b>Get</b>
+  <a id="Weather-get"></a>
+  <h4>Get</h4>
   <ul>
     <code>get &lt;name&gt; &lt;reading&gt;</code><br><br>
 
     G&uuml;ltige ausgelesene Daten (readings) und ihre Bedeutung (das ? kann einen der Werte 1, 2, 3 , 4 oder 5 annehmen und steht f&uuml;r heute, morgen, &uuml;bermorgen etc.):<br><br>
     <table>
+    <a id="Weather-get-.license"></a>
     <tr><td>.license</td><td>Lizenz des jeweiligen API-Anbieters, sofern vorhanden</td></tr>
+    <a id="Weather-get-city"></a>
     <tr><td>city</td><td>Name der Stadt, der f&uuml;r die location &uuml;bermittelt wird</td></tr>
+    <a id="Weather-get-code"></a>
     <tr><td>code</td><td>Code f&uuml;r die aktuellen Wetterverh&auml;ltnisse</td></tr>
+    <a id="Weather-get-condition"></a>
     <tr><td>condition</td><td>aktuelle Wetterverh&auml;ltnisse</td></tr>
+    <a id="Weather-get-current_date_time"></a>
     <tr><td>current_date_time</td><td>Zeitstempel der letzten Aktualisierung der Wetterdaten vom Server</td></tr>
+    <a id="Weather-get-fc?_code"></a>
     <tr><td>fc?_code</td><td>Code f&uuml;r die vorhergesagten Wetterverh&auml;ltnisse</td></tr>
+    <a id="Weather-get-fc?_condition"></a>
     <tr><td>fc?_condition</td><td>vorhergesagte Wetterverh&auml;ltnisse</td></tr>
+    <a id="Weather-get-fc?_day_of_week"></a>
     <tr><td>fc?_day_of_week</td><td>Wochentag des Tages, der durch ? dargestellt wird</td></tr>
+    <a id="Weather-get-fc?_high_c"></a>
     <tr><td>fc?_high_c</td><td>vorhergesagte maximale Tagestemperatur in Grad Celsius</td></tr>
+    <a id="Weather-get-fc?_icon"></a>
     <tr><td>fc?_icon</td><td>Icon f&uuml;r Vorhersage</td></tr>
+    <a id="Weather-get-fc?_low_c"></a>
     <tr><td>fc?_low_c</td><td>vorhergesagte niedrigste Tagestemperatur in Grad Celsius</td></tr>
+    <a id="Weather-get-humidity"></a>
     <tr><td>humidity</td><td>gegenw&auml;rtige Luftfeuchtgkeit in %</td></tr>
+    <a id="Weather-get-icon"></a>
     <tr><td>icon</td><td>relativer Pfad f&uuml;r das aktuelle Icon</td></tr>
+    <a id="Weather-get-pressure"></a>
     <tr><td>pressure</td><td>Luftdruck in hPa</td></tr>
+    <a id="Weather-get-temperature"></a>
     <tr><td>temperature</td><td>gegenw&auml;rtige Temperatur in Grad Celsius</td></tr>
+    <a id="Weather-get-temp_c"></a>
     <tr><td>temp_c</td><td>gegenw&auml;rtige Temperatur in Grad Celsius</td></tr>
+    <a id="Weather-get-temp_f"></a>
     <tr><td>temp_f</td><td>gegenw&auml;rtige Temperatur in Grad Celsius</td></tr>
+    <a id="Weather-get-visibility"></a>
     <tr><td>visibility</td><td>Sichtweite in km</td></tr>
+    <a id="Weather-get-wind"></a>
     <tr><td>wind</td><td>Windgeschwindigkeit in km/h</td></tr>
+    <a id="Weather-get-wind_condition"></a>
     <tr><td>wind_condition</td><td>Windrichtung und -geschwindigkeit</td></tr>
+    <a id="Weather-get-wind_direction"></a>
     <tr><td>wind_direction</td><td>Gradangabe der Windrichtung (0 = Nordwind)</td></tr>
+    <a id="Weather-get-wind_speed"></a>
     <tr><td>wind_speed</td><td>Windgeschwindigkeit in km/h (mit wind identisch)</td></tr>
+    <a id="Weather-get-validity"></a>
     <tr><td>validity</td><td>stale, wenn der Ver&ouml;ffentlichungszeitpunkt auf dem entfernten Server vor dem Zeitpunkt der aktuellen Daten (readings) liegt</td></tr>
     </table>
     <br>
@@ -1515,16 +1567,20 @@ sub Weather_CheckOptions {
   </ul>
   <br>
 
-  <a name="Weatherattr"></a>
-  <b>Attribute</b>
+  <a id="Weather-attr"></a>
+  <h4>Attribute</h4>
   <ul>
-    <li>disable: stellt die Abfrage der Wetterdaten ab - der Timer l&auml;ft
+    <a id="Weather-attr-disable"></a>
+    <li><i>disable</i> - stellt die Abfrage der Wetterdaten ab - der Timer l&auml;ft
     gem&auml;&szlig Plan doch es werden keine Daten vom
     API angefordert.</li>
     <li><a href="#readingFnAttributes">readingFnAttributes</a></li>
-    <li>forecast - hourly/daily, Anzeige von forecast Daten.</li>
-    <li>forecastLimit - Anzahl der Forecast-Datens&auml;tze welche als Reading geschrieben werden sollen.</li>
-    <li>alerts - 0/1 Sollen Alert Meldungen &auml;nlich Unwetterwarnung geschrieben werden.</li>
+    <a id="Weather-attr-forecast"></a>
+    <li><i>forecast</i> - hourly/daily, Anzeige von forecast Daten.</li>
+    <a id="Weather-attr-forecastLimit"></a>
+    <li><i>forecastLimit</i> - Anzahl der Forecast-Datens&auml;tze welche als Reading geschrieben werden sollen.</li>
+    <a id="Weather-attr-alerts"></a>
+    <li><i>alerts</i> - 0/1 Sollen Alert Meldungen &auml;nlich Unwetterwarnung geschrieben werden.</li>
 
   </ul>
   <br>
@@ -1550,7 +1606,7 @@ sub Weather_CheckOptions {
   ],
   "release_status": "stable",
   "license": "GPL_2",
-  "version": "v2.2.15",
+  "version": "v2.2.20",
   "author": [
     "Marko Oldenburg <fhemdevelopment@cooltux.net>"
   ],
