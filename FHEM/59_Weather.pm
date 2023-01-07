@@ -1606,7 +1606,7 @@ sub Weather_CheckOptions {
   ],
   "release_status": "stable",
   "license": "GPL_2",
-  "version": "v2.2.15",
+  "version": "v2.2.20",
   "author": [
     "Marko Oldenburg <fhemdevelopment@cooltux.net>"
   ],
