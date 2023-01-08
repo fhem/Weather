@@ -977,9 +977,8 @@ sub _CreateForecastRef {
         {
             lat           => $self->{lat},
             long          => $self->{long},
-            apiMaintainer => 'Marko Oldenburg ('
-              . $META->{x_fhem_maintainer}[0] . ')',
-            apiVersion => version->parse( __PACKAGE__->VERSION() )->normal,
+            apiMaintainer => $META->{author}[0],
+            apiVersion    => version->parse( __PACKAGE__->VERSION() )->normal,
         }
     );
 
@@ -1026,7 +1025,6 @@ sub _strftimeWrapper {
   },
   "keywords": [
 	    "fhem-mod-device",
-	    "fhem-core",
 	    "Weather",
         "API"
 	  ],
