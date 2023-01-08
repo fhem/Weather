@@ -1,4 +1,24 @@
-### docs: new versions (HEAD -> patch-version)
+### fix: bugfix function WeatherAsHtmlD not working (HEAD -> patch-WeatherAsHtmlD)
+>Sun, 8 Jan 2023 21:54:31 +0100
+
+>Author: Marko Oldenburg (fhemdevelopment@cooltux.net)
+
+>Commiter: Marko Oldenburg (fhemdevelopment@cooltux.net)
+
+
+
+
+### docs: new changelog entry
+>Sun, 8 Jan 2023 17:11:31 +0100
+
+>Author: Marko Oldenburg (fhemdevelopment@cooltux.net)
+
+>Commiter: Marko Oldenburg (fhemdevelopment@cooltux.net)
+
+
+
+
+### docs: new versions
 >Sun, 8 Jan 2023 17:11:03 +0100
 
 >Author: Marko Oldenburg (fhemdevelopment@cooltux.net)
