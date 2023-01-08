@@ -688,7 +688,7 @@ sub _FillSelfHashWithWeatherResponseForForecastHourly {
                 ),
                 'snow3h' => (
                       $data->{list}->[$i]->{snow}->{'3h'}
-                    ? $data->{list}->[$i]->{snow}->{'1h'}
+                    ? $data->{list}->[$i]->{snow}->{'3h'}
                     : 0
                 ),
             }
@@ -977,9 +977,8 @@ sub _CreateForecastRef {
         {
             lat           => $self->{lat},
             long          => $self->{long},
-            apiMaintainer => 'Marko Oldenburg ('
-              . $META->{x_fhem_maintainer}[0] . ')',
-            apiVersion => version->parse( __PACKAGE__->VERSION() )->normal,
+            apiMaintainer => $META->{author}[0],
+            apiVersion    => version->parse( __PACKAGE__->VERSION() )->normal,
         }
     );
 
@@ -1024,6 +1023,13 @@ sub _strftimeWrapper {
       "abstract": "Wetter API für OpenWeatherMap"
     }
   },
+  "keywords": [
+	    "fhem-mod-device",
+	    "Weather",
+        "API"
+	  ],
+  "release_status": "stable",
+  "license": "GPL_2",
   "version": "v3.2.5",
   "author": [
     "Marko Oldenburg <fhemdevelopment@cooltux.net>"
@@ -1037,8 +1043,9 @@ sub _strftimeWrapper {
   "prereqs": {
     "runtime": {
       "requires": {
+        "FHEM": 5.00918799,
+        "HttpUtils": 5.023,
         "FHEM::Meta": 0,
-        "HttpUtils": 0,
         "strict": 0,
         "warnings": 0,
         "constant": 0,
