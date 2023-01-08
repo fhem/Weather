@@ -978,7 +978,8 @@ sub _CreateForecastRef {
             lat           => $self->{lat},
             long          => $self->{long},
             apiMaintainer => $META->{author}[0],
-            apiVersion    => version->parse( __PACKAGE__->VERSION() )->normal,
+            apiVersion => version->parse( __PACKAGE__->VERSION() )->normal . '-'
+              . $META->{release_status},
         }
     );
 
@@ -1030,7 +1031,7 @@ sub _strftimeWrapper {
 	  ],
   "release_status": "stable",
   "license": "GPL_2",
-  "version": "v3.2.5",
+  "version": "v3.2.6",
   "author": [
     "Marko Oldenburg <fhemdevelopment@cooltux.net>"
   ],
