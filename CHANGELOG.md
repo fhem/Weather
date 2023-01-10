@@ -1,4 +1,63 @@
-### fix: bugfix function WeatherAsHtmlD not working (HEAD -> patch-WeatherAsHtmlD)
+### build: v2.2.22 (HEAD -> patch-package)
+>Tue, 10 Jan 2023 21:43:26 +0100
+
+>Author: Marko Oldenburg (fhemdevelopment@cooltux.net)
+
+>Commiter: Marko Oldenburg (fhemdevelopment@cooltux.net)
+
+
+
+
+### docs: add new modul path in to pre-commit (origin/patch-package)
+>Tue, 10 Jan 2023 21:37:10 +0100
+
+>Author: Marko Oldenburg (fhemdevelopment@cooltux.net)
+
+>Commiter: Marko Oldenburg (fhemdevelopment@cooltux.net)
+
+add new modul path in to pre-commit hook file
+
+
+
+### revert: mod packages
+>Tue, 10 Jan 2023 21:32:56 +0100
+
+>Author: Marko Oldenburg (fhemdevelopment@cooltux.net)
+
+>Commiter: Marko Oldenburg (fhemdevelopment@cooltux.net)
+
+- packages Weather.pm
+- split FHEM/59_Weather.pm in two files and packages (FEHM/59_Weather.pm
+and FHEM/Core/Weather.pm
+
+[optional body]
+
+[Ticket: no]
+
+
+
+### fix: #40
+>Tue, 10 Jan 2023 16:09:53 +0100
+
+>Author: Marko Oldenburg (fhemdevelopment@cooltux.net)
+
+>Commiter: Marko Oldenburg (fhemdevelopment@cooltux.net)
+
+Undefined subroutine &FHEM::APIs::Weather::DarkSkyAPI::__strftimeWrapper
+
+
+
+### docs: add new changelog and change version (tag: v2.2.21)
+>Sun, 8 Jan 2023 21:56:15 +0100
+
+>Author: Marko Oldenburg (fhemdevelopment@cooltux.net)
+
+>Commiter: Marko Oldenburg (fhemdevelopment@cooltux.net)
+
+
+
+
+### fix: bugfix function WeatherAsHtmlD not working
 >Sun, 8 Jan 2023 21:54:31 +0100
 
 >Author: Marko Oldenburg (fhemdevelopment@cooltux.net)
