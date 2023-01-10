@@ -5,6 +5,7 @@ use POSIX qw(strftime);
 use strict;
 
 my @filenames = (   'FHEM/59_Weather.pm',
+		    'lib/FHEM/Core/Weather.pm',
 		    'lib/FHEM/APIs/Weather/DarkSkyAPI.pm',
 		    'lib/FHEM/APIs/Weather/OpenWeatherMapAPI.pm',
 		    'lib/FHEM/APIs/Weather/wundergroundAPI.pm',
