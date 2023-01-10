@@ -699,7 +699,7 @@ sub _CallWeatherCallbackFn {
     my $self = shift;
 
     #     ## Aufruf der callbackFn
-    return ::Weather_RetrieveCallbackFn( $self->{devName} );
+    return FHEM::Core::Weather::RetrieveCallbackFn( $self->{devName} );
 }
 
 sub _ErrorHandling {
@@ -709,8 +709,7 @@ sub _ErrorHandling {
     my $err  = shift;
 
     $self->{cached}->{current_date_time} =
-      __strftimeWrapper( "%a, %e %b %Y %H:%M",
-        localtime( $self->{fetchTime} ) );
+      _strftimeWrapper( "%a, %e %b %Y %H:%M", localtime( $self->{fetchTime} ) );
     $self->{cached}->{status}   = $err;
     $self->{cached}->{validity} = 'stale';
 
@@ -780,7 +779,7 @@ sub _strftimeWrapper {
 	  ],
   "release_status": "stable",
   "license": "GPL_2",
-  "version": "v1.2.11",
+  "version": "v1.2.12",
   "author": [
     "Marko Oldenburg <fhemdevelopment@cooltux.net>"
   ],
