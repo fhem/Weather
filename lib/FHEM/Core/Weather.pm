@@ -32,9 +32,18 @@ package FHEM::Core::Weather;
 use strict;
 use warnings;
 
-use Time::HiRes  qw(gettimeofday);
+my $missingModul = 'apt install';
+
+eval { use Time::HiRes qw /gettimeofday/; 1 }
+  or $missingModul .= "libtime-hires-perl ";
+
+eval { use Readonly; 1 }
+  or $missingModul .= "libreadonly-perl ";
+
+#use Time::HiRes  qw(gettimeofday);
 use experimental qw /switch/;
-use Readonly;
+
+#use Readonly;
 
 use FHEM::Meta;
 
@@ -318,8 +327,6 @@ sub _ReturnWithError {
 }
 
 sub DeleteForecastreadings {
-    return 0 unless ( __PACKAGE__ eq caller(0) );
-
     my $hash = shift;
 
     my $name                    = $hash->{NAME};
