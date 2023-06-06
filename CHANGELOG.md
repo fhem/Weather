@@ -1,4 +1,47 @@
-### build: v2.2.22 (HEAD -> patch-package)
+### fix: missing perl modules (HEAD -> patch-removePrivatFnDeklaration)
+>Sun, 5 Feb 2023 09:26:04 +0100
+
+>Author: Marko Oldenburg (fhemdevelopment@cooltux.net)
+
+>Commiter: Marko Oldenburg (fhemdevelopment@cooltux.net)
+
+
+
+
+### fix: failed then Readonly is missing (origin/patch-removePrivatFnDeklaration)
+>Sun, 5 Feb 2023 09:20:20 +0100
+
+>Author: Marko Oldenburg (fhemdevelopment@cooltux.net)
+
+>Commiter: Marko Oldenburg (fhemdevelopment@cooltux.net)
+
+
+
+
+### fix: : Undefined subroutine
+>Thu, 2 Feb 2023 22:58:40 +0100
+
+>Author: Marko Oldenburg (fhemdevelopment@cooltux.net)
+
+>Commiter: Marko Oldenburg (fhemdevelopment@cooltux.net)
+
+&FHEM::Core::Weather::DeleteForecastreadings
+
+[Ticket: #46]
+
+
+
+### docs: add new entry in CHANGELOG.md (tag: v2.2.22)
+>Tue, 10 Jan 2023 21:44:20 +0100
+
+>Author: Marko Oldenburg (fhemdevelopment@cooltux.net)
+
+>Commiter: Marko Oldenburg (fhemdevelopment@cooltux.net)
+
+
+
+
+### build: v2.2.22
 >Tue, 10 Jan 2023 21:43:26 +0100
 
 >Author: Marko Oldenburg (fhemdevelopment@cooltux.net)
@@ -8,7 +51,7 @@
 
 
 
-### docs: add new modul path in to pre-commit (origin/patch-package)
+### docs: add new modul path in to pre-commit
 >Tue, 10 Jan 2023 21:37:10 +0100
 
 >Author: Marko Oldenburg (fhemdevelopment@cooltux.net)
