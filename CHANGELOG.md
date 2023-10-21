@@ -1,4 +1,38 @@
-### fix: missing perl modules (HEAD -> patch-removePrivatFnDeklaration)
+### feat: new reading owmAPICode for original code (HEAD -> patch-createDecimal)
+>Tue, 11 Jul 2023 14:10:13 +0200
+
+>Author: Marko Oldenburg (fhemdevelopment@cooltux.net)
+
+>Commiter: Marko Oldenburg (fhemdevelopment@cooltux.net)
+
+[Ticket: no]
+
+
+
+### feat: add human-readable text of daily forecast
+>Tue, 6 Jun 2023 08:35:06 +0200
+
+>Author: Marko Oldenburg (fhemdevelopment@cooltux.net)
+
+>Commiter: Marko Oldenburg (fhemdevelopment@cooltux.net)
+
+add the proper human-readable text description of the daily forecast
+
+[Ticket: no]
+
+
+
+### add temperatur reading and fix weblink
+>Tue, 23 May 2023 08:08:42 +0200
+
+>Author: Marko Oldenburg (oldenburg@b1-systems.de)
+
+>Commiter: Marko Oldenburg (oldenburg@b1-systems.de)
+
+
+
+
+### fix: missing perl modules
 >Sun, 5 Feb 2023 09:26:04 +0100
 
 >Author: Marko Oldenburg (fhemdevelopment@cooltux.net)
@@ -8,7 +42,7 @@
 
 
 
-### fix: failed then Readonly is missing (origin/patch-removePrivatFnDeklaration)
+### fix: failed then Readonly is missing
 >Sun, 5 Feb 2023 09:20:20 +0100
 
 >Author: Marko Oldenburg (fhemdevelopment@cooltux.net)
