@@ -840,7 +840,7 @@ sub _strftimeWrapper {
       "abstract": "Wetter API für Weather Underground"
     }
   },
-  "version": "v1.2.0",
+  "version": "v1.3.0",
   "author": [
     "Julian Pawlowski <julian.pawlowski@gmail.com>"
   ],
