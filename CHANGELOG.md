@@ -1,4 +1,14 @@
-### feat: new reading owmAPICode for original code (HEAD -> patch-createDecimal)
+### test: add new CHANGELOG (HEAD -> patch-createDecimal)
+>Sat, 21 Oct 2023 08:59:11 +0200
+
+>Author: Marko Oldenburg (fhemdevelopment@cooltux.net)
+
+>Commiter: Marko Oldenburg (fhemdevelopment@cooltux.net)
+
+
+
+
+### feat: new reading owmAPICode for original code (origin/patch-createDecimal)
 >Tue, 11 Jul 2023 14:10:13 +0200
 
 >Author: Marko Oldenburg (fhemdevelopment@cooltux.net)

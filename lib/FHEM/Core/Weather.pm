@@ -8,6 +8,7 @@
 #       Contributors:
 #         - Marko Oldenburg (CoolTux)
 #         - Lippie
+#         - stefanru (wundergroundAPI)
 #
 #
 #     This file is part of fhem.
