@@ -1,4 +1,25 @@
-### fix: Update forecast with cachemaxage after API calls are down. special thanks to stefanru (forum) (HEAD -> patch-fixforecast)
+### docs: change versions and add copyright (HEAD -> patch-fixforecast)
+>Fri, 11 Oct 2024 12:04:07 +0200
+
+>Author: Marko Oldenburg (fhemdevelopment@cooltux.net)
+
+>Commiter: Marko Oldenburg (fhemdevelopment@cooltux.net)
+
+
+
+
+### docs: Changelog (origin/patch-fixforecast)
+>Fri, 11 Oct 2024 07:07:57 +0200
+
+>Author: Marko Oldenburg (fhemdevelopment@cooltux.net)
+
+>Commiter: Marko Oldenburg (fhemdevelopment@cooltux.net)
+
+[Ticket: no]
+
+
+
+### fix: Update forecast with cachemaxage after API calls are down. special thanks to stefanru (forum)
 >Fri, 11 Oct 2024 06:59:53 +0200
 
 >Author: Marko Oldenburg (fhemdevelopment@cooltux.net)
