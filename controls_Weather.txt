@@ -1,5 +1,5 @@
 UPD 2023-01-29_16:14:48 25809 FHEM/59_Weather.pm
-UPD 2023-06-06_07:31:00 34254 lib/FHEM/Core/Weather.pm
+UPD 2024-10-11_06:52:17 34293 lib/FHEM/Core/Weather.pm
 UPD 2023-01-29_16:14:48 50106 lib/FHEM/APIs/Weather/DarkSkyAPI.pm
 UPD 2023-07-11_14:08:00 33779 lib/FHEM/APIs/Weather/OpenWeatherMapAPI.pm
-UPD 2023-06-02_05:03:58 36607 lib/FHEM/APIs/Weather/wundergroundAPI.pm
+UPD 2024-10-11_06:49:47 37627 lib/FHEM/APIs/Weather/wundergroundAPI.pm
