@@ -1,4 +1,24 @@
-### feat: remove DarkSky, change versions remove DarkSkyAPI, no longer supported change Copyright years and versions of OWM API (HEAD -> patch-changeVersion)
+### docs: fix unbalanced p (HEAD -> patch-Unbalanced_p)
+>Tue, 4 Feb 2025 21:26:52 +0100
+
+>Author: Marko Oldenburg (fhemdevelopment@cooltux.net)
+
+>Commiter: Marko Oldenburg (fhemdevelopment@cooltux.net)
+
+
+
+
+### docs: add changelog (origin/patch-changeVersion)
+>Tue, 4 Feb 2025 21:01:33 +0100
+
+>Author: Marko Oldenburg (fhemdevelopment@cooltux.net)
+
+>Commiter: Marko Oldenburg (fhemdevelopment@cooltux.net)
+
+
+
+
+### feat: remove DarkSky, change versions remove DarkSkyAPI, no longer supported change Copyright years and versions of OWM API
 >Tue, 4 Feb 2025 21:01:17 +0100
 
 >Author: Marko Oldenburg (fhemdevelopment@cooltux.net)
