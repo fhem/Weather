@@ -2,7 +2,7 @@
 ##############################################################################
 #
 #     59_Weather.pm
-#     (c) 2009-2024 Copyright by Dr. Boris Neubert
+#     (c) 2009-2025 Copyright by Dr. Boris Neubert
 #     e-mail: omega at online dot de
 #
 #       Contributors:
@@ -544,7 +544,7 @@ __END__
   ],
   "release_status": "stable",
   "license": "GPL_2",
-  "version": "v2.2.30",
+  "version": "v2.2.35",
   "author": [
     "Marko Oldenburg <fhemdevelopment@cooltux.net>"
   ],
