@@ -434,8 +434,13 @@ sub _Writereadings {
                 && ref( $dataRef->{$r} ) ne 'ARRAY' );
         }
 
-        ::readingsBulkUpdate( $hash, 'icon',
-            $iconlist[ $dataRef->{current}->{code} ] );
+        if ( defined( $dataRef->{current}->{code} )
+            && $dataRef->{current}->{code} )
+        {
+            ::readingsBulkUpdate( $hash, 'icon',
+                $iconlist[ $dataRef->{current}->{code} ] );
+        }
+
         if (   defined( $dataRef->{current}->{wind_direction} )
             && $dataRef->{current}->{wind_direction}
             && defined( $dataRef->{current}->{wind_speed} )
