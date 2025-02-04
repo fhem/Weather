@@ -1,4 +1,47 @@
-### docs: change versions and add copyright (HEAD -> patch-fixforecast)
+### feat: remove DarkSky, change versions remove DarkSkyAPI, no longer supported change Copyright years and versions of OWM API (HEAD -> patch-changeVersion)
+>Tue, 4 Feb 2025 21:01:17 +0100
+
+>Author: Marko Oldenburg (fhemdevelopment@cooltux.net)
+
+>Commiter: Marko Oldenburg (fhemdevelopment@cooltux.net)
+
+[Ticket: no]
+
+
+
+### docs: changelog
+>Tue, 4 Feb 2025 20:53:14 +0100
+
+>Author: Marko Oldenburg (fhemdevelopment@cooltux.net)
+
+>Commiter: Marko Oldenburg (fhemdevelopment@cooltux.net)
+
+[Ticket: no]
+
+
+
+### fix: apply patch from stefanru https://forum.fhem.de/index.php?msg=1332884
+>Tue, 4 Feb 2025 20:52:52 +0100
+
+>Author: Marko Oldenburg (fhemdevelopment@cooltux.net)
+
+>Commiter: Marko Oldenburg (fhemdevelopment@cooltux.net)
+
+[Ticket: no]
+
+
+
+### docs: new CHANGELOG
+>Fri, 11 Oct 2024 12:04:37 +0200
+
+>Author: Marko Oldenburg (fhemdevelopment@cooltux.net)
+
+>Commiter: Marko Oldenburg (fhemdevelopment@cooltux.net)
+
+
+
+
+### docs: change versions and add copyright
 >Fri, 11 Oct 2024 12:04:07 +0200
 
 >Author: Marko Oldenburg (fhemdevelopment@cooltux.net)
@@ -8,7 +51,7 @@
 
 
 
-### docs: Changelog (origin/patch-fixforecast)
+### docs: Changelog
 >Fri, 11 Oct 2024 07:07:57 +0200
 
 >Author: Marko Oldenburg (fhemdevelopment@cooltux.net)
