@@ -1,4 +1,34 @@
-### docs: fix unbalanced p (HEAD -> patch-Unbalanced_p)
+### ``` Refactor pre-commit hook file list and output formatting (HEAD -> patch-removedarksky)
+>Wed, 5 Feb 2025 07:07:52 +0100
+
+>Author: Marko Oldenburg (fhemdevelopment@cooltux.net)
+
+>Commiter: Marko Oldenburg (fhemdevelopment@cooltux.net)
+
+Updated the list of files in the pre-commit hook to remove
+references to 'lib/FHEM/APIs/Weather/DarkSkyAPI.pm' and adjusted
+the output formatting for better readability. The order of the
+files in the @filenames array has been restructured for clarity.
+These changes were necessary to ensure our code base focuses on
+the more relevant weather API files.
+
+No breaking changes introduced; the pre-commit hook continues to
+function as intended.
+```
+
+
+
+### docs: add changelog
+>Tue, 4 Feb 2025 21:27:10 +0100
+
+>Author: Marko Oldenburg (fhemdevelopment@cooltux.net)
+
+>Commiter: Marko Oldenburg (fhemdevelopment@cooltux.net)
+
+
+
+
+### docs: fix unbalanced p
 >Tue, 4 Feb 2025 21:26:52 +0100
 
 >Author: Marko Oldenburg (fhemdevelopment@cooltux.net)
