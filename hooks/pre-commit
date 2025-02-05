@@ -4,33 +4,34 @@ use File::Basename;
 use POSIX qw(strftime);
 use strict;
 
-my @filenames = (   'FHEM/59_Weather.pm',
-		    'lib/FHEM/Core/Weather.pm',
-		    'lib/FHEM/APIs/Weather/DarkSkyAPI.pm',
-		    'lib/FHEM/APIs/Weather/OpenWeatherMapAPI.pm',
-		    'lib/FHEM/APIs/Weather/wundergroundAPI.pm',
-    );
+my @filenames = (
+    'FHEM/59_Weather.pm',
+    'lib/FHEM/Core/Weather.pm',
+    'lib/FHEM/APIs/Weather/OpenWeatherMapAPI.pm',
+    'lib/FHEM/APIs/Weather/wundergroundAPI.pm',
+);
 
-my $controlsfile    = 'controls_Weather.txt';
+my $controlsfile = 'controls_Weather.txt';
 
-open(FH, ">$controlsfile") || return("Can't open $controlsfile: $!");
+open( FH, ">$controlsfile" ) || return ("Can't open $controlsfile: $!");
 
-for my  $filename (@filenames) {
+for my $filename (@filenames) {
     my @statOutput = stat($filename);
-  
-    if (scalar @statOutput != 13) {
-        printf 'error: stat has unexpected return value for ' . $filename . "\n";
+
+    if ( scalar @statOutput != 13 ) {
+        printf 'error: stat has unexpected return value for '
+          . $filename . "\n";
         next;
     }
 
-    my $mtime = $statOutput[9];
-    my $date = POSIX::strftime("%Y-%m-%d", localtime($mtime));
-    my $time = POSIX::strftime("%H:%M:%S", localtime($mtime));
-    my $filetime = $date."_".$time;
+    my $mtime    = $statOutput[9];
+    my $date     = POSIX::strftime( "%Y-%m-%d", localtime($mtime) );
+    my $time     = POSIX::strftime( "%H:%M:%S", localtime($mtime) );
+    my $filetime = $date . "_" . $time;
 
     my $filesize = $statOutput[7];
 
-    printf FH 'UPD ' . $filetime . ' ' . $filesize . ' ' .$filename . "\n";
+    printf FH 'UPD ' . $filetime . ' ' . $filesize . ' ' . $filename . "\n";
 }
 
 close(FH);
