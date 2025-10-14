@@ -1,4 +1,28 @@
-### Refactor language initialization and attribute handling (HEAD -> patch-remove-perlexperimental)
+### Refactor language handling to improve readability (HEAD -> patch-remove-perlexperimental)
+>Tue, 14 Oct 2025 07:01:07 +0200
+
+>Author: Marko Oldenburg (fhemdevelopment@cooltux.net)
+
+>Commiter: Marko Oldenburg (fhemdevelopment@cooltux.net)
+
+Improved the language initialization logic by replacing the
+experimental `given/when` construct with a more standard
+`if/elsif` structure, enhancing code readability and
+maintainability. Additionally, the attribute handling in the
+`Attr` subroutine was refactored for clarity, removing
+unnecessary usage of `given/when`, which helps reduce
+complexity across the codebase.
+
+Furthermore, in the OpenWeatherMapAPI module, logic for
+handling weather response data was streamlined by removing
+the `given/when` statements in favor of `if` conditions.
+This change eliminates potential confusion and enhances
+the clarity of the code logic. No breaking changes were
+introduced; the overall functionality remains intact.
+
+
+
+### Refactor language initialization and attribute handling
 >Tue, 14 Oct 2025 06:53:44 +0200
 
 >Author: Marko Oldenburg (fhemdevelopment@cooltux.net)
