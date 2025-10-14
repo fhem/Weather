@@ -1,4 +1,49 @@
-### ``` Refactor pre-commit hook file list and output formatting (HEAD -> patch-removedarksky)
+### Refactor language initialization and attribute handling (HEAD -> patch-remove-perlexperimental)
+>Tue, 14 Oct 2025 06:53:44 +0200
+
+>Author: Marko Oldenburg (fhemdevelopment@cooltux.net)
+
+>Commiter: Marko Oldenburg (fhemdevelopment@cooltux.net)
+
+Improved the language initialization logic by replacing
+the experimental `given/when` construct with a more
+standard `if/elsif` structure. This change enhances code
+readability and maintainability, making it easier to follow
+the flow of language assignments.
+
+Additionally, refactored attribute handling in the `Attr`
+subroutine by streamlining the conditions, removing
+unnecessary `given/when` usage, and maintaining clarity
+in the logic for setting and deleting forecasts and alerts.
+These changes help reduce complexity and improve
+consistency throughout the codebase.
+
+
+
+### ``` Refactor pre-commit hook by removing DarkSkyAPI references
+>Wed, 5 Feb 2025 07:08:45 +0100
+
+>Author: Marko Oldenburg (fhemdevelopment@cooltux.net)
+
+>Commiter: Marko Oldenburg (fhemdevelopment@cooltux.net)
+
+Updated the pre-commit hook to eliminate references to
+'lib/FHEM/APIs/Weather/DarkSkyAPI.pm'. This change was made to
+simplify the codebase and make it more relevant by focusing on
+the other weather API files.
+
+Additionally, the output formatting of the pre-commit hook
+has been improved for better readability, and the order of
+the files in the @filenames array has been restructured for
+clarity.
+
+No breaking changes have been introduced; the pre-commit
+hook continues to operate as intended.
+```
+
+
+
+### ``` Refactor pre-commit hook file list and output formatting
 >Wed, 5 Feb 2025 07:07:52 +0100
 
 >Author: Marko Oldenburg (fhemdevelopment@cooltux.net)
@@ -38,7 +83,7 @@ function as intended.
 
 
 
-### docs: add changelog (origin/patch-changeVersion)
+### docs: add changelog
 >Tue, 4 Feb 2025 21:01:33 +0100
 
 >Author: Marko Oldenburg (fhemdevelopment@cooltux.net)
