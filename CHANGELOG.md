@@ -1,4 +1,57 @@
-### Refactor language handling in Weather API (HEAD -> patch-remove-perlexperimental)
+### Remove DarkSky API support from Weather module (HEAD -> patch-newversion)
+>Tue, 14 Oct 2025 07:35:18 +0200
+
+>Author: Marko Oldenburg (fhemdevelopment@cooltux.net)
+
+>Commiter: Marko Oldenburg (fhemdevelopment@cooltux.net)
+
+The DarkSky API support has been removed from the Weather module documentation,
+including its references in both English and German sections. The API
+documentation has been updated to exclusively focus on the
+OpenWeatherMap API.
+
+The changes made to `59_Weather.pm` include:
+
+- Deleted mentions of the DarkSky API in the documentation.
+- Updated example command snippets to reference the
+  OpenWeatherMap API.
+- Version number has been incremented from v2.2.35 to v2.3.0.
+
+In addition, the version number for the OpenWeatherMap API support
+has been updated from v3.2.7 to v3.2.8 in the corresponding API file.
+
+These updates were necessary to streamline the module's
+functionality and align it with current API availability, as
+DarkSky has been discontinued. There are no breaking changes
+for existing users of the OpenWeatherMap API.
+
+
+
+### Refactor language handling in Weather API (origin/testing, origin/main, origin/dev, origin/HEAD, testing, main, dev)
+>Tue, 14 Oct 2025 07:04:00 +0200
+
+>Author: Marko Oldenburg (fhemdevelopment@cooltux.net)
+
+>Commiter: Marko Oldenburg (fhemdevelopment@cooltux.net)
+
+Improved the language initialization logic by replacing the
+experimental `given/when` construct with a more standard
+`if/elsif` structure to enhance code readability and
+maintainability. The attribute handling in the `Attr` subroutine
+was simplified for clarity, removing unnecessary usage
+of `given/when`, which helps reduce complexity throughout
+the codebase.
+
+Additionally, in the OpenWeatherMapAPI module, the logic for
+handling weather response data was streamlined by removing
+`given/when` statements in favor of `if` conditions. This change
+avoids potential confusion and enhances the clarity of the
+code logic. No breaking changes were introduced; the overall
+functionality remains intact.
+
+
+
+### Refactor language handling in Weather API
 >Tue, 14 Oct 2025 07:03:38 +0200
 
 >Author: Marko Oldenburg (fhemdevelopment@cooltux.net)
