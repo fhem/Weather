@@ -1,4 +1,54 @@
-### Remove DarkSky API support from Weather module (HEAD -> patch-newversion)
+### Update version to 2.3.1 and fix conditionals in Weather.pm (HEAD -> patch-mod-weather)
+>Thu, 16 Oct 2025 19:01:00 +0200
+
+>Author: Marko Oldenburg (fhemdevelopment@cooltux.net)
+
+>Commiter: Marko Oldenburg (fhemdevelopment@cooltux.net)
+
+This commit updates the version number in the FHEM weather module
+from 2.3.0 to 2.3.1 to reflect the latest changes.
+
+In addition to the version bump, several conditionals in
+lib/FHEM/Core/Weather.pm have been corrected. Specifically, the
+syntax for checking the command attributes has been fixed to ensure
+proper evaluation of the conditions.
+
+These changes improve code clarity and correctness, which helps
+in maintaining the module. There are no breaking changes in this
+commit, and existing functionality remains intact.
+
+
+
+### Remove DarkSky API support from Weather module (tag: v2.3.0, origin/testing, origin/main, origin/dev, origin/HEAD, testing, main, dev)
+>Tue, 14 Oct 2025 07:35:31 +0200
+
+>Author: Marko Oldenburg (fhemdevelopment@cooltux.net)
+
+>Commiter: Marko Oldenburg (fhemdevelopment@cooltux.net)
+
+The DarkSky API support has been removed from the Weather module
+documentation, affecting both English and German sections. The API
+documentation now focuses solely on the OpenWeatherMap API.
+
+Changes include the deletion of DarkSky references in `59_Weather.pm`
+and updates to example command snippets to refer to the
+OpenWeatherMap API. The version number was incremented from
+v2.2.35 to v2.3.0, and the OpenWeatherMap API version was updated
+from v3.2.7 to v3.2.8.
+
+These updates were necessary as DarkSky has been discontinued,
+streamlining the module's functionality. There are no breaking
+changes for current OpenWeatherMap API users.
+
+Additionally, the language handling in the Weather API was
+refactored to replace the experimental `given/when` construct
+with standard `if/elsif` statements for better readability
+and maintainability. This change does not introduce any breaking
+changes and enhances code clarity.
+
+
+
+### Remove DarkSky API support from Weather module
 >Tue, 14 Oct 2025 07:35:18 +0200
 
 >Author: Marko Oldenburg (fhemdevelopment@cooltux.net)
@@ -27,7 +77,7 @@ for existing users of the OpenWeatherMap API.
 
 
 
-### Refactor language handling in Weather API (origin/testing, origin/main, origin/dev, origin/HEAD, testing, main, dev)
+### Refactor language handling in Weather API
 >Tue, 14 Oct 2025 07:04:00 +0200
 
 >Author: Marko Oldenburg (fhemdevelopment@cooltux.net)
