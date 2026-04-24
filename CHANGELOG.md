@@ -1,4 +1,66 @@
-### feat(weather): add probability of precipitation to openweathermap (HEAD -> patch-add-new-readings)
+### Fix precipitation data handling in OpenWeatherMap API (HEAD -> patch-openweatermap)
+>Fri, 24 Apr 2026 17:41:04 +0200
+
+>Author: Marko Oldenburg (fhemdevelopment@cooltux.net)
+
+>Commiter: Marko Oldenburg (fhemdevelopment@cooltux.net)
+
+This commit modifies the way precipitation data is retrieved
+from the OpenWeatherMap API response. The previous implementation
+attempted to access the hourly precipitation probability ('pop1h')
+but it was commented out, indicating potential confusion or
+errors in handling data from the API.
+
+The changes now directly access the 'pop' field from the
+hourly data instead of 'pop1h', ensuring that the correct
+precipitation probability is used, defaulting to 0 if not
+available. This simplification improves code clarity and
+adherence to the API specification.
+
+No breaking changes are introduced, but users should be aware
+that the expected precipitation field has changed from 'pop1h'
+to 'pop'. Please refer to the OpenWeatherMap API documentation
+for further details on the data structure.
+
+
+
+### fix(api): remove invalid pop1h mapping in hourly weather (origin/testing, origin/dev, origin/HEAD, testing, dev)
+>Fri, 24 Apr 2026 17:25:05 +0200
+
+>Author: Marko Oldenburg (fhemdevelopment@cooltux.net)
+
+>Commiter: Marko Oldenburg (fhemdevelopment@cooltux.net)
+
+Removes the incorrect mapping for hourly probability of precipitation
+from the OpenWeatherMap One Call API response processing.
+
+- Comments out invalid `pop1h` data extraction logic
+- Prevents potential runtime errors from incorrect hash access
+
+
+
+### ``` Add probability of precipitation fields to weather API
+>Fri, 24 Apr 2026 16:48:02 +0200
+
+>Author: Marko Oldenburg (fhemdevelopment@cooltux.net)
+
+>Commiter: Marko Oldenburg (fhemdevelopment@cooltux.net)
+
+This update integrates Probability of Precipitation (PoP) data into
+current and forecast responses of the weather API. The addition of
+pop1h and pop3h fields for hourly forecasts, along with pop_1h in
+One Call current weather data, enhances the detail and accuracy of
+weather information provided to users. This change supports wider
+use cases for our application, helping users make informed decisions
+based on potential precipitation.
+
+Version is incremented to v3.2.10 to reflect these changes. For
+more details, see the release notes on GitHub.
+```
+
+
+
+### feat(weather): add probability of precipitation to openweathermap
 >Fri, 24 Apr 2026 16:46:27 +0200
 
 >Author: Marko Oldenburg (fhemdevelopment@cooltux.net)
@@ -47,7 +109,7 @@ across weather modules.
 
 
 
-### Bump version to v2.3.3 in Weather module (tag: v2.3.3, origin/main, origin/dev, origin/HEAD, main, dev)
+### Bump version to v2.3.3 in Weather module (tag: v2.3.3, origin/main, main)
 >Thu, 23 Oct 2025 19:47:40 +0200
 
 >Author: Marko Oldenburg (fhemdevelopment@cooltux.net)
@@ -78,7 +140,7 @@ changes or additional notes are involved in this version bump.
 
 
 
-###  Fix Weather.pm to use READINGS instead of readings (origin/testing, testing)
+###  Fix Weather.pm to use READINGS instead of readings
 >Fri, 17 Oct 2025 12:20:04 +0200
 
 >Author: Marko Oldenburg (oldenburg@b1-systems.de)
