@@ -1,4 +1,21 @@
-### chore(weather): update copyright years and license headers (HEAD -> patch-add-new-readings)
+### feat(weather): add probability of precipitation to OpenWeatherMap (HEAD -> patch-add-new-readings)
+>Fri, 24 Apr 2026 16:41:49 +0200
+
+>Author: Marko Oldenburg (fhemdevelopment@cooltux.net)
+
+>Commiter: Marko Oldenburg (fhemdevelopment@cooltux.net)
+
+Integrates Probability of Precipitation (PoP) data into the
+OpenWeatherMap API module for current and forecast responses.
+
+- Adds pop1h and pop3h fields to hourly forecasts
+- Includes pop_1h in One Call current weather data
+- Maps pop fields for One Call daily and hourly segments
+- Updates CHANGELOG with recent maintenance and version history
+
+
+
+### chore(weather): update copyright years and license headers
 >Fri, 24 Apr 2026 16:36:28 +0200
 
 >Author: Marko Oldenburg (fhemdevelopment@cooltux.net)
