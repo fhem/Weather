@@ -3,7 +3,7 @@
 #
 # Developed with VSCodium and richterger perl plugin
 #
-#  (c) 2019-2025 Copyright: Marko Oldenburg (fhemdevelopment at cooltux dot net)
+#  (c) 2019-2026 Copyright: Marko Oldenburg (fhemdevelopment at cooltux dot net)
 #  All rights reserved
 #
 #   Special thanks goes to:
