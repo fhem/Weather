@@ -939,11 +939,12 @@ sub _FillSelfHashWithWeatherResponseForOnecallHourly {
                     ? $data->{hourly}->[$i]->{rain}->{'1h'}
                     : 0
                 ),
-                'pop1h' => (
-                      $data->{hourly}->[$i]->{pop}->{'1h'}
-                    ? $data->{hourly}->[$i]->{pop}->{'1h'}
-                    : 0
-                ),
+
+                # 'pop1h' => (
+                #       $data->{hourly}->[$i]->{pop}->{'1h'}
+                #     ? $data->{hourly}->[$i]->{pop}->{'1h'}
+                #     : 0
+                # ),
                 'snow1h' => (
                       $data->{hourly}->[$i]->{snow}->{'1h'}
                     ? $data->{hourly}->[$i]->{snow}->{'1h'}
