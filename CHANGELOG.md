@@ -1,4 +1,21 @@
-### feat(weather): add probability of precipitation to OpenWeatherMap (HEAD -> patch-add-new-readings)
+### feat(weather): add probability of precipitation to openweathermap (HEAD -> patch-add-new-readings)
+>Fri, 24 Apr 2026 16:46:27 +0200
+
+>Author: Marko Oldenburg (fhemdevelopment@cooltux.net)
+
+>Commiter: Marko Oldenburg (fhemdevelopment@cooltux.net)
+
+Integrates Probability of Precipitation (PoP) data into current and
+forecast responses and increments the version to v3.2.10.
+
+- Adds pop1h and pop3h fields to hourly forecasts
+- Includes pop_1h in One Call current weather data
+- Maps pop fields for One Call daily and hourly segments
+- Increments version to v3.2.10 and updates CHANGELOG
+
+
+
+### feat(weather): add probability of precipitation to OpenWeatherMap
 >Fri, 24 Apr 2026 16:41:49 +0200
 
 >Author: Marko Oldenburg (fhemdevelopment@cooltux.net)
