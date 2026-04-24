@@ -1,4 +1,4 @@
 UPD 2025-10-23_19:49:00 24515 FHEM/59_Weather.pm
 UPD 2026-04-24_16:35:08 34158 lib/FHEM/Core/Weather.pm
-UPD 2026-04-24_16:30:19 33545 lib/FHEM/APIs/Weather/OpenWeatherMapAPI.pm
+UPD 2026-04-24_16:41:20 34334 lib/FHEM/APIs/Weather/OpenWeatherMapAPI.pm
 UPD 2026-04-24_16:35:50 39956 lib/FHEM/APIs/Weather/wundergroundAPI.pm

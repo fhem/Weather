@@ -676,6 +676,16 @@ sub _FillSelfHashWithWeatherResponseForForecastHourly {
                     ? $data->{list}->[$i]->{rain}->{'3h'}
                     : 0
                 ),
+                'pop1h' => (
+                      $data->{list}->[$i]->{pop}->{'1h'}
+                    ? $data->{list}->[$i]->{pop}->{'1h'}
+                    : 0
+                ),
+                'pop3h' => (
+                      $data->{list}->[$i]->{pop}->{'3h'}
+                    ? $data->{list}->[$i]->{pop}->{'3h'}
+                    : 0
+                ),
                 'snow1h' => (
                       $data->{list}->[$i]->{snow}->{'1h'}
                     ? $data->{list}->[$i]->{snow}->{'1h'}
@@ -725,6 +735,7 @@ sub _FillSelfHashWithWeatherResponseForOnecallCurrent {
         ),
         'wind_direction' => $data->{current}->{wind_deg},
         'rain_1h'    => ( $data->{rain}->{'1h'} ? $data->{rain}->{'1h'} : 0 ),
+        'pop_1h'     => ( $data->{pop}->{'1h'}  ? $data->{pop}->{'1h'}  : 0 ),
         'cloudCover' => $data->{current}->{clouds},
         'code'       => $codes{ $data->{current}->{weather}->[0]->{id} },
         'owmAPICode' => $data->{current}->{weather}->[0]->{id},
@@ -855,6 +866,10 @@ sub _FillSelfHashWithWeatherResponseForOnecallDaily {
                     $data->{daily}->[$i]->{rain} ? $data->{daily}->[$i]->{rain}
                     : 0
                 ),
+                'pop' => (
+                    $data->{daily}->[$i]->{pop} ? $data->{daily}->[$i]->{pop}
+                    : 0
+                ),
                 'snow' => (
                     $data->{daily}->[$i]->{snow} ? $data->{daily}->[$i]->{snow}
                     : 0
@@ -922,6 +937,11 @@ sub _FillSelfHashWithWeatherResponseForOnecallHourly {
                 'rain1h'     => (
                       $data->{hourly}->[$i]->{rain}->{'1h'}
                     ? $data->{hourly}->[$i]->{rain}->{'1h'}
+                    : 0
+                ),
+                'pop1h' => (
+                      $data->{hourly}->[$i]->{pop}->{'1h'}
+                    ? $data->{hourly}->[$i]->{pop}->{'1h'}
                     : 0
                 ),
                 'snow1h' => (

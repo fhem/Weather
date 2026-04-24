@@ -1,4 +1,88 @@
-### Update version to 2.3.1 and fix conditionals in Weather.pm (HEAD -> patch-mod-weather)
+### chore(weather): update copyright years and license headers (HEAD -> patch-add-new-readings)
+>Fri, 24 Apr 2026 16:36:28 +0200
+
+>Author: Marko Oldenburg (fhemdevelopment@cooltux.net)
+
+>Commiter: Marko Oldenburg (fhemdevelopment@cooltux.net)
+
+Updates copyright end dates to 2026 and ensures license consistency
+across weather modules.
+
+- Updates copyright range to 2026 in OpenWeatherMap and Core modules
+- Adds missing license and author header to wundergroundAPI.pm
+
+
+
+### Bump version to v2.3.3 in Weather module (tag: v2.3.3, origin/main, origin/dev, origin/HEAD, main, dev)
+>Thu, 23 Oct 2025 19:47:40 +0200
+
+>Author: Marko Oldenburg (fhemdevelopment@cooltux.net)
+
+>Commiter: Marko Oldenburg (fhemdevelopment@cooltux.net)
+
+Update the version of the Weather module from v2.3.2 to v2.3.3.
+This change was necessary to reflect the latest enhancements, bug
+fixes, or improvements made since the last release. Keeping the
+versioning up to date helps users identify the current state of the
+module and ensures better dependency management. No breaking
+changes or additional notes are involved in this version bump.
+
+
+
+###  Bump Weather module version to v2.3.2
+>Fri, 17 Oct 2025 12:40:07 +0200
+
+>Author: Marko Oldenburg (oldenburg@b1-systems.de)
+
+>Commiter: Marko Oldenburg (oldenburg@b1-systems.de)
+
+ Updated the version number of the Weather module from v2.3.1 to v2.3.2 in
+ the module metadata. This version increment likely corresponds to minor
+ bugfixes or improvements that have been implemented in the module. The
+ version change ensures proper tracking of module updates for users and
+ package management systems.
+
+
+
+###  Fix Weather.pm to use READINGS instead of readings (origin/testing, testing)
+>Fri, 17 Oct 2025 12:20:04 +0200
+
+>Author: Marko Oldenburg (oldenburg@b1-systems.de)
+
+>Commiter: Marko Oldenburg (oldenburg@b1-systems.de)
+
+ This commit corrects the hash key used to access device readings in the
+ Weather.pm module. All instances of the lowercase 'readings' hash key
+ have been changed to the uppercase 'READINGS', which is the standard
+ convention in FHEM. This fixes potential issues where weather data
+ wasn't being properly accessed or displayed because the module was
+ looking for readings in the wrong hash location. The change affects
+ the Get function and HTML rendering methods for both vertical and
+ horizontal layouts.
+
+
+
+### Update version to 2.3.1 and fix conditionals in Weather.pm
+>Thu, 16 Oct 2025 19:01:08 +0200
+
+>Author: Marko Oldenburg (fhemdevelopment@cooltux.net)
+
+>Commiter: Marko Oldenburg (fhemdevelopment@cooltux.net)
+
+This commit increments the version number of the FHEM Weather
+module from 2.3.0 to 2.3.1 and addresses several issues with
+conditionals in the Weather.pm file. The syntax for checking
+command attributes has been corrected, ensuring accurate
+evaluation of conditions.
+
+These improvements enhance code clarity and correctness,
+facilitating ongoing maintenance. There are no breaking
+changes introduced in this update; existing functionality
+is preserved.
+
+
+
+### Update version to 2.3.1 and fix conditionals in Weather.pm
 >Thu, 16 Oct 2025 19:01:00 +0200
 
 >Author: Marko Oldenburg (fhemdevelopment@cooltux.net)
@@ -19,7 +103,7 @@ commit, and existing functionality remains intact.
 
 
 
-### Remove DarkSky API support from Weather module (tag: v2.3.0, origin/testing, origin/main, origin/dev, origin/HEAD, testing, main, dev)
+### Remove DarkSky API support from Weather module (tag: v2.3.0)
 >Tue, 14 Oct 2025 07:35:31 +0200
 
 >Author: Marko Oldenburg (fhemdevelopment@cooltux.net)
