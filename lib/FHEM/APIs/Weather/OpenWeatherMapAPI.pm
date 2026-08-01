@@ -413,11 +413,10 @@ sub _ProcessingRetrieveData {
     my $self     = shift;
     my $response = shift;
 
-    if (   $self->{cached}->{status} eq 'ok'
-        && defined($response)
-        && $response )
+    if ( $self->{cached}->{status} eq 'ok'
+        && defined($response) )
     {
-        if ( $response =~ m/^{.*}$/x ) {
+        if ( $response && $response =~ m/^{.*}$/x ) {
             my $data = eval { decode_json($response) };
 
             if ($@) {
@@ -443,10 +442,13 @@ sub _ProcessingRetrieveData {
       if ( $self->{endpoint} eq 'onecall'
         or $self->{endpoint} eq 'forecast' );
 
-    _RetrieveDataFromOpenWeatherMap($self)
-      if ( $self->{endpoint} eq 'weather' );
+    if ( $self->{cached}->{status} eq 'ok' ) {
+        _RetrieveDataFromOpenWeatherMap($self)
+          if ( $self->{endpoint} eq 'weather' );
+    }
 
-    _CallWeatherCallbackFn($self) if ( $self->{endpoint} eq 'none' );
+    _CallWeatherCallbackFn($self)
+      if ( $self->{endpoint} eq 'none' || $self->{cached}->{status} ne 'ok' );
 
     return;
 }
