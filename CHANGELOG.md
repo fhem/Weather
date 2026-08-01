@@ -1,4 +1,35 @@
-### fix(api): improve weather data retrieval logic (HEAD -> patch-forum-msg1367316)
+### chore(release): bump version to v3.2.11 (HEAD -> patch-forum-msg1367316)
+>Sat, 1 Aug 2026 10:55:53 +0200
+
+>Author: Marko Oldenburg (fhemdevelopment@cooltux.net)
+
+>Commiter: Marko Oldenburg (fhemdevelopment@cooltux.net)
+
+Updates the module version number in the OpenWeatherMap API definition.
+
+- Updates version from v3.2.10 to v3.2.11
+
+Signed-off-by: Marko Oldenburg <fhemdevelopment@cooltux.net>
+
+
+
+### docs(changelog): update record with OpenWeatherMap API fixes (origin/patch-forum-msg1367316)
+>Sat, 1 Aug 2026 10:54:22 +0200
+
+>Author: Marko Oldenburg (fhemdevelopment@cooltux.net)
+
+>Commiter: Marko Oldenburg (fhemdevelopment@cooltux.net)
+
+Updates the changelog to include recent fixes regarding OpenWeatherMap API data retrieval and precipitation mapping.
+
+- Documents logic improvements for empty response handling
+- Records correction of precipitation field from pop1h to pop
+
+Signed-off-by: Marko Oldenburg <fhemdevelopment@cooltux.net>
+
+
+
+### fix(api): improve weather data retrieval logic
 >Sat, 1 Aug 2026 10:51:16 +0200
 
 >Author: Marko Oldenburg (fhemdevelopment@cooltux.net)
