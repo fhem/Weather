@@ -1,4 +1,50 @@
-### Fix precipitation data handling in OpenWeatherMap API (HEAD -> patch-openweatermap)
+### fix(api): improve weather data retrieval logic (HEAD -> patch-forum-msg1367316)
+>Sat, 1 Aug 2026 10:51:16 +0200
+
+>Author: Marko Oldenburg (fhemdevelopment@cooltux.net)
+
+>Commiter: Marko Oldenburg (fhemdevelopment@cooltux.net)
+
+Updates data processing to handle empty responses more safely and ensures
+consistent callback execution regardless of cache status.
+
+- Adds null check for response before JSON decoding
+- Restricts weather data retrieval to valid cache state
+- Ensures callback execution when endpoint is none or cache is invalid
+
+Signed-off-by: Marko Oldenburg <fhemdevelopment@cooltux.net>
+
+
+
+### ``` Fix precipitation data handling in OpenWeatherMap API (origin/testing, origin/dev, origin/HEAD, testing, dev)
+>Fri, 24 Apr 2026 17:41:16 +0200
+
+>Author: Marko Oldenburg (fhemdevelopment@cooltux.net)
+
+>Commiter: Marko Oldenburg (fhemdevelopment@cooltux.net)
+
+This commit updates the precipitation data handling in the
+OpenWeatherMap API response processing. The previous implementation
+accessed the hourly probability of precipitation using an incorrect
+field ('pop1h'), which was commented out, indicating potential
+issues in data retrieval.
+
+The new implementation directly accesses the 'pop' field from the
+hourly data, which conforms to the latest API specifications.
+It simplifies the code and ensures that the precipitation probability
+is correctly retrieved, defaulting to 0 if not available.
+
+While there are no breaking changes, users should note that the
+expected precipitation field has shifted from 'pop1h' to 'pop'.
+For further details, please refer to the OpenWeatherMap API
+documentation.
+
+See on github for release notes for version v3.2.10.
+```
+
+
+
+### Fix precipitation data handling in OpenWeatherMap API
 >Fri, 24 Apr 2026 17:41:04 +0200
 
 >Author: Marko Oldenburg (fhemdevelopment@cooltux.net)
@@ -24,7 +70,7 @@ for further details on the data structure.
 
 
 
-### fix(api): remove invalid pop1h mapping in hourly weather (origin/testing, origin/dev, origin/HEAD, testing, dev)
+### fix(api): remove invalid pop1h mapping in hourly weather
 >Fri, 24 Apr 2026 17:25:05 +0200
 
 >Author: Marko Oldenburg (fhemdevelopment@cooltux.net)
