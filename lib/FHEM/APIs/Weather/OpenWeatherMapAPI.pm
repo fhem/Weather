@@ -1051,7 +1051,7 @@ sub _strftimeWrapper {
 	  ],
   "release_status": "stable",
   "license": "GPL_2",
-  "version": "v3.2.10",
+  "version": "v3.2.11",
   "author": [
     "Marko Oldenburg <fhemdevelopment@cooltux.net>"
   ],
