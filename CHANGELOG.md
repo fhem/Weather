@@ -1,4 +1,21 @@
-### feat(api): update openweathermap probability of precipitation mapping (HEAD -> patch-hash-try-skalar)
+### chore(release): bump version to v3.2.12 (HEAD -> patch-hash-try-skalar)
+>Sun, 9 Aug 2026 15:49:03 +0200
+
+>Author: Marko Oldenburg (fhemdevelopment@cooltux.net)
+
+>Commiter: Marko Oldenburg (fhemdevelopment@cooltux.net)
+
+Increments the module version following recent updates to the
+OpenWeatherMap API precipitation data mapping.
+
+- Updates version to v3.2.12 in metadata
+- Reflects API response parsing adjustments in changelog
+
+Signed-off-by: Marko Oldenburg <fhemdevelopment@cooltux.net>
+
+
+
+### feat(api): update openweathermap probability of precipitation mapping (origin/patch-hash-try-skalar)
 >Sun, 9 Aug 2026 15:47:33 +0200
 
 >Author: Marko Oldenburg (fhemdevelopment@cooltux.net)
