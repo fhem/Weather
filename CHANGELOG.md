@@ -1,4 +1,39 @@
-### chore(release): bump version to v3.2.11 (HEAD -> patch-forum-msg1367316)
+### feat(api): update openweathermap probability of precipitation mapping (HEAD -> patch-hash-try-skalar)
+>Sun, 9 Aug 2026 15:47:33 +0200
+
+>Author: Marko Oldenburg (fhemdevelopment@cooltux.net)
+
+>Commiter: Marko Oldenburg (fhemdevelopment@cooltux.net)
+
+Adjusts forecast data parsing to align with current OpenWeatherMap API
+response structure for probability of precipitation.
+
+- Adds pop field to hourly forecast mapping
+- Removes outdated pop1h and pop3h fields
+- Removes obsolete pop_1h field from current weather response
+
+Signed-off-by: Marko Oldenburg <fhemdevelopment@cooltux.net>
+
+
+
+### chore(release): bump version to v3.2.11 and update changelog (origin/testing, origin/main, origin/dev, origin/HEAD, testing, main, dev)
+>Sat, 1 Aug 2026 10:55:59 +0200
+
+>Author: Marko Oldenburg (fhemdevelopment@cooltux.net)
+
+>Commiter: Marko Oldenburg (fhemdevelopment@cooltux.net)
+
+Updates the module version and records recent fixes for the OpenWeatherMap API in the changelog.
+
+- Bumps version from v3.2.10 to v3.2.11
+- Documents improvements for empty response handling
+- Records precipitation field correction from pop1h to pop
+
+Signed-off-by: Marko Oldenburg <fhemdevelopment@cooltux.net>
+
+
+
+### chore(release): bump version to v3.2.11
 >Sat, 1 Aug 2026 10:55:53 +0200
 
 >Author: Marko Oldenburg (fhemdevelopment@cooltux.net)
@@ -13,7 +48,7 @@ Signed-off-by: Marko Oldenburg <fhemdevelopment@cooltux.net>
 
 
 
-### docs(changelog): update record with OpenWeatherMap API fixes (origin/patch-forum-msg1367316)
+### docs(changelog): update record with OpenWeatherMap API fixes
 >Sat, 1 Aug 2026 10:54:22 +0200
 
 >Author: Marko Oldenburg (fhemdevelopment@cooltux.net)
@@ -47,7 +82,7 @@ Signed-off-by: Marko Oldenburg <fhemdevelopment@cooltux.net>
 
 
 
-### ``` Fix precipitation data handling in OpenWeatherMap API (origin/testing, origin/dev, origin/HEAD, testing, dev)
+### ``` Fix precipitation data handling in OpenWeatherMap API
 >Fri, 24 Apr 2026 17:41:16 +0200
 
 >Author: Marko Oldenburg (fhemdevelopment@cooltux.net)
@@ -186,7 +221,7 @@ across weather modules.
 
 
 
-### Bump version to v2.3.3 in Weather module (tag: v2.3.3, origin/main, main)
+### Bump version to v2.3.3 in Weather module (tag: v2.3.3)
 >Thu, 23 Oct 2025 19:47:40 +0200
 
 >Author: Marko Oldenburg (fhemdevelopment@cooltux.net)
