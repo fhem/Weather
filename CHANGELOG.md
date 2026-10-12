@@ -1,4 +1,39 @@
-### chore(release): bump version to v3.2.12 (HEAD -> patch-hash-try-skalar)
+### feat(weather): add daily forecast aggregation for OpenWeatherMap (HEAD -> patch-forecast)
+>Mon, 12 Oct 2026 18:11:22 +0200
+
+>Author: Marko Oldenburg (fhemdevelopment@cooltux.net)
+
+>Commiter: Marko Oldenburg (fhemdevelopment@cooltux.net)
+
+Implements daily forecast parsing by aggregating hourly weather data into
+representative daily values.
+
+- Adds _FillSelfHashWithWeatherResponseForForecastDaily helper method
+- Integrates daily forecast processing into response handling
+- Calculates daily min/max temperatures, average humidity, and wind stats
+
+Signed-off-by: Marko Oldenburg <fhemdevelopment@cooltux.net>
+
+
+
+### chore(release): bump version to v3.2.12 (origin/testing, origin/dev, origin/HEAD, testing, dev)
+>Sun, 9 Aug 2026 15:49:08 +0200
+
+>Author: Marko Oldenburg (fhemdevelopment@cooltux.net)
+
+>Commiter: Marko Oldenburg (fhemdevelopment@cooltux.net)
+
+Increments the module version to reflect recent adjustments to
+OpenWeatherMap API precipitation data mapping.
+
+- Updates module version to v3.2.12
+- Adds release metadata to changelog
+
+Signed-off-by: Marko Oldenburg <fhemdevelopment@cooltux.net>
+
+
+
+### chore(release): bump version to v3.2.12
 >Sun, 9 Aug 2026 15:49:03 +0200
 
 >Author: Marko Oldenburg (fhemdevelopment@cooltux.net)
@@ -15,7 +50,7 @@ Signed-off-by: Marko Oldenburg <fhemdevelopment@cooltux.net>
 
 
 
-### feat(api): update openweathermap probability of precipitation mapping (origin/patch-hash-try-skalar)
+### feat(api): update openweathermap probability of precipitation mapping
 >Sun, 9 Aug 2026 15:47:33 +0200
 
 >Author: Marko Oldenburg (fhemdevelopment@cooltux.net)
@@ -33,7 +68,7 @@ Signed-off-by: Marko Oldenburg <fhemdevelopment@cooltux.net>
 
 
 
-### chore(release): bump version to v3.2.11 and update changelog (origin/testing, origin/main, origin/dev, origin/HEAD, testing, main, dev)
+### chore(release): bump version to v3.2.11 and update changelog (origin/main, main)
 >Sat, 1 Aug 2026 10:55:59 +0200
 
 >Author: Marko Oldenburg (fhemdevelopment@cooltux.net)
