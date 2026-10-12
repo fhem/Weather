@@ -522,6 +522,8 @@ sub _FillSelfHashWithWeatherResponse {
         {
             $self =
               _FillSelfHashWithWeatherResponseForForecastHourly( $self, $data );
+            $self =
+              _FillSelfHashWithWeatherResponseForForecastDaily( $self, $data );
         }
     }
 
@@ -696,6 +698,123 @@ sub _FillSelfHashWithWeatherResponseForForecastHourly {
         );
 
         $i++;
+    }
+
+    return $self;
+}
+
+sub _FillSelfHashWithWeatherResponseForForecastDaily {
+    return 0 unless ( __PACKAGE__ eq caller(0) );
+
+    my $self = shift;
+    my $data = shift;
+
+    my %days;
+    my @day_order;
+
+    for my $entry ( @{ $data->{list} } ) {
+        my $date = POSIX::strftime( "%Y-%m-%d", localtime( $entry->{dt} ) );
+        if ( !exists $days{$date} ) {
+            $days{$date} = [];
+            push( @day_order, $date );
+        }
+        push( @{ $days{$date} }, $entry );
+    }
+
+    for my $date (@day_order) {
+        my $entries = $days{$date};
+        next unless ( scalar( @{$entries} ) > 0 );
+
+# pick midday entry (closest to 12:00:00 UTC/local) or middle entry for representative condition/icon
+        my $rep_entry = $entries->[0];
+        for my $e ( @{$entries} ) {
+            my $hour = ( localtime( $e->{dt} ) )[2];
+            if ( $hour >= 11 && $hour <= 14 ) {
+                $rep_entry = $e;
+                last;
+            }
+        }
+
+        my $min_temp;
+        my $max_temp;
+        my $sum_humidity   = 0;
+        my $sum_pressure   = 0;
+        my $sum_wind       = 0;
+        my $max_wind_speed = 0;
+        my $max_wind_gust  = 0;
+        my $sum_rain       = 0;
+        my $sum_snow       = 0;
+        my $max_pop        = 0;
+        my $count          = scalar( @{$entries} );
+
+        for my $e ( @{$entries} ) {
+            my $t_min = $e->{main}->{temp_min};
+            my $t_max = $e->{main}->{temp_max};
+
+            $min_temp = $t_min if ( !defined($min_temp) || $t_min < $min_temp );
+            $max_temp = $t_max if ( !defined($max_temp) || $t_max > $max_temp );
+
+            $sum_humidity += $e->{main}->{humidity} // 0;
+            $sum_pressure += $e->{main}->{pressure} // 0;
+
+            my $ws = ( $e->{wind}->{speed} // 0 ) * 3.6;
+            $sum_wind += $ws;
+            $max_wind_speed = $ws if ( $ws > $max_wind_speed );
+
+            my $wg = ( $e->{wind}->{gust} // 0 ) * 3.6;
+            $max_wind_gust = $wg if ( $wg > $max_wind_gust );
+
+            $sum_rain += ( $e->{rain}->{'3h'} // 0 );
+            $sum_snow += ( $e->{snow}->{'3h'} // 0 );
+
+            my $pop = $e->{pop} // 0;
+            $max_pop = $pop if ( $pop > $max_pop );
+        }
+
+        my $avg_humidity = int( sprintf( "%.0f", $sum_humidity / $count ) );
+        my $avg_pressure =
+          int( sprintf( "%.1f", $sum_pressure / $count ) + 0.5 );
+        my $wind_speed = int( sprintf( "%.1f", $max_wind_speed ) + 0.5 );
+        my $wind_gust  = int( sprintf( "%.1f", $max_wind_gust ) + 0.5 );
+
+        my $rep_temp =
+          defined( $rep_entry->{main}->{temp} )
+          ? int( sprintf( "%.0f", $rep_entry->{main}->{temp} ) )
+          : int( sprintf( "%.0f", ( $min_temp + $max_temp ) / 2 ) );
+
+        push(
+            @{ $self->{cached}->{forecast}->{daily} },
+            {
+                'pubDate' => _strftimeWrapper(
+                    "%a, %e %b %Y %H:%M",
+                    localtime( $rep_entry->{dt} )
+                ),
+                'day_of_week' =>
+                  strftime( "%a, %H:%M", localtime( $rep_entry->{dt} ) ),
+                'temperature' => $rep_temp,
+                'temp_c'      => $rep_temp,
+                'low_c'       => int( sprintf( "%.0f", $min_temp ) ),
+                'high_c'      => int( sprintf( "%.0f", $max_temp ) ),
+                'tempLow'     => int( sprintf( "%.0f", $min_temp ) ),
+                'tempHigh'    => int( sprintf( "%.0f", $max_temp ) ),
+                'humidity'    => $avg_humidity,
+                'condition'   =>
+                  encode_utf8( $rep_entry->{weather}->[0]->{description} ),
+                'pressure'       => $avg_pressure,
+                'wind'           => $wind_speed,
+                'wind_speed'     => $wind_speed,
+                'wind_gust'      => $wind_gust,
+                'wind_direction' =>
+                  int( sprintf( "%.1f", ( $rep_entry->{wind}->{deg} // 0 ) ) ),
+                'cloudCover' => $rep_entry->{clouds}->{all} // 0,
+                'code'       => $codes{ $rep_entry->{weather}->[0]->{id} },
+                'owmAPICode' => $rep_entry->{weather}->[0]->{id},
+                'iconAPI'    => $rep_entry->{weather}->[0]->{icon},
+                'pop'        => $max_pop,
+                'rain'       => int( sprintf( "%.1f", $sum_rain ) + 0.5 ),
+                'snow'       => int( sprintf( "%.1f", $sum_snow ) + 0.5 ),
+            }
+        );
     }
 
     return $self;
